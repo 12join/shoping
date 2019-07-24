@@ -19,11 +19,12 @@
     
     <script type="text/javascript" src="./js/base.js"></script>
     <script type="text/javascript" src="./js/service/contentService.js"></script>
+    <script type="text/javascript" src="./js/service/loginService.js"></script>
     <script type="text/javascript" src="./js/controller/contentController.js"></script>
    
 </head>
 
-<body ng-app="pinyougou" ng-controller="contentController" ng-init="findByCategoryId(1)">
+<body ng-app="pinyougou" ng-controller="contentController" ng-init="findByCategoryId(1);showName()">
 	<!-- 头部栏位 -->
 	<!--页面顶部-->
 <div id="nav-bottom">
@@ -34,7 +35,9 @@
 				<div class="shortcut">
 					<ul class="fl">
 						<li class="f-item">品优购欢迎您！</li>
-						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
+						<span ng-show="user.isLogin"><li class="f-item"><a href="http://localhost:9106" target="_blank">{{user.name}}</a>&nbsp&nbsp<a href="logout/cas" target="_blank">退出登陆</a></li></span>
+
+						<span ng-show="!user.isLogin"><li class="f-item">请<a href="/login.html#?url=1" target="_blank">登录</a>&nbsp&nbsp<a href="http://localhost:9106/register.html" target="_blank">免费注册</a></li></span>
 					</ul>
 					<ul class="fr">
 						<li class="f-item">我的订单</li>

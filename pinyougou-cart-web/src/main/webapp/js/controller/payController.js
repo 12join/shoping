@@ -1,4 +1,4 @@
-app.controller('payController' ,function($scope ,$location,payService){
+app.controller('payController' ,function($scope ,$location,payService,loginService){
 	
 	
 	$scope.createNative=function(){
@@ -44,5 +44,23 @@ app.controller('payController' ,function($scope ,$location,payService){
 	$scope.getMoney=function(){
 		return $location.search()['money'];
 	}
+
+	//获取用户登陆信息
+    $scope.user={name:"",isLogin:false};
+    $scope.showName=function(){
+
+        loginService.showName().success(
+
+            function(data){
+
+                $scope.user.name=data.loginName;
+
+                $scope.user.isLogin=data.isLogin;
+
+            }
+        );
+    }
+
+
 	
 });

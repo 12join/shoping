@@ -1,4 +1,4 @@
-app.controller('searchController',function($scope,$location,searchService){
+app.controller('searchController',function($scope,$location,searchService,loginService){
 	
 	//定义搜索对象的结构  category:商品分类
 	$scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':'','pageNo':1,'pageSize':40,'sort':'','sortField':''};
@@ -122,5 +122,21 @@ app.controller('searchController',function($scope,$location,searchService){
 		$scope.searchMap.keywords= $location.search()['keywords'];
 		$scope.search();//查询
 	}
+
+    //获取用户登陆信息
+    $scope.user={name:"",isLogin:false};
+    $scope.showName=function(){
+
+        loginService.showName().success(
+
+            function(data){
+
+                $scope.user.name=data.loginName;
+
+                $scope.user.isLogin=data.isLogin;
+
+            }
+        );
+    }
 	
 });

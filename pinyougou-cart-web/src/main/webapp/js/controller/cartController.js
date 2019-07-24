@@ -1,5 +1,5 @@
 //购物车控制层
-app.controller('cartController',function($scope,cartService){
+app.controller('cartController',function($scope,cartService,loginService){
 	//查询购物车列表
 	$scope.findCartList=function(){
 		cartService.findCartList().success(
@@ -86,5 +86,20 @@ app.controller('cartController',function($scope,cartService){
 			}				
 		);		
 	}
+	//获取用户登陆信息
+    $scope.user={name:"",isLogin:false};
+    $scope.showName=function(){
+
+        loginService.showName().success(
+
+            function(data){
+
+                $scope.user.name=data.loginName;
+
+                $scope.user.isLogin=data.isLogin;
+
+            }
+        );
+    }
 	
 });
