@@ -29,7 +29,9 @@
 				<div class="shortcut">
 					<ul class="fl">
 						<li class="f-item">品优购欢迎您！</li>
-						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
+                        <span ng-show="user.isLogin"><li class="f-item"><a href="http://localhost:9106" target="_blank">{{user.name}}</a>&nbsp&nbsp<a href="logout/cas" target="_blank">退出登陆</a></li></span>
+
+                        <span ng-show="!user.isLogin"><li class="f-item">请<a href="/login.html" target="_blank">登录</a>&nbsp&nbsp<a href="http://localhost:9106/register.html" target="_blank">免费注册</a></li></span>
 					</ul>
 					<ul class="fr">
 						<li class="f-item">我的订单</li>
@@ -159,7 +161,7 @@ $(function(){
                     <div class="person-info">
                         <div class="person-photo"><img src="img/_/photo.png" alt=""></div>
                         <div class="person-account">
-                            <span class="name">{{loginName}}</span>
+                            <span class="name">{{user.name}}</span>
                             <span class="safe"><a href="logout/cas">退出登录 </a></span>
                         </div>
                         <div class="clearfix"></div>

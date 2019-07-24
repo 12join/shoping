@@ -1,4 +1,4 @@
-app.controller('payController' ,function($scope,$location,payService){ 
+app.controller('payController' ,function($scope,$location,payService,loginService){
 	// 本地生成二维码
 	$scope.createNative=function(){
 		payService.createNative().success(
@@ -38,6 +38,21 @@ app.controller('payController' ,function($scope,$location,payService){
 	$scope.getMoney=function(){
 		return $location.search()['money'];
 	}
+
+    $scope.user={name:"",isLogin:false};
+    $scope.showName=function(){
+
+        loginService.showName().success(
+
+            function(data){
+
+                $scope.user.name=data.loginName;
+
+                $scope.user.isLogin=data.isLogin;
+
+            }
+        );
+    }
 
 	
 });

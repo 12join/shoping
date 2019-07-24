@@ -13,10 +13,16 @@ public class LoginController {
 
 	@RequestMapping("/name")
 	public Map showName(){
-		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();//得到登陆人账号
 		Map map=new HashMap();
 		map.put("loginName", name);
-		return map;		
+
+		if(name.equals("anonymousUser")){//如果未登录
+			map.put("isLogin", false);
+		}else {
+			map.put("isLogin", true);
+		}
+		return map;
 	}
 	
 }

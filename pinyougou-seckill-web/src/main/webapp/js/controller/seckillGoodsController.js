@@ -1,5 +1,5 @@
 //控制层
-app.controller('seckillGoodsController' ,function($scope,seckillGoodsService,$location,$interval){ 
+app.controller('seckillGoodsController' ,function($scope,seckillGoodsService,$location,$interval,loginService){
 	//读取列表数据绑定到表单中
 	$scope.findAll=function(){
 		seckillGoodsService.findAll().success(
@@ -74,5 +74,20 @@ app.controller('seckillGoodsController' ,function($scope,seckillGoodsService,$lo
 			}
 		);
 	}
+
+    $scope.user={name:"",isLogin:false};
+    $scope.showName=function(){
+
+        loginService.showName().success(
+
+            function(data){
+
+                $scope.user.name=data.loginName;
+
+                $scope.user.isLogin=data.isLogin;
+
+            }
+        );
+    }
 	
 });
