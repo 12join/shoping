@@ -13,8 +13,8 @@ app.controller('payController' ,function($scope ,$location,payService){
 				 var qr=new QRious({
 					    element:document.getElementById('qrious'),
 						size:250,
-						value:response.code_url,
-						level:'H'
+                        level:'L',
+						value:response.code_url
 			     });
 				 
 				 queryPayStatus();//调用查询
