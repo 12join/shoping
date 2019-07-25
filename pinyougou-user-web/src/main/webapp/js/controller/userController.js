@@ -54,6 +54,7 @@ app.controller('userController', function ($scope, userService, loginService,upl
         userService.findUser().success(
             function (response) {
                 $scope.userInfo = response;
+
             }
         );
     }
@@ -64,14 +65,23 @@ app.controller('userController', function ($scope, userService, loginService,upl
     $scope.str3 = "3";
     // $scope.str=$scope.str1+"-"+$scope.str2+"-"+$scope.str3;
 
-    $scope.addStr1 = "安徽省";
-    // $scope.addStr2="北京市市辖区";
-    // $scope.addStr3="东城区";
+    $scope.addStr1 = "北京市";
+    $scope.addStr2="北京市市辖区";
+    $scope.addStr3="东城区";
     $scope.addStr4 = "";
-    $scope.inStr = "图书音像/电子书刊";
 
 
     $scope.updateInfo = function () {
+        if(!flag){
+            alert("昵称格式有误,重新输入");
+            return;
+        }
+        if($scope.addStr4==null||$scope.addStr4==""){
+            alert("地址不能为空,请输入详细地址");
+            return;
+        }
+
+
         $scope.userInfo.birthday = $scope.str1 + "-" + $scope.str2 + "-" + $scope.str3;
         $scope.userInfo.address = $scope.addStr1 + $scope.addStr2 + $scope.addStr3 + $scope.addStr4;
         $scope.userInfo.interest = $scope.inStr;
@@ -89,19 +99,83 @@ app.controller('userController', function ($scope, userService, loginService,upl
     }
 
 
-    $scope.uploadFile = function () {
-        // 调用uploadService的方法完成文件的上传
-        uploadService.uploadFile().success(
-            function (response) {
-                if (response.success) {
-                    // 获得url
-                    $scope.userInfo.headPic = response.message;
-                    alert("保存成功")
-                } else {
-                    alert(response.message);
-                }
-            });
+    $scope.test = function () {
+        setTimeout(function () {
+            $scope.addStr2=$("#city").val();
+            alert($scope.addStr2);
+            $scope.addStr3=$("#district").val();
+            alert($scope.addStr3);
+        }, 50);
     }
+
+    $scope.test1 = function () {
+        setTimeout(function () {
+            $scope.addStr3=$("#district").val();
+            alert($scope.addStr3);
+        }, 50);
+    }
+
+    $("#address").blur(function(){
+        var $address=this.value;
+        if($address==null||$address==""){
+            $("#aa").html("内容不能为空");
+        }else{
+            $("#aa").html("");
+        }
+    });
+
+    /*$("#nickName").blur(function(){
+        var nickName=this.value;
+        if(nickName==null||nickName==""){
+            $("#bb").html("昵称内容不能为空");
+        }else{
+            $("#bb").html("");
+        }
+    });*/
+
+
+    $("#nickName").blur(function() {
+        var nickName=this.value;
+        validNickname(nickName);
+    });
+
+    var flag;
+
+    function validNickname(nickName) {
+        if (nickName == "") {
+            $("#nickName_msg").html("请输入昵称");
+            flag=false;
+        }
+        var reg = new RegExp("^([a-zA-Z0-9_-]|[\\u4E00-\\u9FFF])+$", "g");
+        var reg_number = /^[0-9]+$/; // 判断是否为数字的正则表达式
+        if (reg_number.test(nickName)) {
+            $("#nickName_msg").html("昵称不能设置为手机号等纯数字格式，请您更换哦^^");
+            flag=false;
+        } else if (nickName.replace(/[^\x00-\xff]/g, "**").length < 4 || nickName.replace(/[^\x00-\xff]/g, "**").length > 20) {
+            $("#nickName_msg").html("4-20个字符，可由中英文、数字、“_”、“-”组成");
+            flag=false;
+        } else if (!reg.test(nickName)) {
+            $("#nickName_msg").html("昵称格式不正确");
+            flag=false;
+        }else{
+            $("#nickName_msg").html("");
+            flag=true;
+        }
+
+
+    }
+    /*$("#email").blur(function() {
+        var $email = this.value;
+        var myreg = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+        if (myreg.test($email)) {
+            flag2 = true;
+            $("span").eq(1).hide();
+        } else {
+            $("span").eq(1).html("格式不正确");
+        }
+
+    });*/
+
 
 
 });	

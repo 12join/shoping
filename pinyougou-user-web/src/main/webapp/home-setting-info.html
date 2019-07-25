@@ -221,10 +221,9 @@
                         <div id="one" class="tab-pane active">
                             <form id="form-msg" class="sui-form form-horizontal">
                                 <div class="control-group">
-                                    <label for="inputName" class="control-label">昵称：</label>
+                                    <label  class="control-label">昵称：</label>
                                     <div class="controls">
-                                        <input type="text" id="inputName" name="email" placeholder="昵称"
-                                               ng-model="userInfo.nickName">
+                                        <input type="text"  placeholder="昵称" ng-model="userInfo.nickName" id="nickName"><span id="nickName_msg" style="color: #ff0409"></span>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -241,7 +240,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label for="inputPassword" class="control-label">生日：</label>
+                                    <label class="control-label">生日：</label>
                                     <div class="controls">
                                         <select id="select_year2" rel="1990" ng-model="str1"></select>年
                                         <select id="select_month2" rel="4" ng-model="str2"></select>月
@@ -252,15 +251,14 @@
                                 <!--{{str2}}-->
 
                                 <div class="control-group">
-                                    <label for="inputPassword" class="control-label">所在地：</label>
+                                    <label class="control-label">所在地：</label>
                                     <div class="controls">
                                         <div data-toggle="distpicker">
                                             <div class="form-group area">
-                                                <select class="form-control" id="province" ng-model="addStr1"
-                                                        data-province="{{addStr1}}"></select>
+                                                <select class="form-control" id="province" ng-model="addStr1" ng-change="test()"></select>
                                             </div>
                                             <div class="form-group area">
-                                                <select class="form-control" id="city" ng-model="addStr2"></select>
+                                                <select class="form-control" id="city" ng-model="addStr2" ng-change="test1()"></select>
                                             </div>
                                             <div class="form-group area">
                                                 <select class="form-control" id="district" ng-model="addStr3"></select>
@@ -268,11 +266,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--{{addStr2}}-->
+                                {{addStr2}}
                                 <div class="control-group">
                                     <label for="inputName" class="control-label">详细地址：</label>
                                     <div class="controls">
-                                        <input type="text" ng-model="addStr4">
+                                        <input type="text" ng-model="addStr4" id="address"><span id="aa" style="color: #ff0409"></span>
                                     </div>
                                 </div>
                                 <!--{{addStr4}}-->
@@ -343,69 +341,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade edit">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
 
-                                    <div class="modal-header">
-                                        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">
-                                            ×
-                                        </button>
-                                        <h4 id="myModalLabel" class="modal-title">修改个人信息</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="" class="sui-form form-horizontal">
-                                            <div class="control-group">
-                                                <label class="control-label">昵称：</label>
-                                                <div class="controls">
-                                                    <input type="text" class="input-medium">
-                                                </div>
-                                            </div>
-
-                                            <div class="control-group">
-                                                <label class="control-label">详细地址：</label>
-                                                <div class="controls">
-                                                    <input type="text" class="input-large">
-                                                </div>
-                                            </div>
-                                            <div class="control-group">
-                                                <label class="control-label">联系电话：</label>
-                                                <div class="controls">
-                                                    <input type="text" class="input-medium">
-                                                </div>
-                                            </div>
-                                            <div class="control-group">
-                                                <label class="control-label">邮箱：</label>
-                                                <div class="controls">
-                                                    <input type="text" class="input-medium">
-                                                </div>
-                                            </div>
-                                            <div class="control-group">
-                                                <label class="control-label">地址别名：</label>
-                                                <div class="controls">
-                                                    <input type="text" class="input-medium">
-                                                </div>
-                                                <div class="othername">
-                                                    建议填写常用地址：<a href="#" class="sui-btn btn-default">家里</a>　<a href="#"
-                                                                                                               class="sui-btn btn-default">父母家</a>　<a
-                                                        href="#" class="sui-btn btn-default">公司</a>
-                                                </div>
-                                            </div>
-
-                                        </form>
-
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large">确定
-                                        </button>
-                                        <button type="button" data-dismiss="modal"
-                                                class="sui-btn btn-default btn-large">取消
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div id="two" class="tab-pane">
 
                             <div class="new-photo">
