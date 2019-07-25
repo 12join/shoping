@@ -94,5 +94,6 @@ public interface UserService {
      * @param url
      */
 	void updateHeadImg(String username,String url);
-	
+
+
 }
