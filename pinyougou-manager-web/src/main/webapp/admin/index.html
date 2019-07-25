@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link type="text/css" rel="stylesheet" href="../test/jeDate-test.css">
+    <link type="text/css" rel="stylesheet" href="../skin/jedate.css">
+    <script type="text/javascript" src="../src/jedate.js"></script>
+    <script type="text/javascript" src="../js/echarts.min.js"></script>
     
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/jQueryUI/jquery-ui.min.js"></script>
@@ -39,7 +43,8 @@
  
 </head>
 
-<body class="hold-transition skin-green sidebar-mini" ng-app="pinyougou" ng-controller="indexController" ng-init="showName()">
+
+<body   class="hold-transition skin-green sidebar-mini" ng-app="pinyougou" ng-controller="indexController" ng-init="showName()">
 
     <div class="wrapper">
 
@@ -408,24 +413,162 @@
         <!-- 导航侧栏 /-->
 
         <!-- 内容区域 -->
-        <div class="content-wrapper">
-			<iframe width="100%" id="iframe" name="iframe"	onload="SetIFrameHeight()" 
-					frameborder="0" src="home.html"></iframe>
- 
+        <!--<div class="content-wrapper">-->
+        <!--<iframe width="100%" id="iframe" name="iframe"	onload="SetIFrameHeight()"-->
+                <!--frameborder="0" src="home.html"></iframe>-->
+        <!--</div>-->
+
+        <div id="container" style="height: 100%">
+
+            <div class="jebody">
+
+                <div class="jewarp">
+
+                    <div class="jeitem">
+                        <label class="jelabel">开始时间</label>
+                        <div class="jeinpbox"><input type="text"  class="jeinput" id="short" placeholder="订单时间"></div>
+                    </div>
+                    <div class="jeitem">
+                        <label class="jelabel">结束时间</label>
+                        <div class="jeinpbox"><input type="text" class="jeinput" id="shortboth" placeholder="订单时间"></div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+        <script type="text/javascript">
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+                legend: {},
+                tooltip: {
+                    trigger: 'axis',
+                    showContent: true,
+                },
+
+                title:{
+                    top: '3%',
+                    center: "20%",
+                    text:'品优购订单统计概况',
+                    subtext:'黑马程序员• 合肥中心',
+                    x: 'center'
+
+                },
+                legend:
+                    {
+
+                        top: '25%',
+                        left: '15%',
+                        orient: 'vartical',
+
+                        data:['已关闭订单',"已完成订单","已发货订单","待发货订单","待付款订单"]
+                    },
+
+                dataset: {
+                    source: [
+                        ['product', '2019-01-01', '2019-01-02', '2019-01-03', '2019-01-04', '2019-01-05', '2019-01-06','2019-01-07'],
+                        ['待付款订单', 41.1, 30.4, 65.1, 53.3, 83.8, 98.7,88.5],
+                        ['待发货订单', 86.5, 92.1, 85.7, 83.1, 73.4, 55.1,66.3],
+                        ['已发货订单', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5,70.2],
+                        ['已完成订单', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1,40.6],
+                        ['已关闭订单', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1,55.2],
+
+                    ]
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    gridIndex: 0
+                },
+                grid: {
+                    top: '50%',
+                   right: "15%",
+                },
+                series: [{
+                    type: 'bar',
+                    stack: '总量',
+                    smooth: true,
+                    seriesLayoutBy: 'row'
+                },
+                    {
+                        type: 'bar',
+                        smooth: true,
+                        stack: '总量',
+                        seriesLayoutBy: 'row'
+                    },
+                    {
+                        type: 'bar',
+                        smooth: true,
+                        stack: '总量',
+                        seriesLayoutBy: 'row'
+                    },
+                    {
+                        type: 'bar',
+                        smooth: true,
+                        stack: '总量',
+                        seriesLayoutBy: 'row'
+                    },
+                    {
+                        type: 'bar',
+                        smooth: true,
+                        stack: '总量',
+                        seriesLayoutBy: 'row'
+                    },
+                    {
+                        type: 'pie',
+                        id: 'pie',
+                        radius: '25%',
+                        center: ['50%', '25%'],
+                        label: {
+                            formatter: '{b}: {@2019} ({d}%)'
+                        },
+                        encode: {
+                            itemName: 'product',
+                            value: '2019',
+                            tooltip: '2019'
+                        }
+                    }
+                ]
+            };
+            myChart.on('updateAxisPointer', function (event) {
+                var xAxisInfo = event.axesInfo[0];
+                if (xAxisInfo) {
+                    var dimension = xAxisInfo.value + 1;
+                    myChart.setOption({
+                        series: {
+                            id: 'pie',
+                            label: {
+                                formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+                            },
+                            encode: {
+                                value: dimension,
+                                tooltip: dimension
+                            }
+                        }
+                    });
+                }
+            });
+            myChart.setOption(option);
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        </script>
         <!-- 内容区域 /-->
 
         <!-- 底部导航 -->
-        <footer class="main-footer">
+      <!--  <footer class="main-footer">
             <div class="pull-right hidden-xs">
                 <b>Version</b> 1.0.8
             </div>
             <strong>Copyright &copy; 2014-2017 <a href="http://www.itcast.cn">研究院研发部</a>.</strong> All rights reserved.
-        </footer>
+        </footer>-->
         <!-- 底部导航 /-->
 
     </div>
-
 </body>
 
 </html>
