@@ -13,7 +13,8 @@ import util.HttpClient;
 @Service
 public class WeixinPayServiceImpl implements WeixinPayService {
 
-	@Value("${appid}")
+	//与支付宝的appid名一样所以加了wx做区别
+	@Value("${wxappid}")
 	private String appid;
 	
 	@Value("${partner}")
@@ -27,7 +28,9 @@ public class WeixinPayServiceImpl implements WeixinPayService {
 		//1.参数封装
 		Map param=new HashMap();
 		param.put("appid", appid);//公众账号ID
+		System.out.println(appid);
 		param.put("mch_id", partner);//商户
+		System.out.println(partner);
 		param.put("nonce_str", WXPayUtil.generateNonceStr());//随机字符串
 		param.put("body", "品优购");
 		param.put("out_trade_no", out_trade_no);//交易订单号

@@ -23,6 +23,8 @@ public class SeckillTask {
 	
 	@Autowired
 	private RedisTemplate redisTemplate;
+
+
 	@Scheduled(cron="0 * * * * ?")//每一分钟执行一次
 	public void refreshSeckillGoods(){
 		System.out.println("执行了增加");

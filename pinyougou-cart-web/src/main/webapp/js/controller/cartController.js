@@ -1,5 +1,5 @@
 //购物车控制层
-app.controller('cartController',function($scope,cartService){
+app.controller('cartController',function($scope,cartService,loginService){
 	//查询购物车列表
 	$scope.findCartList=function(){
 		cartService.findCartList().success(
@@ -70,21 +70,41 @@ app.controller('cartController',function($scope,cartService){
 		
 		cartService.submitOrder( $scope.order ).success(
 			function(response){
-				//alert(response.message);
+				//根据支付方式选择不同的生成二维码方法，微信或支付宝
 				if(response.success){
-					//页面跳转
-					if($scope.order.paymentType=='1'){//如果是微信支付，跳转到支付页面
-						location.href="pay.html";
-					}else{//如果货到付款，跳转到提示页面
-						location.href="paysuccess.html";
-					}
-					
+					//得到后端传递的payLogId
+					var payLogId = response.message;
+					//微信支付
+                    if($scope.order.paymentType=='1'){
+                        location.href="pay.html#?type=1&payLogId="+payLogId;
+                    }else if($scope.order.paymentType=='3'){//支付宝支付
+                        location.href="pay.html#?type=3&payLogId="+payLogId;
+                    }
+                    else{
+                        location.href="paysuccess.html"
+                    }
+
 				}else{
-					alert(response.message);	//也可以跳转到提示页面				
+					alert(response.message);	//也可以跳转到提示页面
 				}
 				
-			}				
+			}
 		);		
 	}
+	//获取用户登陆信息
+    $scope.user={name:"",isLogin:false};
+    $scope.showName=function(){
+
+        loginService.showName().success(
+
+            function(data){
+
+                $scope.user.name=data.loginName;
+
+                $scope.user.isLogin=data.isLogin;
+
+            }
+        );
+    }
 	
 });

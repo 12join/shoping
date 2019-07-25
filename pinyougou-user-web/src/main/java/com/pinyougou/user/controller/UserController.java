@@ -1,6 +1,7 @@
 package com.pinyougou.user.controller;
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -110,7 +111,7 @@ public class UserController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param
 	 * @param page
 	 * @param rows
 	 * @return
@@ -135,5 +136,32 @@ public class UserController {
 			return new Result(false, "验证码发送失败");
 		}
 	}
+
+
+	@RequestMapping("/findUser")
+    public TbUser findUser(){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        try {
+            TbUser user = userService.findUser(name);
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+
+    @RequestMapping("/updateUserInfo")
+    public Result add(@RequestBody TbUser user){
+        try {
+            String name = SecurityContextHolder.getContext().getAuthentication().getName();
+            userService.updateUserInfo(user);
+            return new Result(true, "修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "系统错误,请稍后再试");
+        }
+    }
 	
 }

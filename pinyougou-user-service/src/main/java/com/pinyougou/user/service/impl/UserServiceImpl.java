@@ -212,5 +212,29 @@ public class UserServiceImpl implements UserService {
 		
 		return true;
 	}
-	
+
+    @Override
+    public TbUser findUser(String username) {
+        TbUserExample userExample = new TbUserExample();
+        Criteria criteria = userExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        List<TbUser> users = userMapper.selectByExample(userExample);
+        return users.get(0);
+    }
+
+    @Override
+    public void updateUserInfo(TbUser user) {
+        userMapper.updateByPrimaryKey(user);
+    }
+
+    @Override
+    public void updateHeadImg(String username,String url) {
+        TbUser user = new TbUser();
+        user.setHeadPic(url);
+        TbUserExample userExample = new TbUserExample();
+        Criteria criteria = userExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        userMapper.updateByExampleSelective(user,userExample);
+    }
+
 }

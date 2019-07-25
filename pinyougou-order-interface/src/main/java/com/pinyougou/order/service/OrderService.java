@@ -1,5 +1,7 @@
 package com.pinyougou.order.service;
 import java.util.List;
+import java.util.Map;
+
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbPayLog;
 
@@ -26,9 +28,9 @@ public interface OrderService {
 	
 	
 	/**
-	 * 增加
+	 * 增加,修改了返回值类型，在创建订单时将支付订单号返回给前端，用map封装
 	*/
-	public void add(TbOrder order);
+	public Map add(TbOrder order);
 	
 	
 	/**
