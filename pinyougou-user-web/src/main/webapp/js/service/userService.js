@@ -33,5 +33,15 @@ app.service('userService',function($http){
 	this.sendCode=function(phone){
 		return $http.get('../user/sendCode.do?phone='+phone);
 	}
+
+    //查询实体根据用户名
+    this.findUser=function(){
+        return $http.get('../user/findUser.do');
+    }
+
+    //修改用户基本信息
+    this.updateInfo=function(userInfo){
+        return $http.post('../user/updateUserInfo.do',userInfo);
+    }
 	
 });
