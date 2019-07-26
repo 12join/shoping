@@ -198,6 +198,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 
        var logList =  JSON.stringify($scope.payLogList)
 
+        alert(logList)
         if(type=='1'){
             location.href="pay.html#?type=1&currentOrderId="+$scope.currentOrderId+"&payLogList="+logList;
         }else if(type=='3'){
@@ -209,22 +210,25 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
     }
 
 
+    $scope.logId=""
 
     $scope.createNative=function(){
 
-        var payLogList=  JSON.parse($location.search()['payLogList']);
-
+        $scope.payLogList=  $location.search()['payLogList'];
+        $scope.payLogList = JSON.parse($scope.payLogList);
+        console.info( $scope.payLogList)
+        alert($scope.payLogList.length)
 
         var type =  $location.search()['type'];
 
         var currentOrderId = $location.search()['currentOrderId'];
-        payLogId="";
 
-        for(var i =0;i< payLogList.length;i++){
-            alert(payLogList[i].outTradeNo.indexOf(currentOrderId))
-            if(payLogList[i].outTradeNo.indexOf(currentOrderId)!=-1){
-                alert(payLogList[i].outTradeNo.indexOf(currentOrderId)!=-1)
-                payLogId=payLogList[i].outTradeNo;
+
+        for(var i =0;i< $scope.payLogList.length;i++){
+            //alert($scope.payLogList[i].outTradeNo)
+            if($scope.payLogList[i].orderList.indexOf(currentOrderId)!=-1){
+                alert($scope.payLogList[i].orderList.indexOf(currentOrderId))
+                $scope.logId=$scope.payLogList[i].outTradeNo;
             }
         }
 
@@ -235,8 +239,8 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 
         }
 
-        alert(payLogId)
-        payService.createNative(type,payLogId).success(function(response){
+        alert($scope.logId)
+        payService.createNative(type,$scope.logId).success(function(response){
             $scope.orderId=response.out_trade_no;
             $scope.money=(response.total_fee/100).toFixed(2);
             var qr = new QRious({
