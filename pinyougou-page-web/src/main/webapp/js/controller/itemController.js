@@ -1,4 +1,4 @@
-app.controller("itemController",function($scope,$http){
+app.controller("itemController",function($scope,$http,favoriteService,loginService){
 	
 	$scope.specificationItems={};//存储用户选择的规格
 	
@@ -78,6 +78,35 @@ app.controller("itemController",function($scope,$http){
 				);	
 		
 	}
+
+	$scope.favorite=function () {
+        favoriteService.save($scope.sku.id).success(function (data) {
+			alert(data.message);
+            $scope.isFav=true;
+        });
+    }
+
+    //获取用户登陆信息
+    $scope.user={name:"",isLogin:false};
+    $scope.showName=function(){
+
+        loginService.showName().success(
+
+            function(data){
+
+                $scope.user.name=data.loginName;
+
+                $scope.user.isLogin=data.isLogin;
+
+            }
+        );
+    }
+    //判断用户是否收藏
+    $scope.isFavor=function () {
+        favoriteService.isFavor($scope.sku.id).success(function (data) {
+            $scope.isFav= data.success;
+        });
+    }
 	
 	
 });

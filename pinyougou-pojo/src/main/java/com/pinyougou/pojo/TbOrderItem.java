@@ -1,5 +1,9 @@
 package com.pinyougou.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -10,6 +14,7 @@ public class TbOrderItem implements Serializable{
 
     private Long goodsId;
 
+    @JSONField(serializeUsing= ToStringSerializer.class)
     private Long orderId;
 
     private String title;

@@ -72,5 +72,28 @@ public interface UserService {
 	 * @return
 	 */
 	public boolean checkSmsCode(String phone,String code);
-	
+
+
+    /**
+     * 根据用户名查询用户信息
+     * @param username
+     * @return
+     */
+	TbUser findUser(String username);
+
+
+    /**
+     * 更新用户信息
+     * @param user
+     */
+	void updateUserInfo(TbUser user);
+
+
+    /**
+     * 更新头像
+     * @param url
+     */
+	void updateHeadImg(String username,String url);
+
+
 }

@@ -11,16 +11,25 @@
 	
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-payfail.css" />
-</head>
+		<script type="text/javascript" src="plugins/angularjs/angular.min.js"> </script>
+		<script type="text/javascript" src="js/base.js"> </script>
+		<script type="text/javascript" src="js/service/payService.js"> </script>
+		<script type="text/javascript" src="js/service/loginService.js"> </script>
+		<script type="text/javascript" src="js/controller/payController.js"> </script>
+		<script type="text/javascript" src="plugins/qrious.min.js"></script>
 
-	<body>
+	</head>
+
+	<body ng-app="pinyougou" ng-controller="payController" ng-init="showName()">
 		<!--head-->
 		<div class="top">
 			<div class="py-container">
 				<div class="shortcut">
 					<ul class="fl">
 						<li class="f-item">品优购欢迎您！</li>
-						<li class="f-item">请登录　<span><a href="#">免费注册</a></span></li>
+						<span ng-show="user.isLogin"><li class="f-item"><a href="http://localhost:9106" target="_blank">{{user.name}}</a>&nbsp&nbsp<a href="logout/cas" target="_blank">退出登陆</a></li></span>
+
+						<span ng-show="!user.isLogin"><li class="f-item">请<a href="/login.html" target="_blank">登录</a>&nbsp&nbsp<a href="http://localhost:9106/register.html" target="_blank">免费注册</a></li></span>
 					</ul>
 					<ul class="fr">
 						<li class="f-item">我的订单</li>

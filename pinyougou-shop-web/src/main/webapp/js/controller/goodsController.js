@@ -118,7 +118,7 @@ app.controller('goodsController' ,function($scope,$controller,$location,typeTemp
 	$scope.uploadFile = function(){
 		// 调用uploadService的方法完成文件的上传
 		uploadService.uploadFile().success(function(response){
-			if(response.flag){
+			if(response.success){
 				// 获得url
 				$scope.image_entity.url =  response.message;
 			}else{

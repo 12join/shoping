@@ -3,7 +3,7 @@ package com.pinyougou.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TbUser implements Serializable{
+public class TbUser implements Serializable {
     private Long id;
 
     private String username;
@@ -44,9 +44,13 @@ public class TbUser implements Serializable{
 
     private Integer experienceValue;
 
-    private Date birthday;
+    private String birthday;
 
     private Date lastLoginTime;
+
+    private String interest;
+
+    private String address;
 
     public Long getId() {
         return id;
@@ -208,12 +212,12 @@ public class TbUser implements Serializable{
         this.experienceValue = experienceValue;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday == null ? null : birthday.trim();
     }
 
     public Date getLastLoginTime() {
@@ -222,5 +226,21 @@ public class TbUser implements Serializable{
 
     public void setLastLoginTime(Date lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest == null ? null : interest.trim();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
     }
 }

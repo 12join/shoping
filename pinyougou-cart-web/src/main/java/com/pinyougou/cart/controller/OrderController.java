@@ -1,5 +1,6 @@
 package com.pinyougou.cart.controller;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +47,8 @@ public class OrderController {
 	 * 增加
 	 * @param order
 	 * @return
+	 *
+	 * 修改了返回给前端的参数为支付订单号
 	 */
 	@RequestMapping("/add")
 	public Result add(@RequestBody TbOrder order){
@@ -56,8 +59,9 @@ public class OrderController {
 		order.setSourceType("2");//订单来源  PC
 		
 		try {
-			orderService.add(order);
-			return new Result(true, "增加成功");
+			Map payLogIdMap = orderService.add(order);
+			//修改传递到前端的参数为支付订单号
+			return new Result(true, (String)payLogIdMap.get("payLogId"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, "增加失败");
@@ -108,7 +112,7 @@ public class OrderController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param order
 	 * @param page
 	 * @param rows
 	 * @return
