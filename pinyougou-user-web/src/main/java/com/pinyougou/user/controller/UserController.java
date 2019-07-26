@@ -21,7 +21,7 @@ import util.PhoneFormatCheckUtils;
 @RequestMapping("/user")
 public class UserController {
 
-	@Reference
+	@Reference(timeout =10000)
 	private UserService userService;
 	
 	/**
@@ -141,6 +141,7 @@ public class UserController {
 	@RequestMapping("/findUser")
     public TbUser findUser(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(name);
         try {
             TbUser user = userService.findUser(name);
             return user;

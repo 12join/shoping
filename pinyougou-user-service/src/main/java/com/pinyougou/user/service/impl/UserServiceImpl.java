@@ -34,7 +34,7 @@ import entity.PageResult;
  * @author Administrator
  *
  */
-@Service
+@Service(timeout =10000)
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -219,6 +219,7 @@ public class UserServiceImpl implements UserService {
         Criteria criteria = userExample.createCriteria();
         criteria.andUsernameEqualTo(username);
         List<TbUser> users = userMapper.selectByExample(userExample);
+        System.out.println(users);
         return users.get(0);
     }
 

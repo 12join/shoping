@@ -49,14 +49,28 @@ app.controller('userController', function ($scope, userService, loginService,upl
         );
     }
 
-
+    //查找用户
     $scope.findUser = function () {
         userService.findUser().success(
             function (response) {
                 $scope.userInfo = response;
-
             }
         );
+    }
+
+
+    //文件上传
+    $scope.uploadFile = function(){
+        // 调用uploadService的方法完成文件的上传
+        uploadService.uploadFile().success(function(response){
+            if(response.success){
+                // 获得url
+                $scope.userInfo.headPic =  response.message;
+                alert("保存成功");
+            }else{
+                alert(response.message);
+            }
+        });
     }
 
 
@@ -102,16 +116,16 @@ app.controller('userController', function ($scope, userService, loginService,upl
     $scope.test = function () {
         setTimeout(function () {
             $scope.addStr2=$("#city").val();
-            alert($scope.addStr2);
+            // alert($scope.addStr2);
             $scope.addStr3=$("#district").val();
-            alert($scope.addStr3);
+            // alert($scope.addStr3);
         }, 50);
     }
 
     $scope.test1 = function () {
         setTimeout(function () {
             $scope.addStr3=$("#district").val();
-            alert($scope.addStr3);
+            // alert($scope.addStr3);
         }, 50);
     }
 
