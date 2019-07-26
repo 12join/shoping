@@ -34,6 +34,12 @@
 	<!-- 引入angular的js -->
     <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
 	<script type="text/javascript" src="../js/base.js"></script>
+	<script type="text/javascript" src="../js/controller/seckillGoodsController.js"></script>
+	<script type="text/javascript" src="../js/controller/seckillOrderController.js"></script>
+	<script type="text/javascript" src="../js/service/seckillGoodsService.js"></script>
+	<script type="text/javascript" src="../js/service/seckillOrderService.js"></script>
+	<script type="text/javascript" src="../js/service/orderService.js"></script>
+	<script type="text/javascript" src="../js/controller/orderController.js"></script>
     <script type="text/javascript" src="../js/controller/indexController.js"></script>
     <script type="text/javascript" src="../js/service/loginService.js"></script>
  
@@ -374,6 +380,12 @@
 				                    <i class="fa fa-circle-o"></i>商品审核
 				                </a>
 				            </li>
+
+                            <li id="admin-login">
+                                <a href="seckillGoods.html" target="iframe">
+                                    <i class="fa fa-circle-o"></i>秒杀商品
+                                </a>
+                            </li>
 				        </ul>                        
 				    </li>
 					
@@ -399,6 +411,30 @@
 				            </li>
 				        </ul>                        
 				    </li>
+
+
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-folder"></i>
+                            <span>订单管理</span>
+                            <span class="pull-right-container">
+				       			<i class="fa fa-angle-left pull-right"></i>
+				   		 	</span>
+                        </a>
+                        <ul class="treeview-menu">
+
+                            <li id="admin-login">
+                                <a href="order.html" target="iframe">
+                                    <i class="fa fa-circle-o"></i>普通订单管理
+                                </a>
+                            </li>
+                            <li id="admin-login">
+                                <a href="seckillOrder.html" target="iframe">
+                                    <i class="fa fa-circle-o"></i>秒杀订单管理
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 				    <!-- 菜单 /-->
 
                 </ul>

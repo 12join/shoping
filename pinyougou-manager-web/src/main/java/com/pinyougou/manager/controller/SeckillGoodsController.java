@@ -1,15 +1,12 @@
-package com.pinyougou.shop.controller;
+package com.pinyougou.manager.controller;
 import java.util.List;
 
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.pinyougou.pojo.TbSeckillGoods;
+import com.pinyougou.seckill.service.SeckillGoodsService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojo.group.Goods;
-import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
 import entity.Result;
@@ -19,19 +16,19 @@ import entity.Result;
  *
  */
 @RestController
-@RequestMapping("/goods")
-public class GoodsController {
+@RequestMapping("/seckillGoods")
+public class SeckillGoodsController {
 
 	@Reference
-	private GoodsService goodsService;
+	private SeckillGoodsService seckillGoodsService;
 	
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbGoods> findAll(){			
-		return goodsService.findAll();
+	public List<TbSeckillGoods> findAll(){
+		return seckillGoodsService.findAll();
 	}
 	
 	
@@ -41,23 +38,18 @@ public class GoodsController {
 	 */
 	@RequestMapping("/findPage")
 	public PageResult  findPage(int page,int rows){			
-		return goodsService.findPage(page, rows);
+		return seckillGoodsService.findPage(page, rows);
 	}
 	
 	/**
 	 * 增加
-	 * @param goods
+	 * @param seckillGoods
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody Goods goods){
+	public Result add(@RequestBody TbSeckillGoods seckillGoods){
 		try {
-			// 获得商家信息:
-			String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-			
-			goods.getGoods().setSellerId(sellerId);
-			
-			goodsService.add(goods);
+			seckillGoodsService.add(seckillGoods);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,21 +59,13 @@ public class GoodsController {
 	
 	/**
 	 * 修改
-	 * @param goods
+	 * @param seckillGoods
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody Goods goods){
-		// 获得商家信息:
-		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		Goods goods2 = goodsService.findOne(goods.getGoods().getId());
-		if(!sellerId.equals(goods2.getGoods().getSellerId()) || !sellerId.equals(goods.getGoods().getSellerId())){
-			return new Result(false, "非法操作");
-		}
-		
+	public Result update(@RequestBody TbSeckillGoods seckillGoods){
 		try {
-			goodsService.update(goods);
+			seckillGoodsService.update(seckillGoods);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,8 +79,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public Goods findOne(Long id){
-		return goodsService.findOne(id);		
+	public TbSeckillGoods findOne(Long id){
+		return seckillGoodsService.findOne(id);		
 	}
 	
 	/**
@@ -107,7 +91,7 @@ public class GoodsController {
 	@RequestMapping("/delete")
 	public Result delete(Long [] ids){
 		try {
-			goodsService.delete(ids);
+			seckillGoodsService.delete(ids);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,18 +101,32 @@ public class GoodsController {
 	
 		/**
 	 * 查询+分页
-	 * @param goods
+	 * @param seckillGoods
 	 * @param page
 	 * @param rows
 	 * @return
 	 */
 	@RequestMapping("/search")
-	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
-		
-		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-		goods.setSellerId(sellerId);
-		
-		return goodsService.findPage(goods, page, rows);		
+	public PageResult search(@RequestBody TbSeckillGoods seckillGoods, int page, int rows  ){
+		return seckillGoodsService.findPage(seckillGoods, page, rows);		
 	}
+
+
+    /**
+     * 批量修改状态
+     *
+     * @param ids
+     * @param status
+     */
+    @RequestMapping("/updateStatus")
+    public Result updateStatus(Long[] ids, String status) {
+        try {
+            seckillGoodsService.updateStatus(ids, status);
+            return new Result(true, "成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "失败");
+        }
+    }
 	
 }

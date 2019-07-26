@@ -2,6 +2,8 @@ package com.pinyougou.order.service.impl;
 import java.math.BigDecimal;
 import java.util.*;
 
+import com.pinyougou.mapper.*;
+import com.pinyougou.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,19 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.pinyougou.mapper.TbOrderItemMapper;
-import com.pinyougou.mapper.TbOrderMapper;
-import com.pinyougou.mapper.TbPayLogMapper;
-import com.pinyougou.pojo.TbOrder;
-import com.pinyougou.pojo.TbOrderExample;
 import com.pinyougou.pojo.TbOrderExample.Criteria;
-import com.pinyougou.pojo.TbOrderItem;
-import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.pojo.group.Cart;
 import com.pinyougou.order.service.OrderService;
 
 import entity.PageResult;
 import util.IdWorker;
+import util.MailUtils;
 
 /**
  * 服务实现层
@@ -275,5 +271,71 @@ public class OrderServiceImpl implements OrderService {
 		redisTemplate.boundHashOps("payLog").delete(out_trade_no);
 		
 	}
-	
+
+	@Autowired
+    private TbUserMapper userMapper;
+
+
+	@Autowired
+    private TbSellerMapper sellerMapper;
+
+    /**
+     * 发送订单信息
+     * @param order
+     * @param userName
+     */
+    @Override
+    public void sendMessage(TbOrder order, String userName) {
+
+        TbUserExample example = new TbUserExample();
+        example.createCriteria().andUsernameEqualTo(userName);
+        String email  = userMapper.selectByExample(example).get(0).getEmail();
+        String status = order.getStatus();
+
+        TbSeller seller = sellerMapper.selectByPrimaryKey( order.getSellerId());
+        String sellerEmail = seller.getEmail();
+        //1未付款，2已付款，3待发货，4已发货
+        if (status!=null){
+
+            if ("1".equals(status)) {
+                //订单未支付，显示立即付款，点击立即付款后,查询支付接口支付成功发送信息
+                //发送消息
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，您的订单"+order.getOrderId()+"已付款，请耐心等待商家发货","订单流程");
+                //提醒商家有新的订单
+                MailUtils.sendMail(sellerEmail,"尊敬的商家"+seller.getNickName()+"您有新的订单请及时处理","订单提醒");
+                System.out.println("发送成功1");
+            }
+
+            if ("3".equals(status)){
+                //未发货，用户点击提醒发货,提醒商家发货,提示用户提醒成功
+                //发送消息
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，已经提醒商家发货，请耐心等待","订单流程");
+                MailUtils.sendMail(sellerEmail,"尊敬的商家"+seller.getNickName()+"，用户已提醒发货，请尽快发货","发货提醒");
+                System.out.println("发送成功3");
+            }
+
+            if ("4".equals(status)){
+                //提醒用户发货成功
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，您的订单"+order.getOrderId()+"已发货,请耐心等待","订单流程");
+                System.out.println("发送成功4");
+            }
+
+            if ("5".equals(status)){
+                //交易成功
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，您的订单"+order.getOrderId()+"交易完成,给个五星好评！","订单流程");
+                MailUtils.sendMail(sellerEmail,"尊敬的商家"+seller.getNickName()+"您的订单"+order.getOrderId()+"已经交易完成","交易完成");
+                System.out.println("发送成功5");
+            }
+
+            if ("6".equals(status)){
+                //交易关闭
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，您的订单"+order.getOrderId()+"交易已经关闭！","订单流程");
+                MailUtils.sendMail(sellerEmail,"尊敬的商家"+seller.getNickName()+"您好，您的订单"+order.getOrderId()+"交易已经关闭！","交易关闭");
+                System.out.println("发送成功6");
+            }
+
+        }
+
+    }
+
 }

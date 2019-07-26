@@ -1,15 +1,13 @@
-package com.pinyougou.shop.controller;
+package com.pinyougou.manager.controller;
 import java.util.List;
 
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.pinyougou.order.service.OrderService;
+import com.pinyougou.pojo.TbOrder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojo.group.Goods;
-import com.pinyougou.sellergoods.service.GoodsService;
+
 
 import entity.PageResult;
 import entity.Result;
@@ -19,19 +17,19 @@ import entity.Result;
  *
  */
 @RestController
-@RequestMapping("/goods")
-public class GoodsController {
+@RequestMapping("/order")
+public class OrderController {
 
 	@Reference
-	private GoodsService goodsService;
+	private OrderService orderService;
 	
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbGoods> findAll(){			
-		return goodsService.findAll();
+	public List<TbOrder> findAll(){
+		return orderService.findAll();
 	}
 	
 	
@@ -41,23 +39,18 @@ public class GoodsController {
 	 */
 	@RequestMapping("/findPage")
 	public PageResult  findPage(int page,int rows){			
-		return goodsService.findPage(page, rows);
+		return orderService.findPage(page, rows);
 	}
 	
 	/**
 	 * 增加
-	 * @param goods
+	 * @param order
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody Goods goods){
+	public Result add(@RequestBody TbOrder order){
 		try {
-			// 获得商家信息:
-			String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-			
-			goods.getGoods().setSellerId(sellerId);
-			
-			goodsService.add(goods);
+			orderService.add(order);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,21 +60,13 @@ public class GoodsController {
 	
 	/**
 	 * 修改
-	 * @param goods
+	 * @param order
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody Goods goods){
-		// 获得商家信息:
-		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		Goods goods2 = goodsService.findOne(goods.getGoods().getId());
-		if(!sellerId.equals(goods2.getGoods().getSellerId()) || !sellerId.equals(goods.getGoods().getSellerId())){
-			return new Result(false, "非法操作");
-		}
-		
+	public Result update(@RequestBody TbOrder order){
 		try {
-			goodsService.update(goods);
+			orderService.update(order);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,8 +80,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public Goods findOne(Long id){
-		return goodsService.findOne(id);		
+	public TbOrder findOne(Long id){
+		return orderService.findOne(id);		
 	}
 	
 	/**
@@ -107,7 +92,7 @@ public class GoodsController {
 	@RequestMapping("/delete")
 	public Result delete(Long [] ids){
 		try {
-			goodsService.delete(ids);
+			orderService.delete(ids);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,18 +102,14 @@ public class GoodsController {
 	
 		/**
 	 * 查询+分页
-	 * @param goods
+	 * @param brand
 	 * @param page
 	 * @param rows
 	 * @return
 	 */
 	@RequestMapping("/search")
-	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
-		
-		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-		goods.setSellerId(sellerId);
-		
-		return goodsService.findPage(goods, page, rows);		
+	public PageResult search(@RequestBody TbOrder order, int page, int rows  ){
+		return orderService.findPage(order, page, rows);		
 	}
 	
 }

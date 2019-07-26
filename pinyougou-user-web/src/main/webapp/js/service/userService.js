@@ -43,5 +43,10 @@ app.service('userService',function($http){
     this.updateInfo=function(userInfo){
         return $http.post('../user/updateUserInfo.do',userInfo);
     }
-	
+
+
+    //发送订单信息
+    this.sendMessage=function (order) {
+        return  $http.post('../user/sendMessage.do',order);
+    }
 });

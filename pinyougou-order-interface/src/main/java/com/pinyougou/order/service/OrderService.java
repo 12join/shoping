@@ -75,6 +75,13 @@ public interface OrderService {
 	 * @param transaction_id
 	 */
 	public void updateOrderStatus(String out_trade_no,String transaction_id);
-	
+
+
+    /**
+     * 发送订单信息
+     * @param order
+     * @param userName
+     */
+	public void sendMessage(TbOrder order,String userName);
 	
 }
