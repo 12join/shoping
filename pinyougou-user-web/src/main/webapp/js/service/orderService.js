@@ -1,8 +1,8 @@
 //服务层
 app.service('orderService',function($http){
     //获取用户所有状态的信息
-    this.findUserOrder=function(){
-        return $http.get('../order/userOrder.do');
+    this.findUserOrder=function(page){
+        return $http.get('../order/userOrder.do?page='+page);
     }
 
     //获取所有的支付日志
@@ -10,8 +10,8 @@ app.service('orderService',function($http){
         return $http.get('../order/getPayLogList.do');
     }
     //根据订单状态查询订单
-    this.orderPayStatus=function(status){
-        return $http.get('../order/orderStatus.do?status='+status);
+    this.orderPayStatus=function(status,page){
+        return $http.get('../order/orderStatus.do?status='+status+'&page='+page);
     }
 
     //取消订单

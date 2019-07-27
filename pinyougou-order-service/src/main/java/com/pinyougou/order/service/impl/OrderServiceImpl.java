@@ -327,13 +327,44 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 
+    @Override
+    public PageResult findOrderByUserId(String userId,String[] status,int pageNum, int pageSize) {
+        List<UserOrder> orderList = new ArrayList<>();
+        TbOrderExample example = new TbOrderExample();
+        Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        List<String> list = Arrays.asList(status);
+        //只加了一个查询条件，其实可以通过判断是否有status值来决定是否通过状态查询，这里有冗余，懒得改了
+        criteria.andStatusIn(list);
+
+        PageHelper.startPage(pageNum, pageSize);
+        Page<TbOrder> pageOrder = (Page<TbOrder>)orderMapper.selectByExample(example);
+
+        for (TbOrder order : pageOrder.getResult()) {//通过OrderId查询出对应的订单详情表
+            TbOrderItemExample orderItemExample = new TbOrderItemExample();
+            com.pinyougou.pojo.TbOrderItemExample.Criteria orderItemCriteria = orderItemExample.createCriteria();
+            orderItemCriteria.andOrderIdEqualTo(order.getOrderId());
+            //orderItemCriteria.andSellerIdEqualTo(order.getSellerId());
+            List<TbOrderItem> orderItemList = orderItemMapper.selectByExample(orderItemExample );
+            UserOrder userOrder = new UserOrder();
+            userOrder.setOrder(order);
+            userOrder.setOrderItemList(orderItemList);
+            //map.put("order", order);
+            //map.put("orderItemList", orderItemList);
+            orderList.add(userOrder);
+        }
+
+        return new PageResult(pageOrder.getTotal(),orderList);
+
+    }
+
+
 	/**
 	 * 当前用户指定状态的订单列表
 	 */
-	@Override
+	/*@Override
 	public List<UserOrder> findOrderByUserIdAndStatus(String userId, String[] status) {
 		List<UserOrder> orderList = new ArrayList<>();
-		UserOrder userOrderList = new UserOrder();
 		TbOrderExample example = new TbOrderExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andUserIdEqualTo(userId);
@@ -341,6 +372,7 @@ public class OrderServiceImpl implements OrderService {
 		List<String> list = Arrays.asList(status);
 		//只加了一个查询条件，其实可以通过判断是否有status值来决定是否通过状态查询，这里有冗余，懒得改了
 		criteria.andStatusIn(list);
+
 		List<TbOrder> tbOrderList = orderMapper.selectByExample(example );
 
 		for (TbOrder order : tbOrderList) {//通过OrderId查询出对应的订单详情表
@@ -357,7 +389,7 @@ public class OrderServiceImpl implements OrderService {
 			orderList.add(userOrder);
 		}
 		return orderList;
-	}
+	}*/
 
 
 	/**
