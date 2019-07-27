@@ -59,7 +59,11 @@ app.controller('evaluateController',function($scope,evaluateService,loginService
     private String orderId; //订单Id
     private String text; //评价内容
     private List<String> star; //评价选项*/
-    $scope.entity={"_id":"","username":"","goodsId":"","evaluateTime":"","orderId":"","text":"","star":[],"image":""};
+    $scope.entity={"_id":"","username":"","goodsId":"","evaluateTime":"","orderId":"","text":"","star":[],"image":[]};
+
+     
+
+
     var getEntity=function () {
         $scope.entity.goodsId=$scope.orderItem.goodsId;
         $scope.entity.orderId=$scope.orderItem.orderId;
@@ -83,7 +87,7 @@ app.controller('evaluateController',function($scope,evaluateService,loginService
         uploadService.uploadFile().success(function(response){
             if(response.flag){
                 // 获得url
-                $scope.entity.image =  response.message;
+                $scope.entity.image .push(response.message);
             }else{
                 alert(response.message);
             }

@@ -135,6 +135,12 @@ app.controller("itemController",function($scope,$controller,$http,favoriteServic
         });
     }
 
-
+    $scope.loginBack=function(){
+        // var backUrl=window.location.pathname+window.location.search;
+        var backUrl=window.location.href;
+        // alert(backUrl);
+        // alert(encodeURIComponent(backUrl, "UTF-8"));
+        location.href="login.html?backUrl="+encodeURIComponent(backUrl, "UTF-8");
+    }
 	
 });

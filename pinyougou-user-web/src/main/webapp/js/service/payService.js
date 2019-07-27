@@ -12,4 +12,4 @@ app.service('payService',function($http){
 		}
 		return $http.get('../pay/queryStatus.do?out_trade_no='+out_trade_no);
 	}
-})
+});

@@ -1,6 +1,7 @@
 package com.pinyougou.user.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pojo.group.Evaluate;
 import com.pinyougou.user.service.EvaluateService;
 import entity.Result;
@@ -19,7 +20,8 @@ import java.util.List;
 public class EvaluateController {
     @Reference
     private EvaluateService evaluateService;
-
+    @Reference
+    private OrderService orderService;
     @RequestMapping("/save")
     public Result save(@RequestBody Evaluate evaluate){
 
@@ -29,6 +31,7 @@ public class EvaluateController {
             evaluate.setEvaluateTime(new Date());
             System.out.println(evaluate);
             evaluateService.save(evaluate);
+            orderService.updateStatus(Long.valueOf(evaluate.getOrderId()),"8");
             return new Result(true,"保存成功");
         }catch (Exception e){
             return new Result(false,"保存失败");

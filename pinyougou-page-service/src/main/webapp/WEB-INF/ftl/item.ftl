@@ -10,11 +10,27 @@
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-item.css" />
+    <link rel="stylesheet" type="text/css" href="css/a.css" />
+    <link rel="stylesheet" type="text/css" href="css/b.css" />
+    <link rel="stylesheet" type="text/css" href="css/detail.less.css" />
+    <link rel="stylesheet" type="text/css" href="css/global-min.css" />
+
     <link rel="stylesheet" type="text/css" href="css/pages-zoom.css" />
     <link rel="stylesheet" type="text/css" href="css/widget-cartPanelView.css" />
-    
+    <script src="plugins/jquery/jquery-2.2.3.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.js"></script>
+
     <script type="text/javascript" src="plugins/angularjs/angular.min.js"> </script>
-    <script type="text/javascript" src="js/base.js"> </script>
+    <!-- 引入分页相关的JS和CSS -->
+    <script type="text/javascript" src="plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="plugins/angularjs/pagination.css">
+
+
+    <script type="text/javascript" src="js/base_pagination.js"> </script>
+    <script type="text/javascript" src="js/service/loginService.js"></script>
+    <script type="text/javascript" src="js/service/evaluateService.js"></script>
+    <script type="text/javascript" src="js/service/favoriteService.js"></script>
+    <script type="text/javascript" src="js/controller/baseController.js"> </script>
     <script type="text/javascript" src="js/controller/itemController.js"> </script>
     <script>
         var skuList=[
@@ -31,7 +47,7 @@
     </script>
 </head>
 
-<body ng-app="pinyougou" ng-controller="itemController" ng-init="num=1;loadSku()">
+<body ng-app="pinyougou" ng-controller="itemController" ng-init="num=1;loadSku();showName();isFavor()">
 
 <!--页面顶部 开始-->
 <#include "head.ftl">
@@ -174,6 +190,12 @@
 									<li>
 										<a  class="sui-btn  btn-danger addshopcar" ng-click="addToCart()">加入购物车</a>
 									</li>
+                                    <li ng-show="!isFav">
+                                        <a  class="sui-btn  btn-danger addshopcar" ng-click="favorite()">点击收藏</a>
+                                    </li>
+                                    <li ng-show="isFav">
+                                        <a  class="sui-btn  btn-danger addshopcar" ng-click="Nofavorite()">取消收藏</a>
+                                    </li>
 								</ul>
 							</div>
 						</div>
@@ -379,7 +401,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="#four" data-toggle="tab">
+								<a href="#four" data-toggle="tab" ng-click="search(1,5)">
 									<span>商品评价</span>
 								</a>
 							</li>
@@ -409,9 +431,63 @@
 							<div id="three" class="tab-pane">
 								<p>${goodsDesc.saleService}</p>
 							</div>
-							<div id="four" class="tab-pane">
-								<p>商品评价</p>
-							</div>
+                            <div id="four" class="tab-pane">
+                                <div class="rate-grid">
+                                    <div class="box-body">
+                                        <div class="table-box">
+                                            <table>
+                                                <tbody >
+                                                <tr ng-repeat="eva in list">
+                                                    <td>
+                                                        <div class="tdcnt col-3">
+                                                            <div class="cnt">
+                                                                <p>{{eva.text}}</p>
+                                                            </div>
+                                                            <div class="eval-photolist">
+                                                                <ul>
+
+                                                                    <img src="{{eva.image[0]}}" width="80" height="80">
+
+                                                                    &nbsp
+                                                                    <img src="{{eva.image[1]}}" width="80" height="80">
+
+                                                                    &nbsp
+                                                                    <img src="{{eva.image[2]}}" width="80" height="80">
+
+                                                                </ul>
+
+                                                                <div class="gray">{{eva.evaluateTime}}</div>
+                                                            </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="sku">
+                                                            <p>店铺评价：<span class="gray"><p ng-repeat="st in eva.star"><span class="gray">{{st}}</span></p></span></p>
+                                                            <p></p>
+                                                            <div class="space-x"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="customer">
+                                                            <div class="rate-user-info">
+                                                                <p>买家：
+                                                                    <a href="" target="_blank">{{eva.username}}</a>
+                                                                </p>
+                                                            </div>
+                                                            <div class="rate-user-grade">
+
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    <!-- 分页 -->
+                                    <tm-pagination conf="paginationConf"></tm-pagination>
+                                </div>
+                            </div>
 							<div id="five" class="tab-pane">
 								<p>手机社区</p>
 							</div>

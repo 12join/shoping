@@ -1,5 +1,4 @@
 package com.pinyougou.order.service.impl;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -311,7 +310,7 @@ public class OrderServiceImpl implements OrderService {
         criteria.andUserIdEqualTo(userId);
         example.setOrderByClause("status");
         PageHelper.startPage(pageNum, pageSize);
-        Page<TbOrder> pageOrder = (Page<TbOrder>) orderMapper.selectByExample(example);
+        Page<TbOrder> pageOrder = (Page<TbOrder>)orderMapper.selectByExample(example);
 
         for (TbOrder order : pageOrder.getResult()) {//通过OrderId查询出对应的订单详情表
             TbOrderItemExample orderItemExample = new TbOrderItemExample();
@@ -370,6 +369,7 @@ public class OrderServiceImpl implements OrderService {
 	/*@Override
 	public List<UserOrder> findOrderByUserIdAndStatus(String userId, String[] status) {
 		List<UserOrder> orderList = new ArrayList<>();
+		UserOrder userOrderList = new UserOrder();
 		TbOrderExample example = new TbOrderExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andUserIdEqualTo(userId);
@@ -377,7 +377,6 @@ public class OrderServiceImpl implements OrderService {
 		List<String> list = Arrays.asList(status);
 		//只加了一个查询条件，其实可以通过判断是否有status值来决定是否通过状态查询，这里有冗余，懒得改了
 		criteria.andStatusIn(list);
-
 		List<TbOrder> tbOrderList = orderMapper.selectByExample(example );
 
 		for (TbOrder order : tbOrderList) {//通过OrderId查询出对应的订单详情表
@@ -468,6 +467,7 @@ public class OrderServiceImpl implements OrderService {
 		tbOrder.setConsignTime(newTime);
 		tbOrder.setUpdateTime(new Date());
 		orderMapper.updateByPrimaryKey(tbOrder);
+
 	}
 
 
@@ -526,6 +526,13 @@ public class OrderServiceImpl implements OrderService {
     public List<TbPayLog> getPayLogList() {
         List<TbPayLog> payLogList = payLogMapper.selectByExample(null);
         return payLogList;
+    }
+
+    @Override
+    public void updateStatus(Long orderId, String status) {
+        TbOrder tbOrder = orderMapper.selectByPrimaryKey(orderId);
+        tbOrder.setStatus(status);
+        orderMapper.updateByPrimaryKey(tbOrder);
     }
 
 

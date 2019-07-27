@@ -189,24 +189,24 @@
                     <div class="img-intro">
                         <img src="{{orderItem.picPath}}" />
                         <p><a href="#">{{orderItem.title}}</a></p>
-                        <p>¥32.00</p>
-                        <p class="gray">{{orderItem.totalFee}}</p>
+                        <p class="gray">￥：{{orderItem.totalFee}}</p>
                     </div>
                 </div>
                 <div class="right">
                     <p class="warn">请至少填写一件商品的评价</p>
                     <div class="summary-wrap clearfix">
                         <dl>
-                            <dt style="vertical-align:middle">发布图片评价</dt>
+                            <dt style="vertical-align:middle">发布图片评价(最多上传三张)</dt>
 
                             <td>
                                 <input type="file" id="file" />
 
                             </td>
-                            <td>
-                                <img  src="{{entity.image}}" width="100px" height="100px">
+                            <td id="img">
+                                <img src="{{entity.image[0]}}"  width="200" height="200">
+                                <img src="{{entity.image[1]}}"  width="200" height="200">
+                                <img src="{{entity.image[2]}}"  width="200" height="200">
                             </td>
-
                             <div class="modal-footer">
                                 <button class="btn btn-primary" type="button" ng-click="uploadFile()">
                                     上传
@@ -220,7 +220,7 @@
                                 </div>
                             </div>
                         </dl>
-                        {{options}}
+
                         <dl class="tags">
                             <dt>
                                 <div class="title">
@@ -250,41 +250,8 @@
 
     </div>
 </div>
-<div class="tab-content">
-<!-- 上传窗口 -->
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" >
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="myModalLabel">上传商品图片</h3>
-            </div>
-            <div class="modal-body">
-
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <td>颜色</td>
-                        <td><input ng-model="image_entity.color" class="form-control" placeholder="颜色" >  </td>
-                    </tr>
-                    <tr>
-                        <td>商品图片</td>
-                        <td>
-                            <table>
-                                <tr>
-
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-
-            </div>
 
 
-        </div>
-    </div>
-</div>
-</div>
     <!-- 底部栏位 -->
 <!--页面底部-->
 <div class="clearfix footer">
@@ -394,7 +361,7 @@
                     </div>
                     <div class="yui3-u-1-6">
                         <h4>帮助中心</h4>
-                        <img src="../../../../../fire/pinyougou/pinyougou-user-web/src/main/webapp/img/wx_cz.jpg">
+                        <img src="img/wx_cz.jpg">
                     </div>
                 </div>
             </div>

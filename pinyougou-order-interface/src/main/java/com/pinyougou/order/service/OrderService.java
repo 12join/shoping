@@ -165,4 +165,11 @@ public interface OrderService {
 	 */
 	public List<TbPayLog> getPayLogList();
 
+	/**
+	 * 跟新指定id订单状态
+	 * @param orderId
+	 * @param status
+	 */
+	public void updateStatus(Long orderId,String status);
+
 }
