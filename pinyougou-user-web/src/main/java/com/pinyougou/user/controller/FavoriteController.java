@@ -31,31 +31,5 @@ public class FavoriteController {
 
     }
 
-    @RequestMapping("/save")
-    public Result save(@RequestBody TbGoods item){
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();//得到登陆人账号
-        try {
-            favoriteService.save(item,name);
-            return new  Result(true,"成功");
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result(false,"失败");
-        }
 
-
-
-    }
-
-    @RequestMapping("/delete")
-    public Result delete(String id){
-        try {
-            favoriteService.delete(id);
-            return new  Result(true,"成功");
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result(false,"失败");
-        }
-
-
-    }
 }

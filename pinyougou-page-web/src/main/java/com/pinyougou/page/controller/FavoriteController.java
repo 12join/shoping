@@ -2,9 +2,11 @@ package com.pinyougou.page.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbGoods;
+import com.pinyougou.pojo.TbGoodsDesc;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojo.group.Favorite;
 import com.pinyougou.pojo.group.Goods;
+import com.pinyougou.sellergoods.service.GoodsDescService;
 import com.pinyougou.sellergoods.service.GoodsService;
 import com.pinyougou.sellergoods.service.ItemService;
 import com.pinyougou.user.service.FavoriteService;
@@ -25,6 +27,8 @@ public class FavoriteController {
     private ItemService itemService;
     @Reference
     private GoodsService goodsService;
+    @Reference
+    private GoodsDescService goodsDescService;
     @RequestMapping("/findAll")
     public List<Favorite> findAll(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();//得到登陆人账号
@@ -43,10 +47,9 @@ public class FavoriteController {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();//得到登陆人账号
         try {
         TbItem item = itemService.findOne(itemId);
-            System.out.println(item.getGoodsId());
         Goods goods = goodsService.findOne(item.getGoodsId());
-            System.out.println(goods.getGoods().getGoodsName());
-        favoriteService.save(goods.getGoods(),name);
+            TbGoodsDesc goodsDesc = goodsDescService.findOne(item.getGoodsId());
+            favoriteService.save(goods.getGoods(),goodsDesc,name);
         return new  Result(true,"成功");
         }catch (Exception e){
             e.printStackTrace();
@@ -66,6 +69,20 @@ public class FavoriteController {
                 return new Result(false, "失败");
             }
 
+            return new Result(true, "成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "失败");
+        }
+    }
+    @RequestMapping("/NoFavor")
+    public Result NoFavor(String itemId) {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();//得到登陆人账号
+
+        try {
+            TbItem item = itemService.findOne(Long.valueOf(itemId));
+            Goods goods = goodsService.findOne(item.getGoodsId());
+            favoriteService.deleteByGoodsId(goods.getGoods(), name);
             return new Result(true, "成功");
         } catch (Exception e) {
             e.printStackTrace();
