@@ -39,6 +39,13 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private TbPayLogMapper payLogMapper;
 
+    @Autowired
+    private TbUserMapper userMapper;
+
+
+    @Autowired
+    private TbSellerMapper sellerMapper;
+
     /**
      * 查询全部
      */
@@ -281,6 +288,20 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    /**
+     * 批量修改状态
+     * @param ids
+     * @param status
+     */
+    @Override
+    public void updateStatus(Long[] ids, String status) {
+        for (Long id : ids) {
+            TbOrder tbOrder = orderMapper.selectByPrimaryKey(id);
+            tbOrder.setStatus(status);
+            orderMapper.updateByPrimaryKey(tbOrder);
+        }
+    }
+
 
     /**
      * 通过orderId来获取支付订单号（暂时不用）
@@ -452,6 +473,7 @@ public class OrderServiceImpl implements OrderService {
 		tbOrder.setUpdateTime(new Date());
 		orderMapper.updateByPrimaryKey(tbOrder);
 
+
 	}
 
 	/**
@@ -530,5 +552,94 @@ public class OrderServiceImpl implements OrderService {
         return payLogList;
     }
 
+
+    /**
+     * 订单信息发送参数
+     * @param payLogId
+     * @return
+     */
+    @Override
+    public TbOrder getOrderByPayLogId(String payLogId) {
+        TbPayLog tbPayLog = payLogMapper.selectByPrimaryKey(payLogId);
+        String[] order = tbPayLog.getOrderList().split(",");
+
+        TbOrder tbOrder = orderMapper.selectByPrimaryKey(Long.valueOf(order[0]));
+        return tbOrder;
+    }
+
+
+    /**
+     * 发送订单信息
+     * @param order
+     * @param userName
+     */
+    @Override
+    public void sendMessage(TbOrder order, String userName) {
+
+        TbUserExample example = new TbUserExample();
+        example.createCriteria().andUsernameEqualTo(userName);
+        String email  = userMapper.selectByExample(example).get(0).getEmail();
+        String status = order.getStatus();
+
+        TbSeller seller = sellerMapper.selectByPrimaryKey( order.getSellerId());
+        String sellerEmail = seller.getEmail();
+        //1未付款，2已付款，3待发货，4已发货
+        if (status!=null){
+
+            if ("2".equals(status)) {
+                //点击立即付款后,查询支付接口支付成功发送信息
+                //发送消息
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，您的订单"+order.getOrderId()+"已付款，请耐心等待商家发货","订单流程");
+                //提醒商家有新的订单
+                MailUtils.sendMail(sellerEmail,"尊敬的商家"+seller.getNickName()+"您有新的订单请及时处理","订单提醒");
+                System.out.println("发送成功2");
+            }
+
+            if ("3".equals(status)){
+                //未发货，用户点击提醒发货,提醒商家发货,提示用户提醒成功
+                //发送消息
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，已经提醒商家发货，请耐心等待","订单流程");
+                MailUtils.sendMail(sellerEmail,"尊敬的商家"+seller.getNickName()+"，用户已提醒发货，请尽快发货,<a href='http://localhost/9102/'>前往发货</a>","发货提醒");
+                System.out.println("发送成功3");
+            }
+
+            if ("4".equals(status)){
+                //提醒用户发货成功
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，您的订单"+order.getOrderId()+"已发货,请耐心等待","订单流程");
+                System.out.println("发送成功4");
+            }
+
+            if ("5".equals(status)){
+                //交易成功
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，您的订单"+order.getOrderId()+"交易完成,给个五星好评！","订单流程");
+                MailUtils.sendMail(sellerEmail,"尊敬的商家"+seller.getNickName()+"您的订单"+order.getOrderId()+"已经交易完成","交易完成");
+                System.out.println("发送成功5");
+            }
+
+            if ("6".equals(status)){
+                //交易关闭
+                MailUtils.sendMail(email,"尊敬的用户"+userName+"您好，您的订单"+order.getOrderId()+"交易已经关闭！","订单流程");
+                MailUtils.sendMail(sellerEmail,"尊敬的商家"+seller.getNickName()+"您好，您的订单"+order.getOrderId()+"交易已经关闭！","交易关闭");
+                System.out.println("发送成功6");
+            }
+
+        }
+
+    }
+
+    /**
+     * 查询订单状态
+     * @param start
+     * @param end
+     * @return
+     */
+    @Override
+    public List<TbOrder> selectOrderStatus(Date start,Date end) {
+        TbOrderExample example = new TbOrderExample();
+        Criteria criteria = example.createCriteria();
+        criteria.andCreateTimeBetween(start,end);
+        List<TbOrder> orderList = orderMapper.selectByExample(example);
+        return orderList;
+    }
 
 }

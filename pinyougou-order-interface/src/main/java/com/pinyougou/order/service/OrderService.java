@@ -188,4 +188,6 @@ public interface OrderService {
 	 */
 	public List<TbPayLog> getPayLogList();
 
+	public TbOrder getOrderByPayLogId(String payLogId);
+
 }

@@ -3,11 +3,12 @@ package com.pinyougou.user.controller;
 import java.util.List;
 import java.util.Map;
 
+
+import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.pojo.group.UserOrder;
 import entity.PageResult;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,8 @@ import entity.Result;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-    @Reference
+
+    @Reference(timeout = 1000000)
     private OrderService orderService;
 
 
@@ -105,6 +107,9 @@ public class OrderController {
     public Result remindSend(String orderId){
         try {
             orderService.remindSend(orderId);
+            //发送信息
+            TbOrder order = orderService.findOne(Long.valueOf(orderId));
+            new UserController().sendMessage(order);
             return new Result(true,"提醒发货成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,6 +188,8 @@ public class OrderController {
     public String getOrderId(String payLogId) {
         return orderService.getOrderId(payLogId);
     }
+
+
 
 
 

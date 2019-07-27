@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pay.service.AliPayService;
 import com.pinyougou.pay.service.WeixinPayService;
+import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbPayLog;
 import entity.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -68,6 +69,10 @@ public class PayController {
 			if(map.get("trade_state").equals("SUCCESS")){//支付成功
 				result=new Result(true, "支付成功");				
 				orderService.updateOrderStatus(out_trade_no, map.get("transaction_id"));//修改订单状态
+                TbOrder order = orderService.getOrderByPayLogId(out_trade_no);
+                System.out.println(order);
+                orderService.sendMessage(order,SecurityContextHolder.getContext().getAuthentication().getName());
+                System.out.println("调用");
 				break;
 			}
 			
@@ -125,6 +130,7 @@ public class PayController {
 			}
 			params.put(name,valueStr);
 		}
+
 		if("TRADE_SUCCESS".equals(params.get("trade_status"))) {
 			orderService.updateOrderStatus(params.get("out_trade_no")+"", params.get("trade_no"));//修改订单状态
 		}
@@ -145,9 +151,16 @@ public class PayController {
 			if(map==null) {
 				return new Result(false, "支付出错");
 			}
+            System.out.println("======");
+            System.err.println(map);
+            System.out.println("========");
 			if(map.get("trade_state").equals("TRADE_SUCCESS")) {
 
 				orderService.updateOrderStatus(out_trade_no, map.get("transaction_id")+"");
+                TbOrder order = orderService.getOrderByPayLogId(out_trade_no);
+                System.out.println(order);
+                orderService.sendMessage(order,SecurityContextHolder.getContext().getAuthentication().getName());
+                System.out.println("调用");
 				return new Result(true, "支付成功");
 			}
 			try {

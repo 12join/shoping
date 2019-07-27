@@ -33,7 +33,7 @@ import com.alipay.demo.trade.utils.Utils;
 import com.pinyougou.pay.service.AliPayService;
 import org.springframework.beans.factory.annotation.Value;
 
-@Service
+@Service(timeout = 5000)
 public class AliPayServiceImpl implements AliPayService {
 
 

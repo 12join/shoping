@@ -241,10 +241,10 @@ $(function(){
                                     <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#uuid=<null>&style=-1"></script>
                                     <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/addons/bshareMM.js#shareClass=BSHARE_IMAGE_ALL"> </script>
                                  </div>
-									  <a class="sui-btn btn-info share-btn">分享</a>
+									  <!--<a class="sui-btn btn-info share-btn">分享</a>-->
 									<span ng-if="status[order.order.orderId]=='6'"><a ng-click="deleOrder(order.order.orderId)" class="sui-btn btn-info share-btn">删除订单</a></span>
 									<span ng-if="status[order.order.orderId]=='7'"><a ng-click="deleOrder(order.order.orderId)" class="sui-btn btn-info share-btn">删除订单</a></span>
-                                </div>
+
                                 <table class="sui-table table-bordered order-datatable">
                                     <tbody  ng-repeat="entity in order.orderItemList">
 
@@ -329,6 +329,7 @@ $(function(){
                                 </table>
                                 <!--order2-->
                                 </div>
+                            </div>
 
                             </div>
 

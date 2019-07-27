@@ -1,6 +1,6 @@
 //首页控制器
-app.controller('indexController',function($scope,loginService,orderService,userService){
-app.controller('indexController',function($scope,$location,$interval,loginService,orderService,payService){
+
+app.controller('indexController',function($scope,$location,$interval,loginService,orderService,payService,userService){
     //获取用户登陆信息
     $scope.user={name:"",isLogin:false};
     $scope.showName=function(){
@@ -65,6 +65,8 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 		}
 
 	};
+	
+	
 	//根据页码查询
 	$scope.queryByPage=function(pageNum,status){
 		if(pageNum<1||pageNum>$scope.totalPages){
@@ -76,9 +78,6 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
         }else{
             $scope.orderStatus(status);
         }
-
-
-
 	};
 
 	//跳转页初始化
@@ -204,9 +203,11 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
                 timeString=day+"天"+hour+"小时";
             }
         }
+        return timeString+minute+"分钟"+second+"秒"
+    }
 
-        }
-    }*/
+        
+    
 
 
 
@@ -222,8 +223,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
             }
         );
     }
-        return timeString+minute+"分钟"+second+"秒"
-    }
+       
 
 
     //删除订单
