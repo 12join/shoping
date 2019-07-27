@@ -62,6 +62,8 @@ app.controller("seckillOrderController", function ($controller,$scope, seckillOr
             function (response) {
                 if (response.flag) {
                     location.href = response.message;
+
+                    seckillOrderService.deleteExcel(response.message);
                 } else {
                     alert(response.message);
                 }
@@ -97,5 +99,32 @@ app.controller("seckillOrderController", function ($controller,$scope, seckillOr
             $scope.searchEntity.receiverMobile="";
             $scope.searchEntity.receiver=$scope.receiverRegex;
         }
+    };
+
+    // 更新全部复选框：
+    $scope.updateAllSelection = function ($event) {
+
+        for (var i = 0; i < $scope.list.length; i++) {
+            // 复选框选中
+            if ($event.target.checked) {
+                // 向数组中添加元素
+                $scope.selectIds.push($scope.list[i].id);
+            } else {
+                // 从数组中移除
+                var idx = $scope.selectIds.indexOf($scope.list[i].id);
+                $scope.selectIds.splice(idx, 1);
+            }
+        }
+    };
+
+    $scope.updateStatus = function (status) {
+        $scope.entity.status = status;
+        seckillOrderService.updateStatus($scope.entity).success(function (response) {
+            if (response.flag) {
+                $scope.reloadList();//刷新列表
+            } else {
+                alert(response.message);
+            }
+        });
     }
 });

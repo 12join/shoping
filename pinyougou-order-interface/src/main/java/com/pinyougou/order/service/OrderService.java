@@ -94,21 +94,25 @@ public interface OrderService {
 	public PageResult findOrderByUserId(String userId,int pageNum, int pageSize);
 
 
-	/**
-	 * 当前用户指定状态的订单列表
-	 * @param userId
-	 * @param status
-	 * @return
-	 */
-	public List<UserOrder> findOrderByUserIdAndStatus(String userId,String[] status);
+
+    /**
+     * 当前用户指定状态的订单列表
+     * @param userId
+     * @param status
+     * @return
+     */
+    PageResult findOrderByUserId(String userId,String[] status,int pageNum, int pageSize);
+
+
+//	public List<UserOrder> findOrderByUserIdAndStatus(String userId,String[] status);
 
 
 	/**
-	 * 根据登录用户更新支付日志信息
-	 * @param userName
+	 * 根据支付订单号更新支付日志信息，改变订单状态
+	 * @param payLogId 支付订单号
 	 * @return
 	 */
-	public void cancelOrder(String userName);
+	public void cancelOrder(String payLogId);
 
 
 	/**
@@ -117,6 +121,19 @@ public interface OrderService {
 	 * @param orderId
 	 */
 	public void confirmOrder(String orderId);
+
+
+	/**
+	 * 提醒发货
+	 * @param orderId
+	 */
+	public void remindSend(String orderId);
+
+	/**
+	 * 延长收货
+	 * @param orderId
+	 */
+	public void delayReceive(String orderId);
 
 	/**
 	 * 根据订单号删除订单

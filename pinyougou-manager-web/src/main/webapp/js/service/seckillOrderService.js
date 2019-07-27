@@ -25,4 +25,11 @@ app.service("seckillOrderService",function($http){
         return $http.post('../seckillOrder/createExcel.do',list);
     };
 
+    this.deleteExcel=function(name){
+        return $http.get('../seckillOrder/deleteExcel.do?name='+name);
+    };
+
+    this.updateStatus=function(seckillOrder){
+        return $http.post('../seckillOrder/update.do',seckillOrder);
+    };
 });

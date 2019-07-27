@@ -44,10 +44,9 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/userOrder")
-    public PageResult findUserOrder(int page, int rows){
+    public PageResult findUserOrder(int page){
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        orderService.findOrderByUserId(userId,page,rows);
-        return orderService.findOrderByUserId(userId,page,rows);
+        return orderService.findOrderByUserId(userId,page,5);
     }
 
     /**
@@ -56,15 +55,13 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/orderStatus")
-    public List<UserOrder> orderStatus(String[] status){
+    public PageResult orderStatus(String[] status,int page){
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        List<UserOrder> orderList = orderService.findOrderByUserIdAndStatus(userId,status);
-
-
-        return orderList;
+        return orderService.findOrderByUserId(userId,status,page,5);
     }
+
 
     /**
      * 获取分页查询结果
@@ -90,17 +87,33 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/cancelOrder")
-    public Result cancelOrder() {
+    public Result cancelOrder(String payLogId) {
         try {
             String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            orderService.cancelOrder(userId);
+            orderService.cancelOrder(payLogId);
             return new Result(true, "订单取消成功");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
             return new Result(false, "取消失败");
         }
 
+    }
+
+    /**
+     * 提醒发货
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("/remindSend")
+    public Result remindSend(String orderId){
+        try {
+            orderService.remindSend(orderId);
+            return new Result(true,"提醒发货成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,"状态异常，请稍后再试");
+        }
     }
 
     /**
@@ -118,6 +131,22 @@ public class OrderController {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return new Result(false, "确认收货异常");
+        }
+    }
+
+    /**
+     * 延长收货
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("/delayReceive")
+    public Result delayReceive(String orderId){
+        try {
+            orderService.delayReceive(orderId);
+            return new Result(true,"延长收货成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,"状态异常");
         }
     }
 

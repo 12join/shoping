@@ -287,6 +287,7 @@ $(function(){
 													<span ng-if="status[order.order.orderId]=='5'"><li>快件已签收</li></span>
 													<span ng-if="status[order.order.orderId]=='6'"><li>交易已关闭</li></span>
 													<span ng-if="status[order.order.orderId]=='7'"><li>交易成功</li></span>
+													<span ng-if="status[order.order.orderId]=='8'"><li>交易完成</li></span>
 													<li><a href="home-orderDetail.html#?orderId={{order.order.orderId}}" class="btn">订单详情 </a></li>
                                                 </ul>
                                             </td>
@@ -297,20 +298,21 @@ $(function(){
 													<li ng-if="status[order.order.orderId]=='1'">后取消订单</li>
 
 													<span ng-if="status[order.order.orderId]=='1'"><li><a data-toggle="modal" ng-click="getOrderId(order.order.orderId)" data-target=".edit" data-keyboard="false" class="sui-btn btn-info">立即付款</a></li>
-                                                    <li><a ng-click="cancelOrder()" href="">取消订单</a></li>
+                                                    <li><a ng-click="cancelOrder(order.order.orderId)" href="">取消订单</a></li>
                                                     </span>
 													<!-- <span ng-if=""><li>部分发货</li></span> -->
 													<!-- //状态：1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭,7、待评价 -->
-													<span ng-if="status[order.order.orderId]=='2'"><li><a href="" class="sui-btn btn-info">提醒发货</a></li></span>
-													<span ng-if="status[order.order.orderId]=='3'"><li><a href="" class="sui-btn btn-info">提醒发货</a></li></span>
+													<span ng-if="status[order.order.orderId]=='2'"><li><a href="" ng-click="remindSend(order.order.orderId)" class="sui-btn btn-info">提醒发货</a></li></span>
+													<span ng-if="status[order.order.orderId]=='3'"><li><a href="" ng-click="remindSend(order.order.orderId)" class="sui-btn btn-info">提醒发货</a></li></span>
 													<span ng-if="status[order.order.orderId]=='4'">
                                                     <li><a href="" ng-click="confirmOrder(order.order.orderId)" class="sui-btn btn-info">确认收货</a></li>
-                                                    <li><a href="" ng-click="delayOrder(order.order.orderId)" class="sui-btn btn-info">延长收货</a></li>
+                                                    <li><a href="" ng-click="delayReceive(order.order.orderId)" class="sui-btn btn-info">延长收货</a></li>
                                                     </span>
 													<span ng-if="status[order.order.orderId]=='5'"><li><a href="" class="sui-btn btn-info">确认收货</a></li></span>
 													<span ng-if="status[order.order.orderId]=='6'"><li><a href="" ng-click="deleOrder(order.order.orderId)" class="sui-btn btn-info">删除订单</a></li></span>
 													<span ng-if="status[order.order.orderId]=='7'"><li><a href="" class="sui-btn btn-info">评价</a></li></span>
-                                                    
+													<span ng-if="status[order.order.orderId]=='8'"><li><a href="" ng-click="deleOrder(order.order.orderId)" class="sui-btn btn-info">删除订单</a></li></span>
+
                                                 </ul>
                                             </td>
                                         </tr>
@@ -355,23 +357,33 @@ $(function(){
 									</div>
 								</div>
 							</div>
+                            {{total}}
 
 
                             <div class="choose-order">
                                 <div class="sui-pagination pagination-large top-pages">
                                     <ul>
-                                        <li class="prev disabled"><a href="#">«上一页</a></li>
-                                        <li class="active"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li class="dotted"><span>...</span></li>
-                                        <li class="next"><a href="#">下一页»</a></li>
+                                        <li class="prev {{isFirst()?'disabled':''}}"><a href="#" ng-click="queryByPage(num-1)">«上一页</a></li>
+                                        <li class="dotted" ng-if="firstDot==true"><span>...</span></li>
+                                        <!--<li class="active"><a href="#" >1</a></li>-->
+                                        <li ng-repeat="p in pageList" class ="{{p==num?'active':''}}">
+                                            <a href="#" ng-click="queryByPage(p)">{{p}}</a>
+                                        </li>
+                                        <li class="dotted" ng-if="lastDot==true"><span>...</span></li>
+                                        <li class="next {{isLast()?'disabled':''}}"><a href="#" ng-click="queryByPage(num+1)">下一页»</a></li>
                                     </ul>
-                                    <div><span>共10页&nbsp;</span><span>
+
+
+                                <div><span>共{{totalPages}}页&nbsp;</span>
+                                    <span>
                                             到
-                                            <input type="text" class="page-num"><button class="page-confirm" onclick="alert(1)">确定</button>
-                                            页</span></div>
+                                            <input type="text" class="page-num" ng-model="num2">
+											<button class="page-confirm" ng-click="queryByPage(num2)">确定</button>
+                                            页
+                                    </span>
                                 </div>
+                                </div>
+
                             </div>
 
                             <div class="clearfix"></div>

@@ -25,6 +25,10 @@ app.service("orderService",function($http){
         return $http.post('../order/createExcel.do',list);
     };
 
+    this.deleteExcel=function(name){
+        return $http.get('../order/deleteExcel.do?name='+name);
+    };
+
     this.updateStatus=function(order){
         return $http.post('../order/update.do',order);
     };

@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import com.pinyougou.sellergoods.service.SeckillOrderService;
+import com.pinyougou.seckill.service.SeckillOrderService;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -163,7 +165,25 @@ public class SeckillOrderController {
         }
     }
 
-    private String[] statusList = {"", "未付款", "已付款", "未发货", "已发货", "交易成功", "交易关闭", "待评价"};
+    /**
+     * 删除excel
+     * @param name
+     */
+    @RequestMapping("/deleteExcel")
+    public void deleteExcel(final String name) {
+        // 10000毫秒后执行
+        Timer nTimer = new Timer();
+        nTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                File f = new File("src\\main\\webapp\\admin\\"+name);
+                System.out.println("删除:"+"  src\\main\\webapp\\admin\\"+name );
+                f.delete();
+            }
+        },10000);
+    }
+
+    private String[] statusList = {"", "未付款", "已付款", "未发货", "已发货", "交易成功", "交易关闭", "待评价","已完成"};
 
     /**
      * 创建excel
