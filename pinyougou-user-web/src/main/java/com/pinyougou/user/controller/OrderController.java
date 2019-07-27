@@ -1,8 +1,12 @@
 package com.pinyougou.user.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.pinyougou.order.service.OrderItemService;
+import com.pinyougou.pojo.TbOrder;
+import com.pinyougou.pojo.TbOrderItem;
 import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.pojo.group.UserOrder;
 import entity.PageResult;
@@ -155,6 +159,17 @@ public class OrderController {
         return orderService.getOrderId(payLogId);
     }
 
+    @Reference
+    private OrderItemService orderItemService;
 
+    @RequestMapping("/findOne")
+    public Map findOrder(String orderId){
+        TbOrder order = orderService.findOne(Long.valueOf(orderId));
+        TbOrderItem orderItem = orderItemService.findOne(Long.valueOf(orderId));
+        Map map = new HashMap();
+        map.put("order",order);
+        map.put("orderItem",orderItem);
+        return map;
+    }
 
 }

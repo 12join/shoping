@@ -39,6 +39,9 @@ app.service('orderService',function($http){
         return $http.get('../order/getOrderId.do?payLogId='+payLogId);
     }
 
-
+    //通过orderId获取对应订单详情信息
+    this.findOne=function(orderId){
+        return $http.get('../order/findOne.do?orderId='+orderId);
+    }
 
 });
