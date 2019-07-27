@@ -2,6 +2,8 @@ package com.pinyougou.order.service.impl;
 import java.math.BigDecimal;
 import java.util.*;
 
+import com.pinyougou.pojo.*;
+import com.pinyougou.pojo.group.UserOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.pinyougou.mapper.TbOrderItemMapper;
 import com.pinyougou.mapper.TbOrderMapper;
 import com.pinyougou.mapper.TbPayLogMapper;
-import com.pinyougou.pojo.TbOrder;
-import com.pinyougou.pojo.TbOrderExample;
 import com.pinyougou.pojo.TbOrderExample.Criteria;
-import com.pinyougou.pojo.TbOrderItem;
-import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.pojo.group.Cart;
 import com.pinyougou.order.service.OrderService;
 
@@ -275,5 +273,187 @@ public class OrderServiceImpl implements OrderService {
 		redisTemplate.boundHashOps("payLog").delete(out_trade_no);
 		
 	}
-	
+
+
+	/**
+	 * 通过orderId来获取支付订单号（暂时不用）
+	 * @param orderId
+	 * @return
+	 */
+	@Override
+	public String getPayLogId(String orderId) {
+		List<TbPayLog> list = payLogMapper.selectByExample(null);
+		List orderList = new ArrayList<>();
+		for (TbPayLog tbPayLog : list) {
+			String orderListString = tbPayLog.getOrderList();
+			if(orderListString.contains(orderId)) {
+				return tbPayLog.getOutTradeNo();
+			}
+		}
+		return null;
+	}
+
+
+
+	/**
+	 * 通过当前登录用户获取到对应的订单信息
+	 */
+	@Override
+	public List<UserOrder> findOrderByUserId(String userId) {
+		List<UserOrder> orderList = new ArrayList<>();
+		UserOrder userOrderList = new UserOrder();
+		TbOrderExample example = new TbOrderExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUserIdEqualTo(userId);
+		example.setOrderByClause("status");
+
+		List<TbOrder> tbOrderList = orderMapper.selectByExample(example );
+
+		for (TbOrder order : tbOrderList) {//通过OrderId查询出对应的订单详情表
+			TbOrderItemExample orderItemExample = new TbOrderItemExample();
+			com.pinyougou.pojo.TbOrderItemExample.Criteria orderItemCriteria = orderItemExample.createCriteria();
+			orderItemCriteria.andOrderIdEqualTo(order.getOrderId());
+			//orderItemCriteria.andSellerIdEqualTo(order.getSellerId());
+			List<TbOrderItem> orderItemList = orderItemMapper.selectByExample(orderItemExample );
+			UserOrder userOrder = new UserOrder();
+			userOrder.setOrder(order);
+			userOrder.setOrderItemList(orderItemList);
+			//map.put("order", order);
+			//map.put("orderItemList", orderItemList);
+			orderList.add(userOrder);
+
+		}
+		return orderList;
+	}
+
+
+	/**
+	 * 当前用户指定状态的订单列表
+	 */
+	@Override
+	public List<UserOrder> findOrderByUserIdAndStatus(String userId, String[] status) {
+		List<UserOrder> orderList = new ArrayList<>();
+		UserOrder userOrderList = new UserOrder();
+		TbOrderExample example = new TbOrderExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUserIdEqualTo(userId);
+
+		List<String> list = Arrays.asList(status);
+		//只加了一个查询条件，其实可以通过判断是否有status值来决定是否通过状态查询，这里有冗余，懒得改了
+		criteria.andStatusIn(list);
+		List<TbOrder> tbOrderList = orderMapper.selectByExample(example );
+
+		for (TbOrder order : tbOrderList) {//通过OrderId查询出对应的订单详情表
+			TbOrderItemExample orderItemExample = new TbOrderItemExample();
+			com.pinyougou.pojo.TbOrderItemExample.Criteria orderItemCriteria = orderItemExample.createCriteria();
+			orderItemCriteria.andOrderIdEqualTo(order.getOrderId());
+			orderItemCriteria.andSellerIdEqualTo(order.getSellerId());
+			List<TbOrderItem> orderItemList = orderItemMapper.selectByExample(orderItemExample );
+			UserOrder userOrder = new UserOrder();
+			userOrder.setOrder(order);
+			userOrder.setOrderItemList(orderItemList);
+			//map.put("order", order);
+			//map.put("orderItemList", orderItemList);
+			orderList.add(userOrder);
+		}
+		return orderList;
+	}
+
+
+	/**
+	 * 取消订单操作
+	 */
+	@Override
+	public void cancelOrder(String userName) {
+
+		TbPayLog redisPayLog = searchPayLogFromRedis( userName);//还是需要，因为需要此交易订单号，来更新商家订单状态
+		redisTemplate.boundHashOps("payLog").delete(userName);
+		String[] orders = redisPayLog.getOrderList().split(",");
+		for(String order:orders) {
+
+			if(order!=null) {
+				TbOrder tbOrder = orderMapper.selectByPrimaryKey(Long.valueOf(order));
+				//tbOrder.setPaymentTime(new Date());
+				tbOrder.setStatus("6");
+				tbOrder.setUpdateTime(new Date());
+				tbOrder.setCloseTime(new Date());
+				orderMapper.updateByPrimaryKey(tbOrder);
+			}
+		}
+	}
+
+
+	/**
+	 * 确认收货
+	 */
+	@Override
+	public void confirmOrder( String orderId) {
+		TbOrder tbOrder = orderMapper.selectByPrimaryKey(Long.valueOf(orderId));
+		//tbOrder.setPaymentTime(new Date());
+		tbOrder.setStatus("7");
+		tbOrder.setUpdateTime(new Date());
+		tbOrder.setEndTime(new Date());
+		orderMapper.updateByPrimaryKey(tbOrder);
+
+	}
+
+
+	/**
+	 * 根据订单号删除订单以及订单明细
+	 */
+	@Override
+	public void deleOrder(String orderId) {
+		//删除订单
+
+		orderMapper.deleteByPrimaryKey(Long.valueOf(orderId));
+		//删除订单明细
+		TbOrderItemExample example = new TbOrderItemExample();
+		com.pinyougou.pojo.TbOrderItemExample.Criteria criteria = example.createCriteria();
+
+		criteria.andOrderIdEqualTo(Long.valueOf(orderId));
+		// TODO Auto-generated method stub
+		orderItemMapper.deleteByExample(example );
+
+	}
+
+	/**
+	 * 订单详情
+	 */
+	@Override
+	public UserOrder orderDetail(String orderId) {
+		UserOrder userOrder = new UserOrder();
+		TbOrder order = orderMapper.selectByPrimaryKey(Long.valueOf(orderId));
+		TbOrderItemExample example = new TbOrderItemExample();
+		com.pinyougou.pojo.TbOrderItemExample.Criteria criteria = example.createCriteria();
+		criteria.andOrderIdEqualTo(Long.valueOf(orderId));
+		List<TbOrderItem> orderItemList = orderItemMapper.selectByExample(example);
+		userOrder.setOrder(order);
+		userOrder.setOrderItemList(orderItemList);
+		return userOrder;
+	}
+
+
+	/**
+	 * 通过payLogId获取订单Id
+	 */
+	@Override
+	public String getOrderId(String payLogId) {
+		TbPayLog payLog = payLogMapper.selectByPrimaryKey(payLogId);
+		String orderList = payLog.getOrderList();
+		String[] orderIds = orderList.split(",");
+		return orderIds[0];
+	}
+
+	/**
+	 * 查询所有的支付日志，在支付时使用
+	 * @return
+	 */
+	@Override
+	public List<TbPayLog> getPayLogList() {
+		List<TbPayLog> payLogList = payLogMapper.selectByExample(null);
+		return  payLogList;
+	}
+
+
+
 }

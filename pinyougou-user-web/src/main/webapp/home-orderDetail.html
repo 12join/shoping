@@ -10,14 +10,18 @@
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css" />
+
+
 	<script type="text/javascript" src="plugins/angularjs/angular.min.js"></script>
 	<script type="text/javascript" src="js/base.js"></script>
 	<script type="text/javascript" src="js/service/loginService.js"></script>
-	<script type="text/javascript" src="js/controller/orderController.js"></script>
+	<script type="text/javascript" src="/js/service/payService.js"></script>
+	<script type="text/javascript" src="js/service/orderService.js"></script>
+	<script type="text/javascript" src="js/controller/indexController.js"></script>
 
 </head>
 
-<body  ng-app="pinyougou" ng-controller="orderController" ng-init="showName()">
+<body  ng-app="pinyougou" ng-controller="indexController" ng-init="showName();getAllDetail();findUserOrder()">
     <!-- 头部栏位 -->
     <!--页面顶部-->
 <div id="nav-bottom">
@@ -158,7 +162,7 @@ $(function(){
                 <div class="yui3-u-1-6 list">
 
                     <div class="person-info">
-                        <div class="person-photo"><img src="img/_/photo.png" alt=""></div>
+						<div class="person-photo"><img src="{{headPic}}" width="60px" hight="60px" alt=""></div>
                         <div class="person-account">
                             <span class="name">{{user.name}}</span>
                             <span class="safe">账户安全</span>
@@ -190,218 +194,336 @@ $(function(){
 						</dl>
                     </div>
                 </div>
-                <!--右侧主内容-->
-                <div class="yui3-u-5-6">
-                    <div class="body">
-                        <div class="order-detail">
-                            <h4>订单详情</h4>
-                            <div class="order-bar">
-                                <div class="sui-steps-round steps-round-auto steps-4">
-                                    <div class="finished">
-                                        <div class="wrap">
-                                        <div class="round">1</div>
-                                        <div class="bar"></div>
-                                        </div>
-                                        <label>
-                                            <span>提交订单</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
-                                        </label>
-                                    </div>
-                                    <div class="current">
-                                        <div class="wrap">
-                                        <div class="round">2</div>
-                                        <div class="bar"></div>
-                                        </div>
-                                        <label>
-                                            <span>付款成功</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
-                                        </label>
-                                    </div>
-                                    <div class="todo">
-                                        <div class="wrap">
-                                        <div class="round">3</div>
-                                        <div class="bar"></div>
-                                        </div>
-                                        <label>
-                                            <span>发货</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
-                                        </label>
-                                    </div>
-                                    <div class="todo">
-                                        <div class="wrap">
-                                        <div class="round">4</div>
-                                        <div class="bar"></div>
-                                        </div>
-                                        <label>
-                                            <span>确认收货</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div class="todo last">
-                                        <div class="wrap">
-                                        <div class="round">5</div>
-                                        </div>
-                                        <label>
-                                            <span>评价晒单</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
-                                        </label>
-                                    </div>
-                                    </div>
-                            </div>
-                            <div class="order-state">
-                                <p>当前订单状态：<span class="red">已发货</span></p>
-                                <p>还剩06天00小时 自动确认收货</p>
-                            </div>
-                        </div>
-                        <div class="order-info">
-                            <h5>订单信息</h5>
-                            <p>收货地址：神茶减肥茶就观察及噶盘滚啊  </p>
-                            <p>订单单号：178789758976986</p>
-                            <p>下单时间：2017-06-04 09：03：03</p>
-                            <p>支付时间：2017-06-05  09：03：03</p>
-                            <p>支付方式：微信</p>
-                            <p>发货时间：201707-06-06 09：03：03</p>
-                        </div>
-                        <div class="order-goods">
-                            <table class="sui-table">
-                                    <thead>
-                                        <th class="center" >商品</th>
-                                        <th class="center" >价格</th>
-                                        <th class="center" >数量</th>
-                                        <th class="center" >优惠</th>
-                                        <th class="center" >状态</th>
-                                    </thead>                                   
-                             
-                                <tbody>                               
-                                    <tr>
-                                        <td colspan="5">订单编号：787587819591509</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="typographic"><img src="img/goods.png" />
-                                                    <span>包邮 正品玛姬儿压缩面膜无纺布纸膜100粒 送泡瓶面膜刷喷瓶 新款</span>
-                                                    <span class="guige">规格：温泉喷雾150ml</span>
-                                                </div>
-                                        </td>
-                                        <td>
-                                            <ul class="unstyled">
-                                                    <li class="o-price">¥599.00</li>	
-                                                    <li>¥299.00</li>											
-                                                </ul>
-                                        </td>
-                                        <td>1</td>
-                                        <td>无优惠</td>
-                                        <td>交易成功</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="order-price">
-                                <p>商品总金额：￥1.8</p>
-                                <p>运费金额：，免费用</p>
-                                <p>使用优惠券：无</p>
-                                <h4 class="red">实际支付：￥1.8</h4>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <!--猜你喜欢-->
-                        <div class="like-title">
-                            <div class="mt">
-                                <span class="fl"><strong>热卖单品</strong></span>
-                            </div>
-                        </div>
-                        <div class="like-list">
-                            <ul class="yui3-g">
-                                <li class="yui3-u-1-4">
-                                    <div class="list-wrap">
-                                        <div class="p-img">
-                                            <img src="img/_/itemlike01.png" />
-                                        </div>
-                                        <div class="attr">
-                                            <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
-                                        </div>
-                                        <div class="price">
-                                            <strong>
-											<em>¥</em>
-											<i>3699.00</i>
-										</strong>
-                                        </div>
-                                        <div class="commit">
-                                            <i class="command">已有6人评价</i>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="yui3-u-1-4">
-                                    <div class="list-wrap">
-                                        <div class="p-img">
-                                            <img src="img/_/itemlike02.png" />
-                                        </div>
-                                        <div class="attr">
-                                            <em>Apple苹果iPhone 6s/6s Plus 16G 64G 128G</em>
-                                        </div>
-                                        <div class="price">
-                                            <strong>
-											<em>¥</em>
-											<i>4388.00</i>
-										</strong>
-                                        </div>
-                                        <div class="commit">
-                                            <i class="command">已有700人评价</i>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="yui3-u-1-4">
-                                    <div class="list-wrap">
-                                        <div class="p-img">
-                                            <img src="img/_/itemlike03.png" />
-                                        </div>
-                                        <div class="attr">
-                                            <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
-                                        </div>
-                                        <div class="price">
-                                            <strong>
-											<em>¥</em>
-											<i>4088.00</i>
-										</strong>
-                                        </div>
-                                        <div class="commit">
-                                            <i class="command">已有700人评价</i>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="yui3-u-1-4">
-                                    <div class="list-wrap">
-                                        <div class="p-img">
-                                            <img src="img/_/itemlike04.png" />
-                                        </div>
-                                        <div class="attr">
-                                            <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
-                                        </div>
-                                        <div class="price">
-                                            <strong>
-											<em>¥</em>
-											<i>4088.00</i>
-										</strong>
-                                        </div>
-                                        <div class="commit">
-                                            <i class="command">已有700人评价</i>
-                                        </div>
-                                    </div>
-                                </li>
+				<!--右侧主内容-->
+				<div class="yui3-u-5-6">
+					<div class="body">
+						<div class="order-detail">
+							<h4>订单详情</h4>
 
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 底部栏位 -->
+							<div class="order-bar">
+								<div class="sui-steps-round steps-round-auto steps-4">
+									<div class="finished">
+										<div class="wrap">
+											<div class="round">1</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+											<span>提交订单</span>
+											<span>{{order.order.createTime}}</span>
+
+										</label>
+									</div>
+
+									<div ng-if="parseToNum(order.order.status)>2" class="finished">
+										<div class="wrap">
+											<div class="round">2</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+											<span>付款成功</span>
+											<span ng-if="parseToNum(order.order.status)>=2">{{order.order.paymentTime}}</span>
+										</label>
+									</div>
+
+
+
+									<div ng-if="parseToNum(order.order.status)==2" class="current">
+										<div class="wrap">
+											<div class="round">2</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+
+											<span>付款成功</span>
+											<span ng-if="parseToNum(order.order.status)>=2">{{order.order.paymentTime}}</span>
+
+										</label>
+									</div>
+
+
+
+
+									<div ng-if="parseToNum(order.order.status)<2"  class="todo">
+										<div class="wrap">
+											<div class="round">2</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+
+											<span>付款成功</span>
+
+
+										</label>
+									</div>
+
+
+
+
+
+									<div ng-if="parseToNum(order.order.status)>4" class="finished">
+										<div class="wrap">
+											<div class="round">3</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+											<span>发货</span>
+											<span ng-if="parseToNum(order.order.status)>=4">{{order.order.consignTime}}</span>
+											<!-- //状态：1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭,7、待评价 -->
+										</label>
+									</div>
+
+
+
+									<div ng-if="parseToNum(order.order.status)==4" class="current">
+										<div class="wrap">
+											<div class="round">3</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+											<span>发货</span>
+											<span ng-if="parseToNum(order.order.status)>=4">{{order.order.consignTime}}</span>
+											<!-- //状态：1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭,7、待评价 -->
+										</label>
+									</div>
+
+
+
+									<div ng-if="parseToNum(order.order.status)<4" class="todo">
+										<div class="wrap">
+											<div class="round">3</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+											<span>发货</span>
+
+										</label>
+									</div>
+
+
+
+
+
+									<div ng-if="parseToNum(order.order.status)>5" class="finished">
+										<div class="wrap">
+											<div class="round">4</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+											<span>确认收货</span>
+											<span ng-if="parseToNum(order.order.status)>=5">{{order.order.endTime}}</span>
+										</label>
+									</div>
+
+
+
+									<div ng-if="parseToNum(order.order.status)==5" class="current">
+										<div class="wrap">
+											<div class="round">4</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+											<span>确认收货</span>
+											<span ng-if="parseToNum(order.order.status)>=5">{{order.order.endTime}}</span>
+										</label>
+									</div>
+
+
+									<div  ng-if="parseToNum(order.order.status)<5" class="todo">
+										<div class="wrap">
+											<div class="round">4</div>
+											<div class="bar"></div>
+										</div>
+										<label>
+											<span>确认收货</span>
+
+
+										</label>
+									</div>
+
+
+
+
+
+									<div ng-if="parseToNum(order.order.status)==7" class="todo last" >
+										<div class="wrap">
+											<div class="round">5</div>
+										</div>
+										<label>
+											<span>评价晒单</span>
+											<span ng-if="parseToNum(order.order.status)==7">{{order.order.updateTime}}</span>
+
+										</label>
+									</div>
+
+
+
+									<div ng-if="parseToNum(order.order.status)<7" class="todo last">
+										<div class="wrap">
+											<div class="round">5</div>
+										</div>
+										<label>
+											<span>评价晒单</span>
+											<span ng-if="parseToNum(order.order.status)==7">{{order.order.updateTime}}</span>
+
+										</label>
+									</div>
+
+
+
+
+
+
+								</div>
+
+							</div>
+							<div class="order-state">
+								<p>当前订单状态：<span class="red">{{currentStatus[parseToNum(order.order.status)]}}</span></p>
+								<p>还剩{{receTimeString}} 自动确认收货</p>
+							</div>
+						</div>
+						<div class="order-info">
+							<h5>订单信息</h5>
+							<p>收货地址：{{order.order.receiverAreaName}}  </p>
+							<p>订单单号：{{order.order.orderId}}</p>
+							<p>下单时间：{{order.order.createTime}}</p>
+							<p>支付时间：{{order.order.paymentTime}}</p>
+							<p ng-if="order.order.status!=1">支付方式：{{order.order.paymentType=='1'?'微信':'支付宝'}}</p>
+							<p>发货时间：{{order.order.consignTime}}</p>
+						</div>
+						<div class="order-goods">
+							<table class="sui-table">
+								<thead>
+								<th class="center" >商品</th>
+								<th class="center" >价格</th>
+								<th class="center" >数量</th>
+								<th class="center" >优惠</th>
+								<th class="center" >状态</th>
+								</thead>
+
+								<tbody ng-repeat="orderItem in order.orderItemList">
+								<tr>
+									<td colspan="5">订单编号：{{order.order.orderId}}</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="typographic"><img src="img/goods.png" />
+											<span>{{orderItem.title}}</span>
+											<!-- <span class="guige">规格：温泉喷雾150ml</span> -->
+										</div>
+									</td>
+									<td>
+										<ul class="unstyled">
+											<li class="o-price">¥599.00</li>
+											<li>¥{{orderItem.price}}</li>
+										</ul>
+									</td>
+									<td>{{orderItem.num}}</td>
+									<td>无优惠</td>
+									<td>{{currentStatus[parseInt(order.order.status)]}}</td>
+								</tr>
+								</tbody>
+							</table>
+							<div class="order-price">
+								<p>商品总金额：￥{{order.order.payment}}</p>
+								<p>运费金额：，免费用</p>
+								<p>使用优惠券：无</p>
+								<h4 class="red" ng-if="order.order.status!=1">实际支付：￥{{order.order.payment}}</h4>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<!--猜你喜欢-->
+						<div class="like-title">
+							<div class="mt">
+								<span class="fl"><strong>热卖单品</strong></span>
+							</div>
+						</div>
+						<div class="like-list">
+							<ul class="yui3-g">
+								<li class="yui3-u-1-4">
+									<div class="list-wrap">
+										<div class="p-img">
+											<img src="img/_/itemlike01.png" />
+										</div>
+										<div class="attr">
+											<em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+										</div>
+										<div class="price">
+											<strong>
+												<em>¥</em>
+												<i>3699.00</i>
+											</strong>
+										</div>
+										<div class="commit">
+											<i class="command">已有6人评价</i>
+										</div>
+									</div>
+								</li>
+								<li class="yui3-u-1-4">
+									<div class="list-wrap">
+										<div class="p-img">
+											<img src="img/_/itemlike02.png" />
+										</div>
+										<div class="attr">
+											<em>Apple苹果iPhone 6s/6s Plus 16G 64G 128G</em>
+										</div>
+										<div class="price">
+											<strong>
+												<em>¥</em>
+												<i>4388.00</i>
+											</strong>
+										</div>
+										<div class="commit">
+											<i class="command">已有700人评价</i>
+										</div>
+									</div>
+								</li>
+								<li class="yui3-u-1-4">
+									<div class="list-wrap">
+										<div class="p-img">
+											<img src="img/_/itemlike03.png" />
+										</div>
+										<div class="attr">
+											<em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+										</div>
+										<div class="price">
+											<strong>
+												<em>¥</em>
+												<i>4088.00</i>
+											</strong>
+										</div>
+										<div class="commit">
+											<i class="command">已有700人评价</i>
+										</div>
+									</div>
+								</li>
+								<li class="yui3-u-1-4">
+									<div class="list-wrap">
+										<div class="p-img">
+											<img src="img/_/itemlike04.png" />
+										</div>
+										<div class="attr">
+											<em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+										</div>
+										<div class="price">
+											<strong>
+												<em>¥</em>
+												<i>4088.00</i>
+											</strong>
+										</div>
+										<div class="commit">
+											<i class="command">已有700人评价</i>
+										</div>
+									</div>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- 底部栏位 -->
     <!--页面底部-->
 <div class="clearfix footer">
 	<div class="py-container">
