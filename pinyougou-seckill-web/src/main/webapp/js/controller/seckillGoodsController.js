@@ -7,7 +7,7 @@ app.controller('seckillGoodsController' ,function($scope,seckillGoodsService,$lo
 				$scope.list=response;
 			} 
 		);
-	}
+	};
 	
 	$scope.findOne=function(){ 
 		seckillGoodsService.findOne($location.search()["id"]).success(
@@ -16,7 +16,7 @@ app.controller('seckillGoodsController' ,function($scope,seckillGoodsService,$lo
 				allSecond=Math.floor((new Date($scope.entity.endTime).getTime()-new Date().getTime())/1000);
 			}
 		);
-	}
+	};
 	var allSecond;
 	time=$interval(function(){
 		allSecond--;
@@ -55,7 +55,7 @@ app.controller('seckillGoodsController' ,function($scope,seckillGoodsService,$lo
 			timeString+=seconds;
 		}
 		return timeString;
-	}
+	};
 	
 	$scope.submitOrder=function(){
 		seckillGoodsService.submitOrder($scope.entity.id).success(
@@ -73,7 +73,7 @@ app.controller('seckillGoodsController' ,function($scope,seckillGoodsService,$lo
 				}
 			}
 		);
-	}
+	};
 
     $scope.user={name:"",isLogin:false};
     $scope.showName=function(){
@@ -88,6 +88,14 @@ app.controller('seckillGoodsController' ,function($scope,seckillGoodsService,$lo
 
             }
         );
-    }
+    };
+
+    $scope.loginBack=function(){
+		// var backUrl=window.location.pathname+window.location.search;
+        var backUrl=window.location.href;
+        // alert(backUrl);
+        // alert(encodeURIComponent(backUrl, "UTF-8"));
+        location.href="login.html?backUrl="+encodeURIComponent(backUrl, "UTF-8");
+	}
 	
 });
