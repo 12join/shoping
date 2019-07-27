@@ -18,7 +18,7 @@
     
 </head>
 
-<body ng-app="pinyougou" ng-controller="cartController" ng-init="findAddressList();findCartList()">
+<body ng-app="pinyougou" ng-controller="cartController" ng-init="findAddressList();findCartList();findP()">
 	<!--head-->
 	<div class="top">
 		<div class="py-container">
@@ -68,22 +68,22 @@
 			<div class="checkout-steps">
 				<!--收件人信息-->
 				<div class="step-tit">
-					<h5>收件人信息<span><a data-toggle="modal" data-target=".edit" data-keyboard="false" class="newadd">新增收货地址</a></span></h5>
+					<h5>收件人信息<span><a data-toggle="modal" data-target=".edit" data-keyboard="false" class="newadd" ng-click="address={}">新增收货地址</a></span></h5>
 				</div>
 				<div class="step-cont">
 					<div class="addressInfo">
 						<ul class="addr-detail">
 							<li class="addr-item">
-							
-							  <div ng-repeat="address in addressList">
-								<div class="con name {{isSeletedAddress(address)?'selected':''}}"><a href="javascript:;" ng-click="selectAddress(address)">{{address.contact}}<span title="点击取消选择">&nbsp;</a></div>
-								<div class="con address">{{address.address}}<span>{{address.mobile}}</span>
-									<span class="base" ng-if="address.isDefault=='1'">默认地址</span>
-									<span class="edittext"><a data-toggle="modal" data-target=".edit" data-keyboard="false" >编辑</a>&nbsp;&nbsp;<a href="javascript:;">删除</a></span>
-								</div>
-								<div class="clearfix"></div>
-							  </div>
-							 
+
+                                <div ng-repeat="pojo in addressList">
+                                    <div class="con name {{isSelectAddress(pojo.address.id)?'selected':''}}"><a href="javascript:;" ng-click="selectAddress(pojo.address.id)">{{pojo.address.contact}}<span title="点击取消选择">&nbsp;</span></a></div>
+                                    <div class="con address">{{pojo.addStr}} <span>{{pojo.address.mobile}}</span>
+                                        <span class="base" ng-if="pojo.address.isDefault=='1'">默认地址</span>&nbsp;&nbsp;
+                                        <a data-toggle="modal" data-target=".edit" data-keyboard="false" class="newadd" ng-click="findOne(pojo.address)">编辑</a></span>&nbsp;&nbsp;
+                                        <a ng-click="dele(pojo.address.id)">删除</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
 							</li>
 							
 							
@@ -97,50 +97,67 @@
 						        <h4 id="myModalLabel" class="modal-title">添加收货地址</h4>
 						      </div>
 						      <div class="modal-body">
-						      	<form action="" class="sui-form form-horizontal">
-						      		 <div class="control-group">
-									    <label class="control-label">收货人：</label>
-									    <div class="controls">
-									      <input type="text" class="input-medium">
-									    </div>
-									  </div>
-									   
-									   <div class="control-group">
-									    <label class="control-label">详细地址：</label>
-									    <div class="controls">
-									      <input type="text" class="input-large">
-									    </div>
-									  </div>
-									   <div class="control-group">
-									    <label class="control-label">联系电话：</label>
-									    <div class="controls">
-									      <input type="text" class="input-medium">
-									    </div>
-									  </div>
-									   <div class="control-group">
-									    <label class="control-label">邮箱：</label>
-									    <div class="controls">
-									      <input type="text" class="input-medium">
-									    </div>
-									  </div>
-									   <div class="control-group">
-									    <label class="control-label">地址别名：</label>
-									    <div class="controls">
-									      <input type="text" class="input-medium">
-									    </div>
-									    <div class="othername">
-									    	建议填写常用地址：<a href="#" class="sui-btn btn-default">家里</a>　<a href="#" class="sui-btn btn-default">父母家</a>　<a href="#" class="sui-btn btn-default">公司</a>
-									    </div>
-									  </div>
-									  
-						      	</form>
-						      	
-						      	
-						      </div>
-						      <div class="modal-footer">
-						        <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large">确定</button>
-						        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
-						      </div>
+                                  <form class="sui-form form-horizontal">
+                                      <!--{{address}}-->
+                                      <div class="control-group">
+                                          <label class="control-label">收货人：</label>
+                                          <div class="controls">
+                                              <input type="text" class="input-medium" ng-model="address.contact">
+                                          </div>
+                                      </div>
+
+                                      <div class="control-group">
+                                          <label class="control-label">所在地区：</label>
+                                          <div class="controls">
+                                              省:<select  ng-model="address.provinceId" ng-options="item.provinceid as item.province for item in provinceList"></select>
+                                              市:<select  ng-model="address.cityId" ng-options="item.cityid as item.city for item in cityList"></select>
+                                              区:<select ng-model="address.townId" ng-options="item.areaid as item.area for item in areasList"></select>
+
+                                          </div>
+                                      </div>
+
+
+                                      <div class="control-group">
+                                          <label class="control-label">详细地址：</label>
+                                          <div class="controls">
+                                              <input type="text" class="input-large" ng-model="address.address">
+                                          </div>
+                                      </div>
+
+                                      <div class="control-group">
+                                          <label class="control-label">联系电话：</label>
+                                          <div class="controls">
+                                              <input type="text" class="input-medium" ng-model="address.mobile">
+                                          </div>
+                                      </div>
+                                      <div class="control-group">
+                                          <label class="control-label">地址别名：</label>
+                                          <div class="controls">
+                                              <input type="text" class="input-medium" ng-model="address.alias">
+                                          </div>
+                                          <div class="othername">
+                                              建议填写常用地址：<a ng-click="address.alias='家庭'" class="sui-btn btn-default">家庭</a>　<a ng-click="address.alias='学校'" class="sui-btn btn-default">学校</a>　<a ng-click="address.alias='公司'" class="sui-btn btn-default">公司</a>
+                                          </div>
+                                      </div>
+
+                                      <div class="control-group">
+                                          <label class="control-label">设为默认地址:</label>
+                                          <div class="controls">
+                                              <input type="checkbox" ng-model="address.isDefault" ng-true-value="1" ng-false-value="0">
+                                          </div>
+                                      </div>
+
+                                  </form>
+
+
+                              </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large" ng-click="save()">确定
+                                    </button>
+                                    <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">
+                                        取消
+                                    </button>
+                                </div>
 						    </div>
 						  </div>
 						</div>

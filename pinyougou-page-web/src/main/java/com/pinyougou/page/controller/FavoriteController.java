@@ -1,7 +1,6 @@
 package com.pinyougou.page.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbGoodsDesc;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojo.group.Favorite;
@@ -12,7 +11,6 @@ import com.pinyougou.sellergoods.service.ItemService;
 import com.pinyougou.user.service.FavoriteService;
 import entity.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

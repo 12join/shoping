@@ -24,17 +24,6 @@ public class AddressController {
     @Reference
     private AddressService addressService;
 
-    /**
-     * 返回全部列表
-     * @return
-     */
-    @RequestMapping("/findAll")
-    public List<TbAddress> findAll(){
-        return addressService.findAll();
-    }
-
-
-
 
     /**
      * 增加
@@ -91,6 +80,10 @@ public class AddressController {
     @RequestMapping("/delete")
     public Result delete(Long [] ids){
         try {
+            TbAddress address = addressService.findOne(ids[0]);
+            if("1".equals(address.getIsDefault())){
+                return new Result(false, "该地址是默认地址,不能删除");
+            }
             addressService.delete(ids);
             return new Result(true, "删除成功");
         } catch (Exception e) {
