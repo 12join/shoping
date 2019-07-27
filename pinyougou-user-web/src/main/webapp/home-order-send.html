@@ -10,14 +10,19 @@
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css" />
+
+
     <script type="text/javascript" src="plugins/angularjs/angular.min.js"></script>
     <script type="text/javascript" src="js/base.js"></script>
     <script type="text/javascript" src="js/service/loginService.js"></script>
-    <script type="text/javascript" src="js/controller/orderController.js"></script>
+    <script type="text/javascript" src="/js/service/payService.js"></script>
+    <script type="text/javascript" src="js/service/orderService.js"></script>
+    <script type="text/javascript" src="js/controller/indexController.js"></script>
+
 
 </head>
 
-<body  ng-app="pinyougou" ng-controller="orderController" ng-init="showName()">
+<body  ng-app="pinyougou" ng-controller="indexController" ng-init="showName();orderStatus(['2','3'])">
     <!-- 头部栏位 -->
     <!--页面顶部-->
 <div id="nav-bottom">
@@ -158,7 +163,7 @@ $(function(){
                 <div class="yui3-u-1-6 list">
 
                     <div class="person-info">
-                        <div class="person-photo"><img src="img/_/photo.png" alt=""></div>
+                        <div class="person-photo"><img src="{{headPic}}" width="60px" higth="60px" alt=""></div>
                         <div class="person-account">
                             <span class="name">{{user.name}}</span>
                             <span class="safe">账户安全</span>
@@ -210,134 +215,62 @@ $(function(){
                         </div>
                         <div class="order-detail">
                             <div class="orders">
-                                <div class="choose-order">
-                                    <div class="sui-pagination pagination-large top-pages">
-                                        <ul>
-                                            <li class="prev disabled"><a href="#">上一页</a></li>
+                                <!--<div class="choose-order">-->
+                                    <!--<div class="sui-pagination pagination-large top-pages">-->
+                                        <!--<ul>-->
+                                            <!--<li class="prev disabled"><a href="#">上一页</a></li>-->
 
-                                            <li class="next"><a href="#">下一页</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                            <!--<li class="next"><a href="#">下一页</a></li>-->
+                                        <!--</ul>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+
                                 <!--order1-->
-                                <div class="choose-title">
+                                <div class="choose-title" ng-repeat="order in orderList">
                                     <label data-toggle="checkbox" class="checkbox-pretty ">
-                                           <input type="checkbox" checked="checked"><span>2017-02-11 11:59　订单编号：7867473872181848  店铺：哇哈哈 <a>和我联系</a></span>
+                                           <input type="checkbox" checked="checked"><span>{{order.order.updateTime}}　订单编号：{{order.order.orderId}}  店铺：{{order.order.sellerId}} <a>和我联系</a></span>
                                      </label>
                                     <a class="sui-btn btn-info share-btn">分享</a>
-                                </div>
+
                                 <table class="sui-table table-bordered order-datatable">
                                     <tbody>
-                                        <tr>
+                                        <tr ng-repeat="orderItem in order.orderItemList">
                                             <td width="35%">
-                                                <div class="typographic"><img src="img/goods.png" />
-                                                    <a href="#" class="block-text">包邮 正品玛姬儿压缩面膜无纺布纸膜100粒 送泡瓶面膜刷喷瓶 新款</a>
-                                                    <span class="guige">规格：温泉喷雾150ml</span>
+                                                <div class="typographic"><img src="{{orderItem.picPath}}" width="50px" hight="50px" />
+                                                    <a href="#" class="block-text">{{orderItem.title}}</a>
+                                                    <!--<span class="guige">规格：温泉喷雾150ml</span>-->
                                                 </div>
                                             </td>
                                             <td width="5%" class="center">
                                                 <ul class="unstyled">
                                                     <li class="o-price">¥599.00</li>
-                                                    <li>¥299.00</li>
+                                                    <li>¥{{orderItem.price}}</li>
                                                 </ul>
                                             </td>
-                                            <td width="5%" class="center">1</td>
-                                            <td width="8%" class="center">
-                                                <ul class="unstyled">
-                                                    <li>已发货</li>
-                                                    <li><a>退货/退款</a></li>
-                                                </ul>
-                                            </td>
-                                            <td width="10%" class="center" rowspan="2">
-                                                <ul class="unstyled">
-                                                    <li>¥299.00</li>
-                                                    <li>（含运费：￥0.00）</li>
-                                                </ul>
-                                            </td>
-                                            <td width="10%" class="center" rowspan="2">
-                                                <ul class="unstyled">
-                                                    <li>部分发货</li>
-                                                    <li><a href="orderDetail.html" class="btn">订单详情 </a></li>
-                                                </ul>
-                                            </td>
-                                            <td width="10%" class="center" rowspan="2">
-                                                <ul class="unstyled">
-                                                    <li>还剩4天23时</li>
-                                                    <li><a href="#" class="sui-btn btn-info">确认发货</a></li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="35%">
-                                                <div class="typographic"><img src="img/goods.png" />
-                                                    <a href="#" class="block-text">包邮 正品玛姬儿压缩面膜无纺布纸膜100粒 送泡瓶面膜刷喷瓶 新款</a>
-                                                    <span class="guige">规格：温泉喷雾150ml</span>
-                                                </div>
-                                            </td>
-                                            <td width="5%" class="center">
-                                                <ul class="unstyled">
-                                                    <li class="o-price">¥199.00</li>
-                                                    <li>¥212.00</li>
-                                                </ul>
-                                            </td>
-                                            <td width="5%" class="center">1</td>
+                                            <td width="5%" class="center">{{orderItem.num}}</td>
                                             <td width="8%" class="center">
                                                 <ul class="unstyled">
                                                     <li>未发货</li>
                                                     <li><a>退货/退款</a></li>
                                                 </ul>
                                             </td>
-
-
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-
-                                <!--order2-->
-                                <div class="choose-title">
-                                    <label data-toggle="checkbox" class="checkbox-pretty ">
-                                           <input type="checkbox" checked="checked"><span>2017-02-11 11:59　订单编号：7867473872181848  店铺：哇哈哈 <a>和我联系</a></span>
-                                     </label>
-                                    <a class="sui-btn btn-info share-btn">分享</a>
-                                </div>
-                                <table class="sui-table table-bordered order-datatable">
-                                    <tbody>
-                                        <tr>
-                                            <td width="35%">
-                                                <div class="typographic"><img src="img/goods.png" />
-                                                    <a href="#" class="block-text">包邮 正品玛姬儿压缩面膜无纺布纸膜100粒 送泡瓶面膜刷喷瓶 新款</a>
-                                                    <span class="guige">规格：温泉喷雾150ml</span>
-                                                </div>
-                                            </td>
-                                            <td width="5%" class="center">
+                                            <td width="10%" class="center" rowspan="order.orderItemList.length">
                                                 <ul class="unstyled">
-                                                    <li class="o-price">¥599.00</li>
-                                                    <li>¥299.00</li>
-                                                </ul>
-                                            </td>
-                                            <td width="5%" class="center">1</td>
-                                            <td width="8%" class="center">
-                                                <ul class="unstyled">
-
-                                                    <li><a>退货/退款</a></li>
-                                                </ul>
-                                            </td>
-                                            <td width="10%" class="center">
-                                                <ul class="unstyled">
-                                                    <li>¥299.00</li>
+                                                    <li>¥{{orderItem.price*orderItem.num}}</li>
                                                     <li>（含运费：￥0.00）</li>
                                                 </ul>
                                             </td>
-                                            <td width="10%" class="center">
+                                            <td width="10%" class="center" rowspan="order.orderItemList.length">
                                                 <ul class="unstyled">
                                                     <li>买家已付款</li>
-                                                    <li><a href="orderDetail.html" class="btn">订单详情 </a></li>
+                                                    <li><a href="home-orderDetail.html#?orderId={{order.order.orderId}}" class="btn">订单详情 </a></li>
                                                 </ul>
                                             </td>
-                                            <td width="10%" class="center">
+                                            <td width="10%" class="center" rowspan="order.orderItemList.length">
                                                 <ul class="unstyled">
-                                                    <li><a href="#" class="sui-btn btn-info">提醒发货</a></li>
+
+                                                    <li><a ng-click="remindSend(order.order.orderId)" class="sui-btn btn-info">提醒发货</a></li>
                                                 </ul>
                                             </td>
                                         </tr>
@@ -345,22 +278,32 @@ $(function(){
 
                                     </tbody>
                                 </table>
-                            </div>
+                                </div>
+
+
                             <div class="choose-order">
 
                                 <div class="sui-pagination pagination-large top-pages">
                                     <ul>
-                                        <li class="prev disabled"><a href="#">«上一页</a></li>
-                                        <li class="active"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li class="dotted"><span>...</span></li>
-                                        <li class="next"><a href="#">下一页»</a></li>
+                                        <li class="prev {{isFirst()?'disabled':''}}"><a href="#" ng-click="queryByPage(num-1,['2','3'])">«上一页</a></li>
+                                        <li class="dotted" ng-if="firstDot==true"><span>...</span></li>
+                                        <!--<li class="active"><a href="#" >1</a></li>-->
+                                        <li ng-repeat="p in pageList" class ="{{p==num?'active':''}}">
+                                            <a href="#" ng-click="queryByPage(p,['2','3'])">{{p}}</a>
+                                        </li>
+                                        <li class="dotted" ng-if="lastDot==true"><span>...</span></li>
+                                        <li class="next {{isLast()?'disabled':''}}"><a href="#" ng-click="queryByPage(num+1,['2','3'])">下一页»</a></li>
                                     </ul>
-                                    <div><span>共10页&nbsp;</span><span>
+
+
+                                    <div><span>共{{totalPages}}页&nbsp;</span>
+                                        <span>
                                             到
-                                            <input type="text" class="page-num"><button class="page-confirm" onclick="alert(1)">确定</button>
-                                            页</span></div>
+                                            <input type="text" class="page-num" ng-model="num2">
+											<button class="page-confirm" ng-click="queryByPage(num2,['2','3'])">确定</button>
+                                            页
+                                    </span>
+                                    </div>
                                 </div>
                             </div>
 

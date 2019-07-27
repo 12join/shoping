@@ -5,6 +5,7 @@ import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pojo.TbOrder;
 
 
+import com.pinyougou.pojo.TbInterest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ import util.PhoneFormatCheckUtils;
 @RequestMapping("/user")
 public class UserController {
 
-	@Reference
+	@Reference(timeout =10000)
 	private UserService userService;
 	
 	/**
@@ -145,6 +146,7 @@ public class UserController {
 	@RequestMapping("/findUser")
     public TbUser findUser(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(name);
         try {
             TbUser user = userService.findUser(name);
             return user;
@@ -168,6 +170,13 @@ public class UserController {
         }
     }
 
+    @RequestMapping("/findInterest")
+    public List<TbInterest> findProvince(){
+
+        return userService.findInterest();
+    }
+
+
     @Reference(timeout = 1000000)
     private OrderService orderService;
 
@@ -183,5 +192,5 @@ public class UserController {
             return new Result(false, "发送失败");
         }
     }
-	
+
 }

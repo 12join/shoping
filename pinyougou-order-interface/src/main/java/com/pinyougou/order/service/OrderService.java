@@ -6,6 +6,7 @@ import java.util.Map;
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbPayLog;
 
+import com.pinyougou.pojo.group.UserOrder;
 import entity.PageResult;
 /**
  * 服务层接口
@@ -98,4 +99,93 @@ public interface OrderService {
      *
      */
     public List<TbOrder> selectOrderStatus(Date start,Date end);
+
+
+	/**
+	 * 根据订单号获取到对应的支付订单号
+	 * @param orderId
+	 * @return
+	 */
+	public String getPayLogId(String orderId);
+
+
+	/**
+	 * 当前用户所有状态的订单列表
+	 * @param userId
+	 * @return
+	 */
+	public PageResult findOrderByUserId(String userId,int pageNum, int pageSize);
+
+
+
+    /**
+     * 当前用户指定状态的订单列表
+     * @param userId
+     * @param status
+     * @return
+     */
+    PageResult findOrderByUserId(String userId,String[] status,int pageNum, int pageSize);
+
+
+//	public List<UserOrder> findOrderByUserIdAndStatus(String userId,String[] status);
+
+
+	/**
+	 * 根据支付订单号更新支付日志信息，改变订单状态
+	 * @param payLogId 支付订单号
+	 * @return
+	 */
+	public void cancelOrder(String payLogId);
+
+
+	/**
+	 * 确认收货
+	 *
+	 * @param orderId
+	 */
+	public void confirmOrder(String orderId);
+
+
+	/**
+	 * 提醒发货
+	 * @param orderId
+	 */
+	public void remindSend(String orderId);
+
+	/**
+	 * 延长收货
+	 * @param orderId
+	 */
+	public void delayReceive(String orderId);
+
+	/**
+	 * 根据订单号删除订单
+	 * @param orderId
+	 */
+	public void deleOrder(String orderId);
+
+
+
+	/**
+	 * 获取订单详情
+	 * @param orderId
+	 * @return
+	 */
+	public UserOrder orderDetail(String orderId);
+
+
+	/**
+	 * 通过payLogId获取订单Id
+	 * @param payLogId
+	 * @return
+	 */
+	public String getOrderId(String payLogId);
+
+
+	/**
+	 * 查询所有的支付日志
+	 *
+	 */
+	public List<TbPayLog> getPayLogList();
+
 }

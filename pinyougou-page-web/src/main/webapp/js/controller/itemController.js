@@ -1,5 +1,7 @@
-app.controller("itemController",function($scope,$http,favoriteService,loginService){
-	
+app.controller("itemController",function($scope,$controller,$http,favoriteService,loginService,evaluateService){
+    // AngularJS中的继承:伪继承
+    $controller('baseController',{$scope:$scope});
+
 	$scope.specificationItems={};//存储用户选择的规格
 	
 	//数量加减
@@ -64,27 +66,45 @@ app.controller("itemController",function($scope,$http,favoriteService,loginServi
 	
 	//添加商品到购物车
 	$scope.addToCart=function(){
-		//alert('SKUID:'+$scope.sku.id );		
-		
+		//alert('SKUID:'+$scope.sku.id );
+
 		$http.get('http://localhost:9107/cart/addGoodsToCartList.do?itemId='
 				+$scope.sku.id+'&num='+$scope.num ,{'withCredentials':true} ).success(
 					function(response){
 						if(response.success){
-							location.href='http://localhost:9107/cart.html';						
+							location.href='http://localhost:9107/cart.html';
 						}else{
 							alert(response.message);
-						}					
-					}						
-				);	
-		
-	}
+						}
+					}
+				);
 
+	}
+	//收藏
 	$scope.favorite=function () {
-        favoriteService.save($scope.sku.id).success(function (data) {
-			alert(data.message);
-            $scope.isFav=true;
-        });
+		if($scope.user.isLogin){
+            favoriteService.save($scope.sku.id).success(function (data) {
+
+                $scope.isFav=true;
+                location.reload(true);
+            });
+		}else {
+			confirm("请先登陆后再收藏~！");
+		}
+
     }
+    //取消收藏
+    $scope.Nofavorite=function () {
+        if($scope.user.isLogin) {
+            favoriteService.Nofavorite($scope.sku.id).success(function (data) {
+                $scope.isFav = false;
+                location.reload(true);
+            });
+        }else {
+            confirm("请先登陆后再收藏~！");
+		}
+    }
+
 
     //获取用户登陆信息
     $scope.user={name:"",isLogin:false};
@@ -107,6 +127,14 @@ app.controller("itemController",function($scope,$http,favoriteService,loginServi
             $scope.isFav= data.success;
         });
     }
-	
+    //查询评价
+    $scope.search=function (page,size) {
+        evaluateService.evaluate($scope.sku.id,page,size).success(function (data) {
+            $scope.paginationConf.totalItems = data.total;
+            $scope.list = data.rows;
+        });
+    }
+
+
 	
 });

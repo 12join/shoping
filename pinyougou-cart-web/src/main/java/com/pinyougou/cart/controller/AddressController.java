@@ -50,7 +50,7 @@ public class AddressController {
 	@RequestMapping("/add")
 	public Result add(@RequestBody TbAddress address){
 		try {
-			addressService.add(address);
+			addressService.add(null,address);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,7 +102,7 @@ public class AddressController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param
 	 * @param page
 	 * @param rows
 	 * @return

@@ -10,6 +10,8 @@ import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import com.pinyougou.mapper.TbInterestMapper;
+import com.pinyougou.pojo.TbInterest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -219,6 +221,7 @@ public class UserServiceImpl implements UserService {
         Criteria criteria = userExample.createCriteria();
         criteria.andUsernameEqualTo(username);
         List<TbUser> users = userMapper.selectByExample(userExample);
+        System.out.println(users);
         return users.get(0);
     }
 
@@ -235,6 +238,15 @@ public class UserServiceImpl implements UserService {
         Criteria criteria = userExample.createCriteria();
         criteria.andUsernameEqualTo(username);
         userMapper.updateByExampleSelective(user,userExample);
+    }
+
+
+    @Autowired
+    private TbInterestMapper tbInterestMapper;
+    @Override
+    public List<TbInterest> findInterest() {
+
+        return tbInterestMapper.selectByExample(null);
     }
 
 }

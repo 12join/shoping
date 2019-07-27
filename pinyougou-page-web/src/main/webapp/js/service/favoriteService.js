@@ -6,4 +6,11 @@ app.service('favoriteService',function($http){
     this.isFavor=function (id) {
         return $http.post('../favorite/isFavor.do?itemId='+id);
     }
+
+    this.Nofavorite=function (id) {
+        return $http.post('../favorite/NoFavor.do?itemId='+id);
+    }
+    this.evaluate=function (id) {
+        return $http.get('../evaluate/find.do?id='+id);
+    }
 });

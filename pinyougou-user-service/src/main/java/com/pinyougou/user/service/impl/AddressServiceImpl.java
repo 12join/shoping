@@ -1,12 +1,16 @@
 package com.pinyougou.user.service.impl;
+import java.util.Date;
 import java.util.List;
+
+import com.pinyougou.mapper.TbAreasMapper;
+import com.pinyougou.mapper.TbCitiesMapper;
+import com.pinyougou.mapper.TbProvincesMapper;
+import com.pinyougou.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pinyougou.mapper.TbAddressMapper;
-import com.pinyougou.pojo.TbAddress;
-import com.pinyougou.pojo.TbAddressExample;
 import com.pinyougou.pojo.TbAddressExample.Criteria;
 import com.pinyougou.user.service.AddressService;
 
@@ -41,13 +45,27 @@ public class AddressServiceImpl implements AddressService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
-	/**
-	 * 增加
-	 */
-	@Override
-	public void add(TbAddress address) {
-		addressMapper.insert(address);		
-	}
+    /**
+     * 增加
+     */
+    @Override
+    public void add(String userId,TbAddress address) {
+        address.setUserId(userId);
+        address.setCreateDate(new Date());
+        if("1".equals(address.getIsDefault())) {
+            updateAddressDefault(userId);
+        }
+        addressMapper.insert(address);
+    }
+
+    private void updateAddressDefault(String userId) {
+        TbAddress tbAddress = new TbAddress();
+        tbAddress.setIsDefault("0");
+        TbAddressExample example = new TbAddressExample();
+        Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        addressMapper.updateByExampleSelective(tbAddress, example);
+    }
 
 	
 	/**
@@ -55,7 +73,10 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public void update(TbAddress address){
-		addressMapper.updateByPrimaryKey(address);
+        if("1".equals(address.getIsDefault())) {
+            updateAddressDefault(address.getUserId());
+        }
+        addressMapper.updateByPrimaryKey(address);
 	}	
 	
 	/**
@@ -126,11 +147,73 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public List<TbAddress> findListByUserId(String userId) {
-		
-		TbAddressExample example=new TbAddressExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andUserIdEqualTo(userId);
-		return addressMapper.selectByExample(example);
-	}
-	
+        try {
+            TbAddressExample example = new TbAddressExample();
+            Criteria criteria = example.createCriteria();
+            criteria.andUserIdEqualTo(userId);
+            return addressMapper.selectByExample(example);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    @Autowired
+    private TbProvincesMapper tbProvincesMapper;
+
+    @Override
+    public List<TbProvinces> findProvince() {
+        return tbProvincesMapper.selectByExample(null);
+    }
+
+
+    @Autowired
+    private TbCitiesMapper tbCitiesMapper;
+
+
+    @Override
+    public List<TbCities> findCity(String id) {
+        TbCitiesExample example = new TbCitiesExample();
+        TbCitiesExample.Criteria criteria = example.createCriteria();
+        criteria.andProvinceidEqualTo(id);
+        return tbCitiesMapper.selectByExample(example);
+    }
+
+
+    @Autowired
+    private TbAreasMapper tbAreasMapper;
+
+    @Override
+    public List<TbAreas> findAreas(String id) {
+        TbAreasExample example = new TbAreasExample();
+        TbAreasExample.Criteria criteria = example.createCriteria();
+        criteria.andCityidEqualTo(id);
+        return tbAreasMapper.selectByExample(example);
+    }
+
+    @Override
+    public TbProvinces findProvinceById(String provinceId) {
+        TbProvincesExample example = new TbProvincesExample();
+        TbProvincesExample.Criteria criteria = example.createCriteria();
+        criteria.andProvinceidEqualTo(provinceId);
+        return tbProvincesMapper.selectByExample(example).get(0);
+    }
+
+    @Override
+    public TbCities findCitiesById(String cityId) {
+        TbCitiesExample example = new TbCitiesExample();
+        TbCitiesExample.Criteria criteria = example.createCriteria();
+        criteria.andCityidEqualTo(cityId);
+        return tbCitiesMapper.selectByExample(example).get(0);
+    }
+
+    @Override
+    public TbAreas findAreasById(String areaId) {
+        TbAreasExample example = new TbAreasExample();
+        TbAreasExample.Criteria criteria = example.createCriteria();
+        criteria.andAreaidEqualTo(areaId);
+        return tbAreasMapper.selectByExample(example).get(0);
+    }
+
 }

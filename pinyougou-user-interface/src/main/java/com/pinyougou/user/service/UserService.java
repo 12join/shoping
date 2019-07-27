@@ -1,5 +1,7 @@
 package com.pinyougou.user.service;
 import java.util.List;
+
+import com.pinyougou.pojo.TbInterest;
 import com.pinyougou.pojo.TbUser;
 
 import entity.PageResult;
@@ -95,5 +97,7 @@ public interface UserService {
      */
 	void updateHeadImg(String username,String url);
 
+
+	List<TbInterest> findInterest();
 
 }

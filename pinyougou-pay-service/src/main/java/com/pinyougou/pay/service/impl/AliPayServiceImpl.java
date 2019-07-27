@@ -104,7 +104,7 @@ public class AliPayServiceImpl implements AliPayService {
                 .setUndiscountableAmount(undiscountableAmount).setSellerId(sellerId).setBody(body)
                 .setOperatorId(operatorId).setStoreId(storeId).setExtendParams(extendParams)
                 .setTimeoutExpress(timeoutExpress)
-                .setNotifyUrl("http://dv3df3.natappfree.cc/pay/alipayCallBack.do")//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
+                .setNotifyUrl("http://7nnc5i.natappfree.cc/pay/alipayCallBack.do")//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
                 .setGoodsDetailList(goodsDetailList);
 
         /** 一定要在创建AlipayTradeService之前调用Configs.init()设置默认参数
@@ -216,6 +216,8 @@ public class AliPayServiceImpl implements AliPayService {
                 "\"out_trade_no\":"+out_trade_no+"," +
                 "\"operator_id\":\"test_operator_id\"" +
                 "  }");
+        //观察json是否有格式问题
+        System.out.println(request.getBizContent());
         AlipayTradeCloseResponse response = null;
         try {
             response = alipayClient.execute(request);

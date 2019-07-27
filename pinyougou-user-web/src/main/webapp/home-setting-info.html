@@ -15,11 +15,12 @@
     <script type="text/javascript" src="js/service/userService.js"></script>
     <script type="text/javascript" src="js/service/loginService.js"></script>
     <script type="text/javascript" src="js/service/uploadService.js"></script>
+    <script type="text/javascript" src="js/service/addressService.js"></script>
     <script type="text/javascript" src="js/controller/userController.js"></script>
 
 </head>
 
-<body ng-app="pinyougou" ng-controller="userController" ng-init="showName();findUser()">
+<body ng-app="pinyougou" ng-controller="userController" ng-init="showName();findUser();findP();findIn()">
 
 <!-- 头部栏位 -->
 <!--页面顶部-->
@@ -155,8 +156,7 @@
 <script type="text/javascript" src="js/plugins/jquery-placeholder/jquery.placeholder.min.js"></script>
 <script type="text/javascript" src="js/widget/nav.js"></script>
 <script type="text/javascript" src="js/plugins/birthday/birthday.js"></script>
-<script type="text/javascript" src="js/plugins/citypicker/distpicker.data.js"></script>
-<script type="text/javascript" src="js/plugins/citypicker/distpicker.js"></script>
+<script type="text/javascript" src="plugins/distpicker.js"></script>
 <script type="text/javascript" src="js/plugins/upload/uploadPreview.js"></script>
 <script type="text/javascript" src="js/pages/main.js"></script>
 <script>
@@ -242,102 +242,45 @@
                                 <div class="control-group">
                                     <label class="control-label">生日：</label>
                                     <div class="controls">
-                                        <select id="select_year2" rel="1990" ng-model="str1"></select>年
-                                        <select id="select_month2" rel="4" ng-model="str2"></select>月
-                                        <select id="select_day2" rel="3" ng-model="str3"></select>日
+                                        <!--<select id="select_year2" rel="{{str1}}" ng-model="str1"></select>年
+                                        <select id="select_month2" rel="{{str2}}" ng-model="str2"></select>月
+                                        <select id="select_day2" rel="{{str3}}" ng-model="str3"></select>日-->
+
+                                        年:<input type="text" ng-model="str1" style="width: 30px">
+                                        月:<input type="text" ng-model="str2" style="width: 20px">
+                                        日:<input type="text" ng-model="str3" style="width: 20px">
                                     </div>
                                 </div>
-
-                                <!--{{str2}}-->
 
                                 <div class="control-group">
                                     <label class="control-label">所在地：</label>
                                     <div class="controls">
-                                        <div data-toggle="distpicker">
-                                            <div class="form-group area">
-                                                <select class="form-control" id="province" ng-model="addStr1" ng-change="test()"></select>
-                                            </div>
-                                            <div class="form-group area">
-                                                <select class="form-control" id="city" ng-model="addStr2" ng-change="test1()"></select>
-                                            </div>
-                                            <div class="form-group area">
-                                                <select class="form-control" id="district" ng-model="addStr3"></select>
-                                            </div>
-                                        </div>
+                                        <select  ng-model="userInfo.provinceId" ng-options="item.provinceid as item.province for item in provinceList"></select>
+                                        <select  ng-model="userInfo.cityId" ng-options="item.cityid as item.city for item in cityList"></select>
+                                        <select ng-model="userInfo.townId" ng-options="item.areaid as item.area for item in areasList"></select>
                                     </div>
                                 </div>
-                                {{addStr2}}
+                                <!--{{addStr2}}-->
                                 <div class="control-group">
-                                    <label for="inputName" class="control-label">详细地址：</label>
+                                    <label class="control-label">详细地址：</label>
                                     <div class="controls">
-                                        <input type="text" ng-model="addStr4" id="address"><span id="aa" style="color: #ff0409"></span>
+                                        <input type="text" ng-model="userInfo.address" class="input-large" id="address"><span id="aa" style="color: #ff0409"></span>
                                     </div>
                                 </div>
                                 <!--{{addStr4}}-->
                                 <div class="control-group">
-                                    <label for="inputJob" class="control-label">兴趣爱好：</label>
-                                    <div class="controls"><span class="sui-dropdown dropdown-bordered select"><span
-                                            class="dropdown-inner"><a role="button" data-toggle="dropdown" href="#"
-                                                                      class="dropdown-toggle">
-                                                <input name="job" type="hidden" data-rules="required"><i
-                                            class="caret"></i><span>请选择</span></a>
-                                            <ul id="menu4" role="menu" aria-labelledby="drop4"
-                                                class="sui-dropdown-menu">
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='图书音像/电子书刊'">图书音像/电子书刊</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='家用电器'">家用电器</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='手机/数码'">手机/数码</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='电脑/办公'">电脑/办公</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='运动健康'">运动健康</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='家居/家具/家装/厨具'">家居/家具/家装/厨具</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='服饰内衣/珠宝首饰'">服饰内衣/珠宝首饰</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='个护化妆'">个护化妆</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='鞋靴/箱包/钟表/奢侈品'">鞋靴/箱包/钟表/奢侈品</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='汽车用品'">汽车用品</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='母婴/玩具乐器'">母婴/玩具乐器</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='食品饮料/保健食品'">食品饮料/保健食品</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                           href="javascript:void(0);"
-                                                                           ng-click="inStr='彩票/旅行/充值/票务'">彩票/旅行/充值/票务</a></li>
-                                            </ul>
-                                            </span>
-                                            </span>
+                                    <label  class="control-label">兴趣爱好：</label>
+                                    <div class="controls">
+                                        <select ng-model="userInfo.interestId" ng-options="item.id as item.intersetName for item in interestList"></select>
                                     </div>
                                 </div>
-
-                                <!--<button ng-click="addStr1='安徽省'">呵呵</button>-->
                                 <div class="control-group">
-                                    <label for="sanwei" class="control-label"></label>
+                                    <label class="control-label"></label>
                                     <div class="controls">
                                         <button type="submit" class="sui-btn btn-primary" ng-click="updateInfo()">提交
                                         </button>
                                     </div>
-                                    <!--<div class="step-tit">
-                                        <button type="submit"><a data-toggle="modal" data-target=".edit" data-keyboard="false" class="newadd">修改</a></button>
-                                    </div>-->
+
                                 </div>
                             </form>
                         </div>
@@ -349,7 +292,7 @@
                                 <div class="upload">
                                     <img id="imgShow_WU_FILE_0" width="100" height="100" src="{{userInfo.headPic==null?'img/_/photo_icon.png':userInfo.headPic}}"
                                          alt="">
-                                    <input name="file" type="file" id="file"/>
+                                   <input name="file" type="file" id="file"/>
                                 </div>
 
                             </div>
