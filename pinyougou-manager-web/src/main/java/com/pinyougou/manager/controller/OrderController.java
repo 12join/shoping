@@ -3,7 +3,7 @@ package com.pinyougou.manager.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbTypeTemplate;
-import com.pinyougou.sellergoods.service.OrderService;
+import com.pinyougou.order.service.OrderService;
 import entity.PageResult;
 import entity.Result;
 import org.apache.poi.xssf.usermodel.XSSFRow;
