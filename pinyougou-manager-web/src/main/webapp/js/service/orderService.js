@@ -25,4 +25,8 @@ app.service("orderService",function($http){
         return $http.post('../order/createExcel.do',list);
     };
 
+    this.updateStatus=function(order){
+        return $http.post('../order/update.do',order);
+    };
+
 });
