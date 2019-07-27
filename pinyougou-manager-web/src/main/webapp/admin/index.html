@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 
 <head>
     <!-- 页面meta -->
@@ -43,8 +42,8 @@
  
 </head>
 
-
-<body   class="hold-transition skin-blue "  ng-app="pinyougou" ng-controller="indexController"  ng-init="showName()">
+<!--skin-blue   背景颜色-->
+<body   class="hold-transition skin-green "  ng-app="pinyougou" ng-controller="indexController"  ng-init="showName()">
 
     <div class="wrapper">
 
@@ -443,31 +442,15 @@
             </section>
             <!-- /.sidebar -->
         </aside>
-        <!-- 导航侧栏 /-->
+        <!-- 导航侧栏 /
 
-        <!-- 内容区域 -->
-        <!--<div class="content-wrapper">-->
-        <!--<iframe width="100%" id="iframe" name="iframe"	onload="SetIFrameHeight()"-->
-                <!--frameborder="0" src="home.html"></iframe>-->
-        <!--</div>-->
+         内容区域 -->
+        <div class="content-wrapper">
+        <iframe width="100%" id="iframe" name="iframe"	onload="SetIFrameHeight()"
+                frameborder="0" src="home.html"></iframe>
+        </div>
 
-        <div id="container" style="height: 100%">
-
-            <div class="jebody">
-
-                <div class="jewarp">
-
-                    <div class="jeitem">
-                        <label class="jelabel">开始时间</label>
-                        <div class="jeinpbox"><input type="text"  class="jeinput" id="short" placeholder="订单时间"></div>
-                    </div>
-                    <div class="jeitem">
-                        <label class="jelabel">结束时间</label>
-                        <div class="jeinpbox"><input type="text" class="jeinput" id="shortboth" placeholder="订单时间"></div>
-                    </div>
-                </div>
-
-            </div>
+      <!--  <div id="container" style="height: 100%; ">
         </div>
 
         <script type="text/javascript">
@@ -492,13 +475,26 @@
                 },
                 legend:
                     {
-
                         top: '25%',
                         left: '15%',
                         orient: 'vartical',
-
                         data:['已关闭订单',"已完成订单","已发货订单","待发货订单","待付款订单"]
                     },
+                toolbox: {
+                    orient: 'vartical',
+                    left:'92%',
+                    top:'62%',
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
 
                 dataset: {
                     source: [
@@ -519,7 +515,8 @@
                 },
                 grid: {
                     top: '50%',
-                   left: "13%",
+                   left: "14%",
+
                 },
                 series: [{
                     type: 'bar',
@@ -590,18 +587,49 @@
                 myChart.setOption(option, true);
             }
         </script>
-        <!-- 内容区域 /-->
 
-        <!-- 底部导航 -->
-      <!--  <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 1.0.8
-            </div>
-            <strong>Copyright &copy; 2014-2017 <a href="http://www.itcast.cn">研究院研发部</a>.</strong> All rights reserved.
-        </footer>-->
-        <!-- 底部导航 /-->
+        <script type="text/javascript">
+            //单面板左边快捷菜单
+            jeDate("#shortcut01",{
+                shortcut:[
+                    {name:"一周",val:{DD:7}},
+                    {name:"一个月",val:{DD:30}},
+                    {name:"二个月",val:{MM:2}},
+                    {name:"三个月",val:{MM:3}},
+                    {name:"一年",val:{DD:365}}
+                ],
+                format: "YYYY-MM-DD hh:mm:ss"
+            });
 
+            //双面板左边快捷菜单
+            jeDate("#shortcut02",{
+                multiPane:false,
+                shortcut:[
+                    {name:"一周",val:{DD:7}},
+                    {name:"一个月",val:{DD:30}},
+                    {name:"二个月",val:{MM:2}},
+                    {name:"三个月",val:{MM:3}},
+                    {name:"一年",val:{DD:365}}
+                ],
+                format: "YYYY-MM-DD hh:mm:ss"
+            });
+        </script>
+-->
+       <!-- //内容区域 /zZ
+
+        <!--// 底部导航 &ndash;&gt;-->
+        <!--<footer class="main-footer">-->
+            <!--<div class="pull-right hidden-xs">-->
+                <!--<b>Version</b> 1.0.8-->
+            <!--</div>-->
+            <!--<strong>Copyright &copy; 2014-2017 <a href="http://www.itcast.cn">研究院研发部</a>.</strong> All rights reserved.-->
+        <!--</footer>-->
+      <!--&lt;!&ndash;  // 底部导航 /-->
+<!--&ndash;&gt;-->
     </div>
+
 </body>
+
+
 
 </html>
