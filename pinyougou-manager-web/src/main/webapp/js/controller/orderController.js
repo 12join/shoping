@@ -63,6 +63,8 @@ app.controller("orderController", function ($controller, $scope, orderService) {
             function (response) {
                 if (response.flag) {
                     location.href = response.message;
+
+                    orderService.deleteExcel(response.message);
                 } else {
                     alert(response.message);
                 }
@@ -81,7 +83,7 @@ app.controller("orderController", function ($controller, $scope, orderService) {
         data: [{id: 0, text: ""}, {id: 1, text: "未付款"}, {id: 2, text: "已付款"}, {
             id: 3,
             text: "未发货"
-        }, {id: 4, text: "已发货"}, {id: 5, text: "交易成功"}, {id: 6, text: "交易关闭"}, {id: 7, text: "待评价"}]
+        }, {id: 4, text: "已发货"}, {id: 5, text: "交易成功"}, {id: 6, text: "交易关闭"}, {id: 7, text: "待评价"},{id: 8, text: "已完成"}]
     };//状态：1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭,7、待评价
 
     $scope.changeEntityStatus = function (x) {

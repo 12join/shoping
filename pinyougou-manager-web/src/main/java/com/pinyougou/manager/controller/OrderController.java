@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/order")
@@ -141,7 +139,7 @@ public class OrderController {
         try {
             XSSFWorkbook wb = createOrderListExcel(list);
             // getTime()是一个返回当前时间的字符串，用于做文件名称
-            String name ="seckillorder"+ new Date().getTime() + "";
+            String name ="order"+ new Date().getTime() + "";
             //  csvFile是我的一个路径，自行设置就行
             String ys = csvFile + "\\" + name + ".xlsx";
             System.out.println(ys);
@@ -159,12 +157,29 @@ public class OrderController {
             e.printStackTrace();
             return new Result(false, "生成失败");
         }
+    }
 
+    /**
+     * 删除excel
+     * @param name
+     */
+    @RequestMapping("/deleteExcel")
+    public void deleteExcel(final String name) {
+        // 10000毫秒后执行
+        Timer nTimer = new Timer();
+        nTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                File f = new File("src\\main\\webapp\\admin\\"+name);
+                System.out.println("删除:"+"  src\\main\\webapp\\admin\\"+name );
+                f.delete();
+            }
+        },10000);
     }
 
     private String[] paymentTypeList = {"", "在线支付", "货到付款"};//支付类型，1、在线支付，2、货到付款
     private String[] sourceTypeList = {"", "app", "pc", "m端", "微信", "手机qq"};//订单来源：1:app端，2：pc端，3：M端，4：微信端，5：手机qq端
-    private String[] statusList = {"", "未付款", "已付款", "未发货", "已发货", "交易成功", "交易关闭", "待评价"};//状态：1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭,7、待评价
+    private String[] statusList = {"", "未付款", "已付款", "未发货", "已发货", "交易成功", "交易关闭", "待评价","已完成"};//状态：1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭,7、待评价
 
     /**
      * 创建excel
