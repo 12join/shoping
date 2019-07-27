@@ -2,6 +2,9 @@ package com.pinyougou.user.service;
 import java.util.List;
 import com.pinyougou.pojo.TbAddress;
 
+import com.pinyougou.pojo.TbAreas;
+import com.pinyougou.pojo.TbCities;
+import com.pinyougou.pojo.TbProvinces;
 import entity.PageResult;
 /**
  * 服务层接口
@@ -22,13 +25,13 @@ public interface AddressService {
 	 * @return
 	 */
 	public PageResult findPage(int pageNum,int pageSize);
-	
-	
-	/**
-	 * 增加
-	*/
-	public void add(TbAddress address);
-	
+
+
+    /**
+     * 增加
+     */
+    public void add(String userId,TbAddress address);
+
 	
 	/**
 	 * 修改
@@ -57,7 +60,30 @@ public interface AddressService {
 	 * @return
 	 */
 	public PageResult findPage(TbAddress address, int pageNum,int pageSize);
-	
+
+
+    /**
+     * 查询地址
+     * @param userId
+     * @return
+     */
 	public List<TbAddress> findListByUserId(String userId);
-	
+
+
+    /**
+     * 查询省份
+     * @return
+     */
+    List<TbProvinces> findProvince();
+
+    List<TbCities> findCity(String id);
+
+    List<TbAreas> findAreas(String id);
+
+    TbProvinces findProvinceById(String provinceId);
+
+    TbCities findCitiesById(String cityId);
+
+    TbAreas findAreasById(String areaId);
+
 }

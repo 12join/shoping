@@ -10,6 +10,8 @@ import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import com.pinyougou.mapper.TbInterestMapper;
+import com.pinyougou.pojo.TbInterest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +36,7 @@ import entity.PageResult;
  * @author Administrator
  *
  */
-@Service(timeout =10000)
+@Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -236,6 +238,15 @@ public class UserServiceImpl implements UserService {
         Criteria criteria = userExample.createCriteria();
         criteria.andUsernameEqualTo(username);
         userMapper.updateByExampleSelective(user,userExample);
+    }
+
+
+    @Autowired
+    private TbInterestMapper tbInterestMapper;
+    @Override
+    public List<TbInterest> findInterest() {
+
+        return tbInterestMapper.selectByExample(null);
     }
 
 }

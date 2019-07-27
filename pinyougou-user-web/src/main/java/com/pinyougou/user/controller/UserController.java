@@ -1,6 +1,7 @@
 package com.pinyougou.user.controller;
 import java.util.List;
 
+import com.pinyougou.pojo.TbInterest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -164,5 +165,12 @@ public class UserController {
             return new Result(false, "系统错误,请稍后再试");
         }
     }
+
+    @RequestMapping("/findInterest")
+    public List<TbInterest> findProvince(){
+
+        return userService.findInterest();
+    }
+
 	
 }

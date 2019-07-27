@@ -21,7 +21,6 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
     $scope.findUserOrder=function(){
         orderService.findUserOrder().success(
             function(response){
-                //alert('919059760869863424'.indexOf('919059760869863424')!=-1);
                 $scope.orderList=response;
                 //$scope.getImage();
                 //获取用户所有订单状态数组
@@ -29,7 +28,63 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
                 $scope.getPayLogList();
             }
         )
-    }
+    };
+
+
+    /*
+    * 	//构建页码
+	$scope.buildPageLabel=function(){
+		$scope.pageList=[];
+		var maxPage=$scope.resultMap.totlePages;
+		var firstPage=1;
+		var lastPage=maxPage;
+		$scope.firstDot=true;//前面有点
+		$scope.lastDot=true;//后边有点
+		if(maxPage>5){
+			if($scope.searchMap.pageNum<=3){
+				lastPage=5;
+				$scope.firstDot=false;
+			}else if($scope.searchMap.pageNum>=maxPage-2){
+				firstPage=maxPage-4;
+				$scope.lastDot=false;
+			}else{
+				firstPage=$scope.searchMap.pageNum-2;
+				lastPage=$scope.searchMap.pageNum+2;
+			}
+		}else{
+			$scope.firstDot=false;
+			$scope.lastDot=false;
+		}
+		for(var i=firstPage;i<=lastPage;i++){
+			$scope.pageList.push(i);
+		}
+
+	}
+	//根据页码查询
+	$scope.queryByPage=function(pageNum){
+		if(pageNum<1||pageNum>$scope.resultMap.totlePages){
+			return;
+		}
+		$scope.searchMap.pageNum=pageNum;
+		$scope.search();
+	}
+
+	//判断是否是第一页
+	$scope.isFirst=function(){
+		if($scope.searchMap.pageNum==1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	//判断是否是最后一页
+	$scope.isLast=function(){
+		if($scope.searchMap.pageNum==$scope.resultMap.totlePages){
+			return true;
+		}else{
+			return false;
+		}
+	}*/
 
 
     $scope.status={};//支付状态数组

@@ -3,7 +3,7 @@ package com.pinyougou.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TbUser implements Serializable {
+public class TbUser implements Serializable{
     private Long id;
 
     private String username;
@@ -48,9 +48,15 @@ public class TbUser implements Serializable {
 
     private Date lastLoginTime;
 
-    private String interest;
+    private String interestId;
 
     private String address;
+
+    private String provinceId;
+
+    private String cityId;
+
+    private String townId;
 
     public Long getId() {
         return id;
@@ -228,12 +234,12 @@ public class TbUser implements Serializable {
         this.lastLoginTime = lastLoginTime;
     }
 
-    public String getInterest() {
-        return interest;
+    public String getInterestId() {
+        return interestId;
     }
 
-    public void setInterest(String interest) {
-        this.interest = interest == null ? null : interest.trim();
+    public void setInterestId(String interestId) {
+        this.interestId = interestId == null ? null : interestId.trim();
     }
 
     public String getAddress() {
@@ -242,5 +248,29 @@ public class TbUser implements Serializable {
 
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
+    }
+
+    public String getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(String provinceId) {
+        this.provinceId = provinceId == null ? null : provinceId.trim();
+    }
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId == null ? null : cityId.trim();
+    }
+
+    public String getTownId() {
+        return townId;
+    }
+
+    public void setTownId(String townId) {
+        this.townId = townId == null ? null : townId.trim();
     }
 }

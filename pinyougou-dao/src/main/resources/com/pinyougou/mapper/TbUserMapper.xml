@@ -24,8 +24,11 @@
     <result column="experience_value" property="experienceValue" jdbcType="INTEGER" />
     <result column="birthday" property="birthday" jdbcType="VARCHAR" />
     <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
-    <result column="interest" property="interest" jdbcType="VARCHAR" />
+    <result column="interest_id" property="interestId" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="town_id" property="townId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -88,7 +91,8 @@
   <sql id="Base_Column_List" >
     id, username, password, phone, email, created, updated, source_type, nick_name, name, 
     status, head_pic, qq, account_balance, is_mobile_check, is_email_check, sex, user_level, 
-    points, experience_value, birthday, last_login_time, interest, address
+    points, experience_value, birthday, last_login_time, interest_id, address, province_id, 
+    city_id, town_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinyougou.pojo.TbUserExample" >
     select
@@ -128,7 +132,8 @@
       qq, account_balance, is_mobile_check, 
       is_email_check, sex, user_level, 
       points, experience_value, birthday, 
-      last_login_time, interest, address
+      last_login_time, interest_id, address, 
+      province_id, city_id, town_id
       )
     values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
@@ -137,7 +142,8 @@
       #{qq,jdbcType=VARCHAR}, #{accountBalance,jdbcType=DECIMAL}, #{isMobileCheck,jdbcType=VARCHAR}, 
       #{isEmailCheck,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{userLevel,jdbcType=INTEGER}, 
       #{points,jdbcType=INTEGER}, #{experienceValue,jdbcType=INTEGER}, #{birthday,jdbcType=VARCHAR}, 
-      #{lastLoginTime,jdbcType=TIMESTAMP}, #{interest,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{interestId,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{provinceId,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, #{townId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.pinyougou.pojo.TbUser" >
@@ -209,11 +215,20 @@
       <if test="lastLoginTime != null" >
         last_login_time,
       </if>
-      <if test="interest != null" >
-        interest,
+      <if test="interestId != null" >
+        interest_id,
       </if>
       <if test="address != null" >
         address,
+      </if>
+      <if test="provinceId != null" >
+        province_id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="townId != null" >
+        town_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -283,11 +298,20 @@
       <if test="lastLoginTime != null" >
         #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="interest != null" >
-        #{interest,jdbcType=VARCHAR},
+      <if test="interestId != null" >
+        #{interestId,jdbcType=VARCHAR},
       </if>
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="townId != null" >
+        #{townId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -366,11 +390,20 @@
       <if test="record.lastLoginTime != null" >
         last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.interest != null" >
-        interest = #{record.interest,jdbcType=VARCHAR},
+      <if test="record.interestId != null" >
+        interest_id = #{record.interestId,jdbcType=VARCHAR},
       </if>
       <if test="record.address != null" >
         address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.provinceId != null" >
+        province_id = #{record.provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityId != null" >
+        city_id = #{record.cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.townId != null" >
+        town_id = #{record.townId,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -401,8 +434,11 @@
       experience_value = #{record.experienceValue,jdbcType=INTEGER},
       birthday = #{record.birthday,jdbcType=VARCHAR},
       last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
-      interest = #{record.interest,jdbcType=VARCHAR},
-      address = #{record.address,jdbcType=VARCHAR}
+      interest_id = #{record.interestId,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      province_id = #{record.provinceId,jdbcType=VARCHAR},
+      city_id = #{record.cityId,jdbcType=VARCHAR},
+      town_id = #{record.townId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -473,11 +509,20 @@
       <if test="lastLoginTime != null" >
         last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="interest != null" >
-        interest = #{interest,jdbcType=VARCHAR},
+      <if test="interestId != null" >
+        interest_id = #{interestId,jdbcType=VARCHAR},
       </if>
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        province_id = #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="townId != null" >
+        town_id = #{townId,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -505,8 +550,11 @@
       experience_value = #{experienceValue,jdbcType=INTEGER},
       birthday = #{birthday,jdbcType=VARCHAR},
       last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
-      interest = #{interest,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR}
+      interest_id = #{interestId,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      town_id = #{townId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -299,17 +299,16 @@ public class OrderServiceImpl implements OrderService {
 	 * 通过当前登录用户获取到对应的订单信息
 	 */
 	@Override
-	public List<UserOrder> findOrderByUserId(String userId) {
+	public PageResult findOrderByUserId(String userId,int pageNum, int pageSize) {
 		List<UserOrder> orderList = new ArrayList<>();
-		UserOrder userOrderList = new UserOrder();
 		TbOrderExample example = new TbOrderExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andUserIdEqualTo(userId);
 		example.setOrderByClause("status");
+        PageHelper.startPage(pageNum, pageSize);
+        Page<TbOrder> pageOrder = (Page<TbOrder>)orderMapper.selectByExample(example);
 
-		List<TbOrder> tbOrderList = orderMapper.selectByExample(example );
-
-		for (TbOrder order : tbOrderList) {//通过OrderId查询出对应的订单详情表
+		for (TbOrder order : pageOrder.getResult()) {//通过OrderId查询出对应的订单详情表
 			TbOrderItemExample orderItemExample = new TbOrderItemExample();
 			com.pinyougou.pojo.TbOrderItemExample.Criteria orderItemCriteria = orderItemExample.createCriteria();
 			orderItemCriteria.andOrderIdEqualTo(order.getOrderId());
@@ -321,9 +320,10 @@ public class OrderServiceImpl implements OrderService {
 			//map.put("order", order);
 			//map.put("orderItemList", orderItemList);
 			orderList.add(userOrder);
-
 		}
-		return orderList;
+
+        return new PageResult(pageOrder.getTotal(),orderList);
+
 	}
 
 

@@ -91,7 +91,7 @@ public interface OrderService {
 	 * @param userId
 	 * @return
 	 */
-	public List<UserOrder> findOrderByUserId(String userId);
+	public PageResult findOrderByUserId(String userId,int pageNum, int pageSize);
 
 
 	/**

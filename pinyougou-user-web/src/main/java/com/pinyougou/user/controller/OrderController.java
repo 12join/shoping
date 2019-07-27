@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.pojo.group.UserOrder;
+import entity.PageResult;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,10 +40,10 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/userOrder")
-    public List<UserOrder> findUserOrder(){
+    public PageResult findUserOrder(int page, int rows){
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<UserOrder> orderList = orderService.findOrderByUserId(userId);
-        return orderList;
+        orderService.findOrderByUserId(userId,page,rows);
+        return orderService.findOrderByUserId(userId,page,rows);
     }
 
     /**
