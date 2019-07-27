@@ -6,16 +6,11 @@ import com.github.pagehelper.PageHelper;
 import com.pinyougou.mapper.TbOrderMapper;
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbOrderExample;
-import com.pinyougou.pojo.TbTypeTemplate;
 import com.pinyougou.sellergoods.service.OrderService;
 import entity.PageResult;
 import entity.Result;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.*;
 
 @Service

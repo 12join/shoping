@@ -8,12 +8,6 @@ import java.util.List;
 public interface OrderService {
 
     /**
-     * 导出excel报表
-     * @return
-     */
-    public void createExcel(List<TbOrder> orderList);
-
-    /**
      * 返回全部列表
      * @return
      */
