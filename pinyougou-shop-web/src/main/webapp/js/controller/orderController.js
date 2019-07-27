@@ -78,7 +78,23 @@ app.controller('orderController' ,function($scope,$controller   ,orderService){
 	}
 
 
-    $scope.status=['未支付','已支付','未发货','已发货','交易成功','交易关闭','待评价'];//订单状态
+    $scope.status=['','未支付','已支付','未发货','已发货','交易成功','交易关闭','待评价'];//订单状态
 
     $scope.paymentType=['','在线支付','货到付款'];//支付方式
+
+
+
+
+    // 审核的方法:
+    $scope.updateStatus = function(status){
+        orderService.updateStatus($scope.selectIds,status).success(function(response){
+            if(response.flag){
+                $scope.reloadList();//刷新列表
+                $scope.selectIds = [];
+            }else{
+                alert(response.message);
+            }
+        });
+    }
+
 });	

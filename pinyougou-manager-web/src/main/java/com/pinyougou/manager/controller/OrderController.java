@@ -1,4 +1,6 @@
 package com.pinyougou.manager.controller;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.pinyougou.order.service.OrderService;
@@ -102,7 +104,7 @@ public class OrderController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param order
 	 * @param page
 	 * @param rows
 	 * @return
@@ -111,5 +113,57 @@ public class OrderController {
 	public PageResult search(@RequestBody TbOrder order, int page, int rows  ){
 		return orderService.findPage(order, page, rows);		
 	}
+
+
+
+
+
+
+
+    /**
+     * 查询订单状态
+     * @param start
+     * @return
+     */
+    @RequestMapping("/selectOrderStatus")
+	public List selectOrderStatus(Date start, Date end){
+
+        System.out.println(start);
+        System.out.println(end);
+
+        int number1=0;
+        int number2=0;
+        int number3=0;
+        int number4=0;
+        int number5=0;
+
+        List list=new ArrayList();
+        List<TbOrder> tbOrders = orderService.selectOrderStatus(start, end);
+        for (TbOrder tbOrder : tbOrders) {
+            if ("1".equals(tbOrder.getStatus())){
+                number1++;
+            }
+            if ("2".equals(tbOrder.getStatus())){
+                number2++;
+            }
+            if ("3".equals(tbOrder.getStatus())){
+                number3++;
+            }
+            if ("4".equals(tbOrder.getStatus())){
+                number4++;
+            }
+            if ("5".equals(tbOrder.getStatus())){
+                number5++;
+            }
+        }
+        list.add(number1);
+        list.add(number2);
+        list.add(number3);
+        list.add(number4);
+        list.add(number5);
+        System.out.println(list);
+        return list;
+    }
+
 	
 }

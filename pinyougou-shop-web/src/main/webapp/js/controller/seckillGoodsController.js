@@ -78,7 +78,7 @@ app.controller('seckillGoodsController' ,function($scope,$controller   ,seckillG
 	}
 
 
-    $scope.status=['未审核','已审核','审核未通过','关闭'];//商品状态
+    $scope.status=['未审核','已提交','已审核','审核未通过','关闭'];//商品状态
 
     // 审核的方法:
     $scope.updateStatus = function(status){

@@ -231,14 +231,17 @@ $(function(){
                                     <label data-toggle="checkbox" class="checkbox-pretty ">
                                            <input type="checkbox" checked="checked"><span>2017-02-11 11:59　订单编号：{{order.order.orderId}}  店铺：{{order.order.sellerId}} <a>和我联系</a></span>
                                      </label>
-									  <a class="sui-btn btn-info share-btn">分享</a>
-                                </div>
+									<!--  <a class="sui-btn btn-info share-btn">分享</a>-->
+                                    <div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到人人网" class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count">0</span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=1&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+                                    <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#uuid=<null>&style=-1"></script>
+                                    <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/addons/bshareMM.js#shareClass=BSHARE_IMAGE_ALL"> </script>
+                                 </div>
                                 <table class="sui-table table-bordered order-datatable">
                                     <tbody  ng-repeat="ordersItem in order.orderItemList">
 
                                         <tr  >
                                             <td width="35%" >
-                                                <div class="typographic"><img src="img/goods.png" />
+                                                <div class="typographic"><img src="img/goods.png" shareClass=BSHARE_IMAGE" />
                                                     <a href="#" class="block-text">{{ordersItem.title}}</a>
                                                     <span class="guige"></span>
                                                 </div>

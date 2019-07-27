@@ -141,12 +141,10 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
     public void updateStatus(Long[] ids, String status) {
         for (Long id : ids) {
             TbSeckillGoods seckillGoods = seckillGoodsMapper.selectByPrimaryKey(id);
-            if ("1".equals(seckillGoods.getStatus())){
-                System.out.println("已经审核过了");
-            }else {
+
                 seckillGoods.setStatus(status);
                 seckillGoodsMapper.updateByPrimaryKey(seckillGoods);
-            }
+
         }
     }
 

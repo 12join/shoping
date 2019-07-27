@@ -102,7 +102,7 @@ public class OrderController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param order
 	 * @param page
 	 * @param rows
 	 * @return
@@ -111,5 +111,24 @@ public class OrderController {
 	public PageResult search(@RequestBody TbOrder order, int page, int rows  ){
 		return orderService.findPage(order, page, rows);		
 	}
+
+
+
+    /**
+     * 批量修改状态
+     *
+     * @param ids
+     * @param status
+     */
+    @RequestMapping("/updateStatus")
+    public Result updateStatus(Long[] ids, String status) {
+        try {
+            orderService.updateStatus(ids, status);
+            return new Result(true, "成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "失败");
+        }
+    }
 	
 }

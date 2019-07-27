@@ -1,5 +1,5 @@
  //控制层 
-app.controller('orderController' ,function($scope,$controller   ,orderService){	
+app.controller('orderController' ,function($scope,$controller,orderService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -81,4 +81,7 @@ app.controller('orderController' ,function($scope,$controller   ,orderService){
     $scope.status=['未支付','已支付','未发货','已发货','交易成功','交易关闭','待评价'];//订单状态
 
     $scope.paymentType=['','在线支付','货到付款'];//支付方式
-});	
+
+});
+
+
