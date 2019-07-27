@@ -40,10 +40,9 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/userOrder")
-    public PageResult findUserOrder(int page, int rows){
+    public PageResult findUserOrder(int page){
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        orderService.findOrderByUserId(userId,page,rows);
-        return orderService.findOrderByUserId(userId,page,rows);
+        return orderService.findOrderByUserId(userId,page,5);
     }
 
     /**
@@ -52,15 +51,13 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/orderStatus")
-    public List<UserOrder> orderStatus(String[] status){
+    public PageResult orderStatus(String[] status,int page){
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        List<UserOrder> orderList = orderService.findOrderByUserIdAndStatus(userId,status);
-
-
-        return orderList;
+        return orderService.findOrderByUserId(userId,status,page,5);
     }
+
 
     /**
      * 获取分页查询结果

@@ -14,42 +14,46 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 
             }
         );
-    }
+    };
 
-
+    $scope.num=1;
     //获取用户订单信息
     $scope.findUserOrder=function(){
-        orderService.findUserOrder().success(
+        $scope.num= parseInt($scope.num);
+        orderService.findUserOrder($scope.num).success(
             function(response){
-                $scope.orderList=response;
+                $scope.orderList=response.rows;
+                $scope.total=response.total;
+                $scope.totalPages=Math.ceil($scope.total/5);
+                $scope.buildPageLabel();
                 //$scope.getImage();
                 //获取用户所有订单状态数组
                 getStatus();
                 $scope.getPayLogList();
+                $('html, body').animate({scrollTop:0}, 'slow');
             }
         )
     };
 
 
-    /*
-    * 	//构建页码
+     	//构建页码
 	$scope.buildPageLabel=function(){
 		$scope.pageList=[];
-		var maxPage=$scope.resultMap.totlePages;
+		var maxPage=$scope.totalPages;
 		var firstPage=1;
 		var lastPage=maxPage;
 		$scope.firstDot=true;//前面有点
 		$scope.lastDot=true;//后边有点
 		if(maxPage>5){
-			if($scope.searchMap.pageNum<=3){
+			if($scope.num<=3){
 				lastPage=5;
 				$scope.firstDot=false;
-			}else if($scope.searchMap.pageNum>=maxPage-2){
+			}else if($scope.num>=maxPage-2){
 				firstPage=maxPage-4;
 				$scope.lastDot=false;
 			}else{
-				firstPage=$scope.searchMap.pageNum-2;
-				lastPage=$scope.searchMap.pageNum+2;
+				firstPage=$scope.num-2;
+				lastPage=$scope.num+2;
 			}
 		}else{
 			$scope.firstDot=false;
@@ -59,32 +63,46 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 			$scope.pageList.push(i);
 		}
 
-	}
+	};
 	//根据页码查询
-	$scope.queryByPage=function(pageNum){
-		if(pageNum<1||pageNum>$scope.resultMap.totlePages){
+	$scope.queryByPage=function(pageNum,status){
+		if(pageNum<1||pageNum>$scope.totalPages){
 			return;
 		}
-		$scope.searchMap.pageNum=pageNum;
-		$scope.search();
-	}
+		$scope.num=pageNum;
+		if(status==null||""==status){
+            $scope.findUserOrder();
+        }else{
+            $scope.orderStatus(status);
+        }
+
+
+
+	};
+
+	//跳转页初始化
+	$scope.num2='';
 
 	//判断是否是第一页
 	$scope.isFirst=function(){
-		if($scope.searchMap.pageNum==1){
+		if($scope.num==1){
 			return true;
 		}else{
 			return false;
 		}
-	}
+	};
 	//判断是否是最后一页
 	$scope.isLast=function(){
-		if($scope.searchMap.pageNum==$scope.resultMap.totlePages){
+		if($scope.num==$scope.totalPages){
 			return true;
 		}else{
 			return false;
 		}
-	}*/
+	};
+
+
+
+
 
 
     $scope.status={};//支付状态数组
@@ -103,13 +121,17 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 
     //根据订单状态查询订单列表
     $scope.orderStatus=function(status){
-        orderService.orderPayStatus(status).success(function(response){
+        orderService.orderPayStatus(status,$scope.num).success(function(response){
             //$scope.getImage();
-            $scope.orderList=response;
+            $scope.orderList=response.rows;
+            $scope.total=response.total;
+            $scope.totalPages=Math.ceil($scope.total/10);
+            $scope.buildPageLabel();
             getStatus();
             $scope.getPayLogList();
+            $('html, body').animate({scrollTop:0}, 'slow');
         })
-    }
+    };
 
 
     //取消订单
@@ -122,7 +144,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
                 alert(response.message);
             }
         })
-    }
+    };
 
     //确认收货
     $scope.confirmOrder=function(orderId){
@@ -132,7 +154,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
                 location.reload();
             }
         })
-    }
+    };
 
 
     //倒计时格式转换
@@ -146,7 +168,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
             timeString=day+"天";
         }
         return timeString+hour+"小时"+minute+"分钟"+second+"秒"
-    }
+    };
 
 
     //删除订单
@@ -159,7 +181,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
                 alert(response.message);
             }
         })
-    }
+    };
 
 
     //获取订单详情，包括从订单页面跳转和从支付成功页面跳转
@@ -172,7 +194,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
         if(payLogId==""||payLogId==null){
             $scope.orderDetail();
         }
-    }
+    };
     //从订单页面跳转
     $scope.orderDetail=function(){
         $scope.orderId3= $location.search()['orderId'];
@@ -192,7 +214,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
                 },1000)
             }
         })
-    }
+    };
 
     //通过payLogId获取订单号，再查询对应的订单详情，从支付成功页面跳转
     $scope.getDetail=function(payLogId){
@@ -223,7 +245,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 
             })
         })
-    }
+    };
 
 
     //订单详情页状态数组
@@ -231,7 +253,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 
     $scope.parseToNum=function(status){
         return parseInt(status);
-    }
+    };
 
 
 
@@ -243,7 +265,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
             $scope.payLogList=response;
         })
 
-    }
+    };
 
 
     //付款相关
@@ -262,7 +284,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
         else{
             location.href="paysuccess.html"
         }
-    }
+    };
 
 
     $scope.logId=""
@@ -309,7 +331,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
             queryStatus(type);
         })
 
-    }
+    };
 
 
 
@@ -332,7 +354,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
     $scope.selectPayment=function(type){
         $scope.selectType=type;
 
-    }
+    };
 
 
     //支付成功页面显示支付金额
@@ -354,7 +376,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 
         }
 
-    }
+    };
 
 
     //付款相关结束

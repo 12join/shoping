@@ -1,6 +1,7 @@
 package com.pinyougou.pojo.group;
 
 import com.pinyougou.pojo.TbGoods;
+import com.pinyougou.pojo.TbGoodsDesc;
 import com.pinyougou.pojo.TbItem;
 import org.springframework.data.annotation.Id;
 
@@ -17,16 +18,18 @@ public class Favorite implements Serializable{
     private String goodsId; //商品Id
     private Date favoriteTime; //收藏时间
     private TbGoods goods; //收藏商品
+    private TbGoodsDesc goodsDesc; //收藏商品
 
     public Favorite() {
     }
 
-    public Favorite(String _id, String username, String goodsId, Date favoriteTime, TbGoods goods) {
+    public Favorite(String _id, String username, String goodsId, Date favoriteTime, TbGoods goods, TbGoodsDesc goodsDesc) {
         this._id = _id;
         this.username = username;
         this.goodsId = goodsId;
         this.favoriteTime = favoriteTime;
         this.goods = goods;
+        this.goodsDesc = goodsDesc;
     }
 
     public String get_id() {
@@ -69,6 +72,14 @@ public class Favorite implements Serializable{
         this.goods = goods;
     }
 
+    public TbGoodsDesc getGoodsDesc() {
+        return goodsDesc;
+    }
+
+    public void setGoodsDesc(TbGoodsDesc goodsDesc) {
+        this.goodsDesc = goodsDesc;
+    }
+
     @Override
     public String toString() {
         return "Favorite{" +
@@ -77,6 +88,7 @@ public class Favorite implements Serializable{
                 ", goodsId='" + goodsId + '\'' +
                 ", favoriteTime=" + favoriteTime +
                 ", goods=" + goods +
+                ", goodsDesc=" + goodsDesc +
                 '}';
     }
 }
