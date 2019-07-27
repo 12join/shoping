@@ -1,4 +1,5 @@
 package com.pinyougou.order.service;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -97,7 +98,7 @@ public interface OrderService {
      * 查询订单状态
      *
      */
-    public List<TbOrder> selectOrderStatus(Date start,Date end);
+    public List<TbOrder> selectOrderStatus(Date start, Date end);
 
 
 	/**

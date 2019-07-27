@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/favorite")
 public class FavoriteController {
-    @Reference
+    @Reference(timeout = 10000)
     private FavoriteService favoriteService;
     @RequestMapping("/findAll")
     public List<Favorite> findAll(){
