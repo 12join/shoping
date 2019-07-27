@@ -220,10 +220,12 @@ $(function(){
 											<div class="bar"></div>
 										</div>
 										<label>
-											<span>付款成功</span>
+											<span ng-if="parseToNum(order.order.status)==6">订单已取消</span>
+											<span ng-if="parseToNum(order.order.status)!=6">付款成功</span>
 											<span ng-if="parseToNum(order.order.status)>=2">{{order.order.paymentTime}}</span>
 										</label>
 									</div>
+
 
 
 
@@ -372,13 +374,17 @@ $(function(){
 
 
 
+										</span>
 
-								</div>
+
+
+
 
 							</div>
 							<div class="order-state">
 								<p>当前订单状态：<span class="red">{{currentStatus[parseToNum(order.order.status)]}}</span></p>
-								<p>还剩{{receTimeString}} 自动确认收货</p>
+								<span ng-if="parseToNum(order.order.status)==4||parseToNum(order.order.status)==5"><p>还剩{{receTimeString}} 自动确认收货</p></span>
+								<span ng-if="parseToNum(order.order.status)==1"><p>还剩{{receTimeString}} 自动取消订单</p></span>
 							</div>
 						</div>
 						<div class="order-info">
@@ -387,7 +393,7 @@ $(function(){
 							<p>订单单号：{{order.order.orderId}}</p>
 							<p>下单时间：{{order.order.createTime}}</p>
 							<p>支付时间：{{order.order.paymentTime}}</p>
-							<p ng-if="order.order.status!=1">支付方式：{{order.order.paymentType=='1'?'微信':'支付宝'}}</p>
+							<p ng-if="order.order.status!=1&&order.order.status!=6">支付方式：{{order.order.paymentType=='1'?'微信':'支付宝'}}</p>
 							<p>发货时间：{{order.order.consignTime}}</p>
 						</div>
 						<div class="order-goods">

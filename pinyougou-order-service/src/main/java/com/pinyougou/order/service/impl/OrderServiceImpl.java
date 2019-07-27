@@ -24,8 +24,8 @@ import util.IdWorker;
 
 /**
  * 服务实现层
- *
  * @author Administrator
+ *
  */
 @Service
 @Transactional
@@ -397,16 +397,21 @@ public class OrderServiceImpl implements OrderService {
 	}*/
 
 
-    /**
-     * 取消订单操作
-     */
-    @Override
-    public void cancelOrder(String userName) {
+	/**
+	 * 取消订单操作
+	 */
+	@Override
+	public void cancelOrder(String payLogId) {
 
-        TbPayLog redisPayLog = searchPayLogFromRedis(userName);//还是需要，因为需要此交易订单号，来更新商家订单状态
-        redisTemplate.boundHashOps("payLog").delete(userName);
-        String[] orders = redisPayLog.getOrderList().split(",");
-        for (String order : orders) {
+		TbPayLog redisPayLog = searchPayLogFromRedis( payLogId);//还是需要，因为需要此交易订单号，来更新商家订单状态
+		redisTemplate.boundHashOps("payLog").delete(payLogId);
+		//Long.ValueOf("String")返回Long包装类型
+		//
+		//Long.parseLong("String")返回long基本数据类型
+		TbPayLog payLog = payLogMapper.selectByPrimaryKey(payLogId);
+		String orderList = payLog.getOrderList();
+		String[] orders = orderList.split(",");
+		for(String order:orders) {
 
             if (order != null) {
                 TbOrder tbOrder = orderMapper.selectByPrimaryKey(Long.valueOf(order));
@@ -432,7 +437,38 @@ public class OrderServiceImpl implements OrderService {
         tbOrder.setEndTime(new Date());
         orderMapper.updateByPrimaryKey(tbOrder);
 
-    }
+	}
+
+	/**
+	 * 提醒发货
+	 * @param orderId
+	 */
+	@Override
+	public void remindSend(String orderId) {
+		TbOrder tbOrder = orderMapper.selectByPrimaryKey(Long.valueOf(orderId));
+		tbOrder.setStatus("3");
+		tbOrder.setUpdateTime(new Date());
+		orderMapper.updateByPrimaryKey(tbOrder);
+
+	}
+
+	/**
+	 * 延长收货
+	 * @param orderId
+	 */
+	@Override
+	public void delayReceive(String orderId) {
+		TbOrder tbOrder = orderMapper.selectByPrimaryKey(Long.valueOf(orderId));
+		long day = 60*60*24*1000;
+		Date consignTime = tbOrder.getConsignTime();
+		long time = consignTime.getTime();
+
+		Date  newTime = new Date(day+time);
+
+		tbOrder.setConsignTime(newTime);
+		tbOrder.setUpdateTime(new Date());
+		orderMapper.updateByPrimaryKey(tbOrder);
+	}
 
 
     /**

@@ -269,7 +269,7 @@ $(function(){
                                                 <ul class="unstyled">
                                                     <li ng-if="status[order.order.orderId]=='4'||status[order.order.orderId]=='5'">{{timeString}}</li>
                                                     <li><a href="" ng-click="confirmOrder(order.order.orderId)" class="sui-btn btn-info">确认收货</a></li>
-                                                    <li><a href="" ng-click="delayOrder(order.order.orderId)" class="sui-btn btn-info">延长收货</a></li>
+                                                    <li><a href="" ng-click="delayReceive(order.order.orderId)" class="sui-btn btn-info">延长收货</a></li>
                                                 </ul>
                                             </td>
                                         </tr>

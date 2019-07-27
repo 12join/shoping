@@ -108,11 +108,11 @@ public interface OrderService {
 
 
 	/**
-	 * 根据登录用户更新支付日志信息
-	 * @param userName
+	 * 根据支付订单号更新支付日志信息，改变订单状态
+	 * @param payLogId 支付订单号
 	 * @return
 	 */
-	public void cancelOrder(String userName);
+	public void cancelOrder(String payLogId);
 
 
 	/**
@@ -121,6 +121,19 @@ public interface OrderService {
 	 * @param orderId
 	 */
 	public void confirmOrder(String orderId);
+
+
+	/**
+	 * 提醒发货
+	 * @param orderId
+	 */
+	public void remindSend(String orderId);
+
+	/**
+	 * 延长收货
+	 * @param orderId
+	 */
+	public void delayReceive(String orderId);
 
 	/**
 	 * 根据订单号删除订单

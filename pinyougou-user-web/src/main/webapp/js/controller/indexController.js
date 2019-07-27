@@ -135,8 +135,17 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 
 
     //取消订单
-    $scope.cancelOrder=function(){
-        orderService.cancelOrder().success(function(response){
+    $scope.cancelOrder=function(orderId){
+        for(var i =0;i< $scope.payLogList.length;i++){
+            //alert($scope.payLogList[i].outTradeNo)
+            if($scope.payLogList[i].orderList.indexOf(orderId)!=-1){
+
+                alert($scope.payLogList[i].outTradeNo)
+                $scope.logId=$scope.payLogList[i].outTradeNo;
+            }
+        }
+
+        orderService.cancelOrder($scope.logId).success(function(response){
             if(response.success){
                 alert(response.message);
                 location.reload();
@@ -145,6 +154,18 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
             }
         })
     };
+
+    //提醒发货
+    $scope.remindSend=function(orderId){
+        orderService.remindSend(orderId).success(function(response){
+            if(response.success){
+                alert("提醒发货成功")
+                location.reload();
+            }else{
+                alert("状态异常，请稍后重试");
+            }
+        })
+    }
 
     //确认收货
     $scope.confirmOrder=function(orderId){
@@ -156,6 +177,17 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
         })
     };
 
+    //延长收货
+    $scope.delayReceive=function(orderId){
+        orderService.delayReceive(orderId).success(function (response) {
+            if(response.success){
+                alert("延长收货成功");
+            }else{
+                alert("状态异常");
+            }
+        })
+    }
+
 
     //倒计时格式转换
     convert=function(t){
@@ -164,11 +196,16 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
         minute=Math.floor((t-day*60*60*24-hour*60*60)/60);
         second=Math.floor(t-day*60*60*24-hour*60*60-minute*60);
         var timeString ="";
+
         if(day>0){
             timeString=day+"天";
+            if(hour>0){
+                timeString=day+"天"+hour+"小时";
+            }
         }
-        return timeString+hour+"小时"+minute+"分钟"+second+"秒"
-    };
+
+        return timeString+minute+"分钟"+second+"秒"
+    }
 
 
     //删除订单
@@ -200,6 +237,19 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
         $scope.orderId3= $location.search()['orderId'];
         orderService.orderDetail($scope.orderId3).success(function(response){
             $scope.order=response;
+            if($scope.order.order.status=='1'){
+                var day15Sec= 60*60;
+                allSecond2=Math.floor( day15Sec-(new Date().getTime()-new Date($scope.order.order.createTime).getTime())/1000);
+                var time2 = $interval(function(){
+                    if(allSecond2>0){
+                        allSecond2 = allSecond2-1;
+                        $scope.receTimeString =convert(allSecond2);
+                    }
+                    else{
+                        $interval.cancel(time2)
+                    }
+                },1000)
+            }
             if($scope.order.order.consignTime!=null&&$scope.order.order.status!='5'){
                 var day15Sec= 60*60*24*15;
                 allSecond2=Math.floor( day15Sec-(new Date().getTime()-new Date($scope.order.order.consignTime).getTime())/1000);
@@ -225,6 +275,7 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
 
                 $scope.order=response1;
                 if($scope.order.order.consignTime!=null&&$scope.order.order.status!='5'){
+
                     var day15Sec= 60*60*24*15;
 
                     allSecond2=Math.floor( day15Sec-(new Date().getTime()-new Date($scope.order.order.consignTime).getTime())/1000);
@@ -294,7 +345,6 @@ app.controller('indexController',function($scope,$location,$interval,loginServic
         $scope.payLogList=  $location.search()['payLogList'];
         $scope.payLogList = JSON.parse($scope.payLogList);
         console.info( $scope.payLogList)
-        alert($scope.payLogList.length)
 
         var type =  $location.search()['type'];
 

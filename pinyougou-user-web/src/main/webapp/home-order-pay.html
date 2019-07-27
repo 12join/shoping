@@ -273,7 +273,7 @@ $(function(){
                                             <td width="10%" class="center">
                                                 <ul class="unstyled">
 													<li><a data-toggle="modal" data-target=".edit" ng-click="getOrderId(order.order.orderId)" data-keyboard="false" class="sui-btn btn-info">立即付款</a></li>
-													<li><a ng-click="cancelOrder()" href="">取消订单</a></li>
+													<li><a ng-click="cancelOrder(order.order.orderId)" href="">取消订单</a></li>
                                                 </ul>
                                             </td>
                                         </tr>

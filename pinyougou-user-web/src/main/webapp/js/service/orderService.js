@@ -15,12 +15,23 @@ app.service('orderService',function($http){
     }
 
     //取消订单
-    this.cancelOrder=function(){
-        return $http.get('../order/cancelOrder.do');
+    this.cancelOrder=function(payLogId){
+        return $http.get('../order/cancelOrder.do?payLogId='+payLogId);
+    }
+
+    //提醒发货
+
+    this.remindSend=function(orderId){
+        return $http.get('../order/remindSend.do?orderId='+orderId);
     }
     //确认收货
     this.confirmOrder=function(orderId){
         return $http.get('../order/confirmOrder.do?orderId='+orderId);
+    }
+
+    //延长收货
+    this.delayReceive=function(orderId){
+        return $http.get('../order/delayReceive.do?orderId='+orderId);
     }
 
     //删除订单
