@@ -11,10 +11,12 @@
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css" />
 	<link rel="stylesheet" type="text/css" href="css/pages-getOrderInfo.css" />
-    
+
     <script type="text/javascript" src="plugins/angularjs/angular.min.js"></script>
 	<script type="text/javascript" src="js/base.js"></script>
 	<script type="text/javascript" src="js/service/loginService.js"></script>
+	<script type="text/javascript" src="js/service/userService.js"></script>
+	<script type="text/javascript" src="js/controller/userController.js"></script>
 	<script type="text/javascript" src="/js/service/payService.js"></script>
     <script type="text/javascript" src="js/service/orderService.js"></script>
 	<script type="text/javascript" src="js/controller/indexController.js"></script>
@@ -234,10 +236,15 @@ $(function(){
                                     <label data-toggle="checkbox" class="checkbox-pretty ">
                                            <input type="checkbox" checked="checked"><span>{{order.order.updateTime}}　订单编号：{{order.order.orderId}}  店铺：{{order.order.sellerId}} <a>和我联系</a></span>
                                      </label>
-									  <a class="sui-btn btn-info share-btn">分享</a>
+									<!--  <a class="sui-btn btn-info share-btn">分享</a>-->
+                                    <div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到人人网" class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count">0</span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=1&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+                                    <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#uuid=<null>&style=-1"></script>
+                                    <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/addons/bshareMM.js#shareClass=BSHARE_IMAGE_ALL"> </script>
+                                 </div>
+									  <!--<a class="sui-btn btn-info share-btn">分享</a>-->
 									<span ng-if="status[order.order.orderId]=='6'"><a ng-click="deleOrder(order.order.orderId)" class="sui-btn btn-info share-btn">删除订单</a></span>
 									<span ng-if="status[order.order.orderId]=='7'"><a ng-click="deleOrder(order.order.orderId)" class="sui-btn btn-info share-btn">删除订单</a></span>
-                                </div>
+
                                 <table class="sui-table table-bordered order-datatable">
                                     <tbody  ng-repeat="entity in order.orderItemList">
 
@@ -322,6 +329,7 @@ $(function(){
                                 </table>
                                 <!--order2-->
                                 </div>
+                            </div>
 
                             </div>
 

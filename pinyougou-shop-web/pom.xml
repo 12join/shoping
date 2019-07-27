@@ -78,12 +78,7 @@
 	</dependency>
 
 
-	<dependency>
-		<groupId>com.pinyougou</groupId>
-		<artifactId>pinyougou-sellergoods-interface</artifactId>
-		<version>0.0.3-SNAPSHOT</version>
-	</dependency>
-	
+
 	<!-- 身份认证的依赖 -->
 	<dependency>
 		<groupId>org.springframework.security</groupId>
@@ -99,6 +94,25 @@
 		<artifactId>pinyougou-common</artifactId>
 		<version>0.0.3-SNAPSHOT</version>
 	</dependency>
+
+       <dependency>
+           <groupId>com.pinyougou</groupId>
+           <artifactId>pinyougou-order-interface</artifactId>
+           <version>0.0.3-SNAPSHOT</version>
+       </dependency>
+
+       <dependency>
+           <groupId>com.pinyougou</groupId>
+           <artifactId>pinyougou-sellergoods-interface</artifactId>
+           <version>0.0.3-SNAPSHOT</version>
+       </dependency>
+
+
+       <dependency>
+           <groupId>com.pinyougou</groupId>
+           <artifactId>pinyougou-seckill-interface</artifactId>
+           <version>0.0.3-SNAPSHOT</version>
+       </dependency>
    </dependencies>
   
   

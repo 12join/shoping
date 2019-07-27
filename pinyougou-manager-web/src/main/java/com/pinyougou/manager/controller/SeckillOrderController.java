@@ -1,4 +1,8 @@
 package com.pinyougou.manager.controller;
+import java.util.List;
+
+import com.pinyougou.pojo.TbSeckillOrder;
+import com.pinyougou.seckill.service.SeckillOrderService;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,6 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
+
+import entity.PageResult;
+import entity.Result;
+/**
+ * controller
+ * @author Administrator
+ *
 import com.pinyougou.pojo.TbSeckillOrder;
 
 import entity.PageResult;

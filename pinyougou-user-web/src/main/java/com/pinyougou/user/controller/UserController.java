@@ -1,6 +1,10 @@
 package com.pinyougou.user.controller;
 import java.util.List;
 
+import com.pinyougou.order.service.OrderService;
+import com.pinyougou.pojo.TbOrder;
+
+
 import com.pinyougou.pojo.TbInterest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -172,5 +176,21 @@ public class UserController {
         return userService.findInterest();
     }
 
-	
+
+    @Reference(timeout = 1000000)
+    private OrderService orderService;
+
+    @RequestMapping("/sendMessage")
+    public Result sendMessage(@RequestBody TbOrder order){
+
+        try {
+            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            orderService.sendMessage(order,userName);
+            return new Result(true, "发送成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "发送失败");
+        }
+    }
+
 }

@@ -1,17 +1,29 @@
 package com.pinyougou.manager.controller;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbOrder;
-import com.pinyougou.pojo.TbTypeTemplate;
 import com.pinyougou.order.service.OrderService;
-import entity.PageResult;
-import entity.Result;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.pinyougou.pojo.TbOrder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.dubbo.config.annotation.Reference;
+
+
+import entity.PageResult;
+import entity.Result;
+/**
+ * controller
+ * @author Administrator
+ *
+ */
+
+
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -265,6 +277,60 @@ public class OrderController {
 //            sheet.setColumnWidth(3, 8000);
         }
         return wb;
+    }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 查询订单状态
+     * @param start
+     * @return
+     */
+    @RequestMapping("/selectOrderStatus")
+	public List selectOrderStatus(Date start, Date end){
+
+        System.out.println(start);
+        System.out.println(end);
+
+        int number1=0;
+        int number2=0;
+        int number3=0;
+        int number4=0;
+        int number5=0;
+
+        List list=new ArrayList();
+        List<TbOrder> tbOrders = orderService.selectOrderStatus(start, end);
+        for (TbOrder tbOrder : tbOrders) {
+            if ("1".equals(tbOrder.getStatus())){
+                number1++;
+            }
+            if ("2".equals(tbOrder.getStatus())){
+                number2++;
+            }
+            if ("3".equals(tbOrder.getStatus())){
+                number3++;
+            }
+            if ("4".equals(tbOrder.getStatus())){
+                number4++;
+            }
+            if ("5".equals(tbOrder.getStatus())){
+                number5++;
+            }
+        }
+        list.add(number1);
+        list.add(number2);
+        list.add(number3);
+        list.add(number4);
+        list.add(number5);
+        System.out.println(list);
+        return list;
     }
 
 

@@ -44,10 +44,16 @@ app.service('userService',function($http){
         return $http.post('user/updateUserInfo.do',userInfo);
     }
 
+
+    //发送订单信息
+    this.sendMessage=function (order) {
+        return  $http.post('../user/sendMessage.do',order);
+    }
+
     //查询兴趣
     this.findIn=function(){
         return $http.get('user/findInterest.do');
     }
 
-	
+
 });

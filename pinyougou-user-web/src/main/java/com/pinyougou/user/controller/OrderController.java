@@ -26,7 +26,8 @@ import entity.Result;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-    @Reference
+
+    @Reference(timeout = 10000)
     private OrderService orderService;
 
 
@@ -109,6 +110,9 @@ public class OrderController {
     public Result remindSend(String orderId){
         try {
             orderService.remindSend(orderId);
+            //发送信息
+            TbOrder order = orderService.findOne(Long.valueOf(orderId));
+            new UserController().sendMessage(order);
             return new Result(true,"提醒发货成功");
         } catch (Exception e) {
             e.printStackTrace();

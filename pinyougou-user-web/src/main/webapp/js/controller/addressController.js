@@ -35,8 +35,6 @@ app.controller('addressController', function ($scope, addressService,loginServic
 
 
     $scope.save=function(){
-        // $scope.address.addresss=$scope.addStr1+" "+$scope.addStr2+" "+$scope.addStr3+" "+$scope.addStr4;
-
         var serviceObject;//服务层对象
         if($scope.address.userId!=null){//如果有ID
             serviceObject=addressService.update($scope.address); //修改
@@ -55,7 +53,7 @@ app.controller('addressController', function ($scope, addressService,loginServic
                 }
             }
         );
-    }
+    };
 
     $scope.ids=[];
     //删除
@@ -68,11 +66,14 @@ app.controller('addressController', function ($scope, addressService,loginServic
             function(response){
                 if(response.success){
                     $scope.findAddressList();//重新加载
-                    $scope.ids=[];
+
+                }else{
+                    alert(response.message);
                 }
+                $scope.ids=[];
             }
         );
-    }
+    };
 
     //查找一个
     $scope.findOne=function(address){
@@ -89,7 +90,7 @@ app.controller('addressController', function ($scope, addressService,loginServic
                     }
                 );
             }
-        })
+        });
 
         $scope.$watch('address.cityId',function(newValue,oldValue){
             if(newValue != undefined){
@@ -111,22 +112,6 @@ app.controller('addressController', function ($scope, addressService,loginServic
             }
         );
     };
-
-    // $scope.findC=function (id) {
-    //     addressService.findC(id).success(
-    //         function(response){
-    //             $scope.cityList=response;
-    //         }
-    //     );
-    // };
-    //
-    // $scope.findA=function (id) {
-    //     addressService.findA(id).success(
-    //         function(response){
-    //             $scope.areasList=response;
-    //         }
-    //     );
-    // }
 
 
 });

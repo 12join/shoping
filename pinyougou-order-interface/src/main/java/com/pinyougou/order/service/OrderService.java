@@ -78,6 +78,28 @@ public interface OrderService {
 	public void updateOrderStatus(String out_trade_no,String transaction_id);
 
 
+    /**
+     * 批量修改状态
+     * @param ids
+     * @param status
+     */
+    public void updateStatus(Long[] ids, String status);
+
+
+    /**
+     * 发送订单信息
+     * @param order
+     * @param userName
+     */
+	public void sendMessage(TbOrder order,String userName);
+
+    /**
+     * 查询订单状态
+     *
+     */
+    public List<TbOrder> selectOrderStatus(Date start,Date end);
+
+
 	/**
 	 * 根据订单号获取到对应的支付订单号
 	 * @param orderId
@@ -171,5 +193,7 @@ public interface OrderService {
 	 * @param status
 	 */
 	public void updateStatus(Long orderId,String status);
+
+	public TbOrder getOrderByPayLogId(String payLogId);
 
 }

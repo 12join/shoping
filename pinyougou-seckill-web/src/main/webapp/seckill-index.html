@@ -31,7 +31,7 @@
 						<li class="f-item">品优购欢迎您！</li>
 						<span ng-show="user.isLogin"><li class="f-item"><a href="http://localhost:9106" target="_blank">{{user.name}}</a>&nbsp&nbsp<a href="logout" target="_blank">退出登陆</a></li></span>
 
-						<span ng-show="!user.isLogin"><li class="f-item">请<a href="/login.html" target="_blank">登录</a>&nbsp&nbsp<a href="http://localhost:9106/register.html" target="_blank">免费注册</a></li></span>
+						<span ng-show="!user.isLogin"><li class="f-item">请<a ng-click="loginBack()" target="_blank">登录</a>&nbsp&nbsp<a href="http://localhost:9106/register.html" target="_blank">免费注册</a></li></span>
 					</ul>
 					<ul class="fr">
 						<li class="f-item">我的订单</li>

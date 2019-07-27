@@ -137,5 +137,16 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
 			return (TbSeckillGoods) redisTemplate.boundHashOps("seckillGoods").get(id);
 		}
 
-	
+    @Override
+    public void updateStatus(Long[] ids, String status) {
+        for (Long id : ids) {
+            TbSeckillGoods seckillGoods = seckillGoodsMapper.selectByPrimaryKey(id);
+
+                seckillGoods.setStatus(status);
+                seckillGoodsMapper.updateByPrimaryKey(seckillGoods);
+
+        }
+    }
+
+
 }

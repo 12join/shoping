@@ -21,7 +21,7 @@ app.controller('cartController',function($scope,cartService,loginService){
 				}				
 			}		
 		);		
-	}
+	};
 	
 
 	
@@ -31,8 +31,8 @@ app.controller('cartController',function($scope,cartService,loginService){
 			function(response){
 				$scope.addressList=response;
 				for(var i=0;i<$scope.addressList.length;i++){
-					if($scope.addressList[i].isDefault=='1'){
-						$scope.address=$scope.addressList[i];
+					if($scope.addressList[i].address.isDefault=='1'){
+						$scope.id=$scope.addressList[i].address.id;
 						break;
 					}					
 				}
@@ -42,18 +42,99 @@ app.controller('cartController',function($scope,cartService,loginService){
 	}
 	
 	//选择地址
-	$scope.selectAddress=function(address){
-		$scope.address=address;		
+	$scope.selectAddress=function(id){
+		$scope.id=id;
 	}
 	
 	//判断某地址对象是不是当前选择的地址
-	$scope.isSeletedAddress=function(address){
-		if(address==$scope.address){
+	$scope.isSelectAddress=function(id){
+		if(id==$scope.id){
 			return true;
 		}else{
 			return false;
 		}		
-	}
+	};
+
+
+    $scope.address={};
+    $scope.save=function(){
+        var serviceObject;//服务层对象
+        if($scope.address.userId!=null){//如果有ID
+            serviceObject=cartService.update($scope.address); //修改
+        }else{
+            serviceObject=cartService.add($scope.address);//增加
+        }
+        serviceObject.success(
+            function(response){
+                if(response.success){
+                    //重新查询
+                    alert(response.message);
+                    $scope.findAddressList();//重新加载
+                    $scope.address={};
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
+    };
+
+    $scope.ids=[];
+    //删除
+    $scope.dele=function(id){
+        if(!confirm("你确定要删除吗")){
+            return;
+        }
+        $scope.ids.push(id);
+        cartService.dele($scope.ids).success(
+            function(response){
+                if(response.success){
+                    $scope.findAddressList();//重新加载
+                }else{
+                    alert(response.message);
+                }
+                $scope.ids=[];
+            }
+        );
+    };
+
+    //查找一个
+    $scope.findOne=function(address){
+        $scope.address=JSON.parse(JSON.stringify(address));
+
+
+        $scope.$watch('address.provinceId',function(newValue,oldValue){
+            if(newValue != undefined){
+                cartService.findC(newValue).success(
+                    function(response){
+                        $scope.areasList={};
+                        $scope.cityList=response;
+
+                    }
+                );
+            }
+        });
+
+        $scope.$watch('address.cityId',function(newValue,oldValue){
+            if(newValue != undefined){
+                cartService.findA(newValue).success(
+                    function(response){
+                        $scope.areasList=response;
+                    }
+                );
+            }
+        })
+
+
+    };
+
+    $scope.findP=function () {
+        cartService.findP().success(
+            function(response){
+                $scope.provinceList=response;
+            }
+        );
+    };
+
 	
 	$scope.order={paymentType:'1'};//订单对象
 	
@@ -106,5 +187,9 @@ app.controller('cartController',function($scope,cartService,loginService){
             }
         );
     }
+
+
+
+
 	
 });
